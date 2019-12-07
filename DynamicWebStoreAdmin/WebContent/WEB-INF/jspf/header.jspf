@@ -1,0 +1,19 @@
+<%@ page import="es.tiwadmin.model.User" %>
+<header>
+	<nav>
+		<a href="userList">Users</a>
+		<a href="productList">Products</a>
+		<a href="orderList">Orders</a>
+		<a href="messageList">Messages</a>
+	</nav>
+	<div id="dropdown">
+		<div id="userFace">
+			<img src="images/user.png">
+			<div><%=((User) session.getAttribute("user")).getName() %></div>
+		</div>
+		<div id="dropdown-content">
+			<a href="profile">Profile</a>
+			<a href="logout">Log Out</a>
+		</div>
+	</div>
+</header>

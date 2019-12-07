@@ -1,0 +1,14 @@
+tr td:nth-child(1),
+tr th:nth-child(1) {
+	width: 5%;
+}
+
+tr td:nth-child(4),
+tr th:nth-child(4) {
+	width: 15%;
+}
+
+tr td:nth-child(2),
+tr th:nth-child(2) {
+	width: 30%;
+}

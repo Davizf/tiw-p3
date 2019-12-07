@@ -1,0 +1,201 @@
+#content #lyt-right { /*Double ID selector to win specificity*/
+	margin-top: 50px;
+	padding-top: 0;
+}
+
+#userHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#userProfileData img {
+	width: 128px;
+	height: 128px;
+	margin-right: 20px;
+}
+
+#userProfileData > div {
+	display: inline-block;
+	vertical-align: 35px;
+}
+
+#userProfileData h1 {
+	margin-bottom: 0;
+}
+
+#userProfileData h2 {
+	margin-top: 0;
+	font-weight: normal;
+	font-size: 18px;
+	margin-left: 10px;
+}
+
+#stats {
+	float: right;
+}
+
+#stats::after {
+	content: "";
+    display: block;
+    height: 0;
+	clear: both;
+}
+
+#stats > div {
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 80px;
+	background-color: rgb(230, 230, 230);
+	font-weight: bold;
+	margin: 0 10px;
+	float: left;
+	border-radius: 10px;
+}
+
+#stats > div span:first-child {
+	font-size: 23px;
+	margin-bottom: 15px;
+}
+
+#stats > div span:last-child {
+	font-size: 25px;
+}
+
+#mainUserData > div {
+	border: 1px solid gray;
+	border-radius: 10px;
+	font-size: 18px;
+	overflow: hidden;
+	margin-top: 15px;
+}
+
+#mainUserData h4 {
+	margin: 0;
+}
+
+.dataHeaderBar * {
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.dataHeaderBar {
+	display: flex;
+	justify-content: space-between;
+	background: linear-gradient(rgb(250, 250, 250), rgb(190, 190, 190));
+	cursor: pointer;
+	padding: 5px 20px;
+}
+
+.dataHeaderBar:active {
+	background: linear-gradient(rgb(190, 190, 190), rgb(250, 250, 250));
+}
+
+.dataHeaderBar span {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.dataHeaderBar span.hidden {
+	display: none;
+}
+
+.dataContent {
+	padding: 5px 20px;
+}
+
+.dataContent.hidden {
+	max-height: 0px;
+	padding: 0;
+}
+
+.dataContent table {
+	text-align: left;
+	width: 100%;
+}
+
+.dataContent th {
+	width: 230px;
+	min-width: 230px;
+	vertical-align: top;
+}
+
+.dataContent th::after {
+	content: ":";
+}
+
+#mainUserData input,
+select,
+#mainUserData textarea {
+	max-width: 400px;
+}
+
+#mainUserData input.semi-length {
+	max-width: 197px;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type="submit"] {
+	background-color: rgb(255, 100, 75);
+	width: 100px;
+	height: 40px;
+	margin: 20px auto 0;
+	color: black;
+	border: 1px solid gray;
+	border-radius: 5px;
+	font-size: 18px;
+	padding: 0 5px;
+	display: block;
+}
+
+td textarea {
+	text-align: left;
+	height: 170px;
+}
+
+#short-description {
+	height: 100px;
+}
+
+input[type="file"] {
+	display: none;
+}
+
+label[for="image"] {
+	background-color: rgb(255, 100, 75);
+	display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 388px;
+	height: 40px;
+	line-height: 40px;
+	color: black;
+	border: 1px solid gray;
+	border-radius: 5px;
+	font-size: 18px;
+	padding: 0 5px;
+	display: block;
+	text-align: center;
+	margin-left: 10px;
+}
+
+td #price {
+	max-width: 350px;
+}
+
+#currency {
+	margin-left: 15px;
+	font-size: 20px;
+}

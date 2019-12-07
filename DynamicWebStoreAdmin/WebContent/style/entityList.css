@@ -1,0 +1,67 @@
+/*************** USER LIST PAGE ***************/
+
+table {
+	/*border: 1px solid gray;*/
+	width: 100%;
+	border-collapse: collapse;
+	text-align: center;
+}
+
+thead tr {
+	border-bottom: 1px solid gray;
+	background-color: rgb(230, 230, 230);
+}
+
+tr:nth-child(even) {
+	background-color: rgb(230, 230, 230);
+}
+
+td form {
+	display: inline;
+}
+
+td button {
+	cursor: pointer;
+	background: none;
+	margin: 0;
+	border: none;
+}
+
+td button img {
+	width: 20px;
+	height: 20px;
+}
+
+/*************** PAGINATION MENU ***************/
+
+#pagination {
+	text-align: center;
+}
+
+#pagination > form {
+	display: inline-block;
+	margin-top: 20px;
+}
+
+#pagination button {
+	background-color: white;
+	color: black;
+	/*border: 1px solid gray;*/
+	border: none;
+	width: 35px;
+	height: 35px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+#pagination button:not([type="button"]):hover {
+	background-color: rgb(200, 200, 200);
+}
+
+#pagination button[type="button"] {
+	background-color: rgb(255, 100, 75);
+}
+
+form[name="mass-operation"] {
+	display: none;
+}
