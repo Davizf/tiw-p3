@@ -64,11 +64,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "users", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<?> createUser(@RequestBody(required = true) User user) {
+	public ResponseEntity<Void> createUser(@RequestBody(required = true) User user) {
 		try {
 			User userFind = userDAO.findByEmail(user.getEmail());
 
-			if (userFind != null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			if (userFind != null) return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 			
 			userDAO.save(user);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -78,16 +78,16 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "users/{email}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<?> updateUser(@PathVariable(value = "email", required = true) String email, @RequestBody(required = true) User user) {// TODO probar
+	public ResponseEntity<Void> updateUser(@PathVariable(value = "email", required = true) String email, @RequestBody(required = true) User user) {// TODO probar
 		try {
 			User userFind = userDAO.findByEmail(email);
 
-			if (userFind == null || !user.getEmail().equals(email)) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			if (userFind == null || !user.getEmail().equals(email)) return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 
 			user.setEmail(email);
 			userDAO.save(user);
 
-			return new ResponseEntity<User>(user, HttpStatus.OK);
+			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
