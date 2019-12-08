@@ -68,7 +68,7 @@ public class UserController {
 		try {
 			User userFind = userDAO.findByEmail(user.getEmail());
 
-			if (userFind != null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			if (userFind != null) return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 			
 			userDAO.save(user);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -82,12 +82,12 @@ public class UserController {
 		try {
 			User userFind = userDAO.findByEmail(email);
 
-			if (userFind == null || !user.getEmail().equals(email)) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			if (userFind == null || !user.getEmail().equals(email)) return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 
 			user.setEmail(email);
 			userDAO.save(user);
 
-			return new ResponseEntity<User>(user, HttpStatus.OK);
+			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
@@ -99,7 +99,7 @@ public class UserController {
 			userDAO.deleteById(email);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (EmptyResultDataAccessException e) {
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}

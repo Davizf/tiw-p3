@@ -14,9 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="users")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
-@NamedQuery(name="User.findAllByType", query="SELECT u FROM User u WHERE u.type LIKE :type")
+@Table(name = "users")
+@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
+@NamedQuery(name = "User.findAllByType", query = "SELECT u FROM User u WHERE u.type LIKE :type")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -29,12 +29,12 @@ public class User implements Serializable {
 
 	private String country;
 
-	@Column(name="credit_card")
+	@Column(name = "credit_card")
 	private String creditCard;
 
 	private int credit_card_CVV;
 
-	@Column(name="credit_card_expiration")
+	@Column(name = "credit_card_expiration")
 	private String creditCardExpiration;
 
 //	@Column(name="CURRENT_CONNECTIONS")
@@ -46,7 +46,7 @@ public class User implements Serializable {
 
 	private int phone;
 
-	@Column(name="postal_code")
+	@Column(name = "postal_code")
 	private int postalCode;
 
 	private String surnames;
@@ -59,23 +59,20 @@ public class User implements Serializable {
 //	private String user;
 
 	/*
-	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="userBean")
-	private List<Product> products1;
-
-	//bi-directional many-to-many association to Product
-	@ManyToMany
-	@JoinTable(
-		name="wishlists"
-		, joinColumns={
-			@JoinColumn(name="user")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="product")
-			}
-		)
-	private List<Product> products2;
-	*/
+	 * //bi-directional many-to-one association to Product
+	 * 
+	 * @OneToMany(mappedBy="userBean") private List<Product> products1;
+	 * 
+	 * //bi-directional many-to-many association to Product
+	 * 
+	 * @ManyToMany
+	 * 
+	 * @JoinTable( name="wishlists" , joinColumns={
+	 * 
+	 * @JoinColumn(name="user") } , inverseJoinColumns={
+	 * 
+	 * @JoinColumn(name="product") } ) private List<Product> products2;
+	 */
 	public User() {
 	}
 
@@ -207,34 +204,26 @@ public class User implements Serializable {
 //		this.user = user;
 //	}
 
-	/*public List<Product> getProducts1() {
-		return this.products1;
-	}
-
-	public void setProducts1(List<Product> products1) {
-		this.products1 = products1;
-	}
-
-	public Product addProducts1(Product products1) {
-		getProducts1().add(products1);
-		products1.setUserBean(this);
-
-		return products1;
-	}
-
-	public Product removeProducts1(Product products1) {
-		getProducts1().remove(products1);
-		products1.setUserBean(null);
-
-		return products1;
-	}
-
-	public List<Product> getProducts2() {
-		return this.products2;
-	}
-
-	public void setProducts2(List<Product> products2) {
-		this.products2 = products2;
-	}*/
+	/*
+	 * public List<Product> getProducts1() { return this.products1; }
+	 * 
+	 * public void setProducts1(List<Product> products1) { this.products1 =
+	 * products1; }
+	 * 
+	 * public Product addProducts1(Product products1) {
+	 * getProducts1().add(products1); products1.setUserBean(this);
+	 * 
+	 * return products1; }
+	 * 
+	 * public Product removeProducts1(Product products1) {
+	 * getProducts1().remove(products1); products1.setUserBean(null);
+	 * 
+	 * return products1; }
+	 * 
+	 * public List<Product> getProducts2() { return this.products2; }
+	 * 
+	 * public void setProducts2(List<Product> products2) { this.products2 =
+	 * products2; }
+	 */
 
 }

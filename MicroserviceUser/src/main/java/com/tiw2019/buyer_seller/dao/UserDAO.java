@@ -13,7 +13,7 @@ public interface UserDAO extends CrudRepository<User, String> {
 	List<User> findAll();
 
 	User findByEmail(String email);
-	
+
 	@Query("SELECT u FROM User u WHERE u.type LIKE :type")
 	List<User> findByType(@Param("type") int type);
 }
