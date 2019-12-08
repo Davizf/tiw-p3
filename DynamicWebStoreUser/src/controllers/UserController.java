@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -16,7 +14,6 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
 
-import managers.UserManager;
 import model.Product;
 import model.User;
 import model.WishList;
@@ -68,15 +65,15 @@ public class UserController {
 	}
 	
 	public static void deleteUser(User user) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		UserManager manager = new UserManager();
-		manager.setEntityManagerFactory(factory);
-		try {
-			manager.deleteUser(user);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		factory.close();
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+		
+		WebTarget webTarget = client.target("http://localhost:11144");
+		WebTarget webTargetPath = webTarget.path("users").path(user.getEmail());
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.delete();
+		
+		client.close();
 	}
 
 	public static ArrayList<Product> getWishListProduct(User user) {
