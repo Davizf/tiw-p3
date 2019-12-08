@@ -330,7 +330,7 @@ if (user!=null) {
 					</div>
 
 				</form>
-				
+				<p id="redText"><%=request.getAttribute("message") == null ? "":request.getAttribute("message") %></p>
 				
 			</div>
 			<!-- /row -->
