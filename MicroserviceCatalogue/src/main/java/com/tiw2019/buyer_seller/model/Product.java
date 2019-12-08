@@ -1,4 +1,4 @@
-package es.uc3m.buyer_seller.model;
+package com.tiw2019.buyer_seller.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package es.uc3m.buyer_seller.controller;
+package com.tiw2019.buyer_seller.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.uc3m.buyer_seller.dao.CategoryDAO;
-import es.uc3m.buyer_seller.model.Category;
+import com.tiw2019.buyer_seller.dao.CategoryDAO;
+import com.tiw2019.buyer_seller.model.Category;
 
 @RestController
 @CrossOrigin

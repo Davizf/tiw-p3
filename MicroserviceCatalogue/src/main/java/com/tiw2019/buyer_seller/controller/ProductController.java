@@ -1,4 +1,4 @@
-package es.uc3m.buyer_seller.controller;
+package com.tiw2019.buyer_seller.controller;
 
 
 public class ProductController {

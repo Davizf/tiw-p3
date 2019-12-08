@@ -1,4 +1,4 @@
-package es.uc3m.buyer_seller;
+package com.tiw2019.buyer_seller;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
