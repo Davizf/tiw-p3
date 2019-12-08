@@ -31,11 +31,11 @@ public class UserController {
 	public ResponseEntity<?> getUsers(){
 		try {
 			List<User> users = userDAO.findAll();
-			return new ResponseEntity<>(users, 
+			return new ResponseEntity<List<User>>(users, 
 					(users.size() == 0) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
 		} catch (Exception ex) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -43,11 +43,11 @@ public class UserController {
 	public ResponseEntity<?> getUserByEmail(@PathVariable(value = "email", required = true) String email){
 		try {
 			User user = userDAO.findByEmail(email);
-			return new ResponseEntity<>(user, 
+			return new ResponseEntity<User>(user, 
 					(user != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT
 					);
 		} catch (Exception ex) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -59,7 +59,7 @@ public class UserController {
 					(users.size() == 0) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
 		} catch (Exception ex) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class UserController {
 			if (userFind != null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			
 			userDAO.save(user);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
@@ -87,7 +87,7 @@ public class UserController {
 			user.setEmail(email);
 			userDAO.save(user);
 
-			return new ResponseEntity<>(user, HttpStatus.OK);
+			return new ResponseEntity<User>(user, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
