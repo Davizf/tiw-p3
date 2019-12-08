@@ -91,29 +91,38 @@ public class UserController {
 	public static boolean checkUserEmail(String email) {
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
+		User user = null;
 		
 		WebTarget webTarget = client.target("http://localhost:11144");
-		WebTarget webTargetPath = webTarget.path("users").path("email");
+		WebTarget webTargetPath = webTarget.path("users").path(email);
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 		
 		if(response.getStatus() == 200) {
-			User user = response.readEntity(User.class);
-			client.close();
-			
-			return user != null;
-		} 
-
-		return true;
+			user = response.readEntity(User.class);	
+		}
+		client.close();
+		
+		return user != null;
 	}
 	
 	public static boolean verifyUser(String email, String password) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		UserManager manager = new UserManager();
-		manager.setEntityManagerFactory(factory);
-		boolean check =  manager.verifyUser(email, password);
-		factory.close();
-		return check;
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+		
+		WebTarget webTarget = client.target("http://localhost:11144");
+		WebTarget webTargetPath = webTarget.path("users").path(email);
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+
+		if(response.getStatus() == 200) {
+			User user = response.readEntity(User.class);
+			client.close();
+			return user.getPassword().equals(password);
+		} 
+		client.close();
+		
+		return false;
 	}
 
 
