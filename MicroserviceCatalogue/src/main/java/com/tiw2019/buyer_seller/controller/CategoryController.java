@@ -33,7 +33,7 @@ public class CategoryController {
 		try {
 			List<Category> c = categoryDAO.findAll();
 			return new ResponseEntity<>(c, 
-					(c.size() == 0) ? HttpStatus.NO_CONTENT : HttpStatus.OK
+					(c.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -57,7 +57,7 @@ public class CategoryController {
 		try {
 			List<Category> c = categoryDAO.findByName(name);
 			return new ResponseEntity<>(c, 
-					(c.size() == 0) ? HttpStatus.NO_CONTENT : HttpStatus.OK
+					(c.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -75,11 +75,11 @@ public class CategoryController {
 	}
 
 	@RequestMapping(value = "categories/{id}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<?> updateCategory(@PathVariable(value = "id", required = true) Integer id, @RequestBody(required = true) Category category) {// TODO probar
+	public ResponseEntity<?> updateCategory(@PathVariable(value = "id", required = true) Integer id, @RequestBody(required = true) Category category) {
 		try {
 			Optional<Category> c = categoryDAO.findById(id);
 
-			if (!c.isPresent()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			if (!c.isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 			category.setId(id);
 			categoryDAO.save(category);
@@ -95,8 +95,8 @@ public class CategoryController {
 		try {
 			categoryDAO.deleteById(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
-		} catch (EmptyResultDataAccessException e) {
-			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (EmptyResultDataAccessException e) {// No existe con ese id
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
