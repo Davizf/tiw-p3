@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
@@ -80,12 +81,23 @@ public class UserController {
 	}
 
 	public static List<User> getAllUsersByType(int type){
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		UserManager manager = new UserManager();
-		manager.setEntityManagerFactory(factory);
-		List<User> buyers= manager.getAllUsersByType(type);
-		factory.close();
-		return buyers;
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+		List<User> users = null;
+		
+		WebTarget webTarget = client.target("http://localhost:11144");
+		WebTarget webTargetPath = webTarget.path("users").queryParam("type", type);
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+		
+		if(response.getStatus() == 200) {
+			User[] usersArray = response.readEntity(User[].class);	
+			users = Arrays.asList(usersArray);
+		}
+		client.close();
+		
+
+		return users;
 	}
 	
 	public static boolean checkUserEmail(String email) {
@@ -118,10 +130,11 @@ public class UserController {
 		if(response.getStatus() == 200) {
 			User user = response.readEntity(User.class);
 			client.close();
+			
 			return user.getPassword().equals(password);
 		} 
 		client.close();
-		
+	
 		return false;
 	}
 

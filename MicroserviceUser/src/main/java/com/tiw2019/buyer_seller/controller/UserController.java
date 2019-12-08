@@ -55,7 +55,7 @@ public class UserController {
 	public ResponseEntity<?> getUsersByType(@RequestParam(value = "type", required = true) Integer type){
 		try {
 			List<User> users = userDAO.findByType(type);
-			return new ResponseEntity<>(users, 
+			return new ResponseEntity<List<User>>(users, 
 					(users.size() == 0) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
 		} catch (Exception ex) {
