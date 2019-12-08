@@ -49,7 +49,7 @@ public class OrderServlet extends HttpServlet{
 				order.setCity(req.getParameter("city"));
 				order.setCountry(req.getParameter("country"));
 				order.setPostalCode(Integer.parseInt(req.getParameter("zipCode")));
-				order.setUserBean(UserController.getUserInformation(email));
+				order.setUserBean(UserController.getUser(email));
 				order.setDate(formatter.format(date));
 
 				// Fill the order with products

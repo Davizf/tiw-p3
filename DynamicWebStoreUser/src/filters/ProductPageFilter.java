@@ -25,7 +25,7 @@ public class ProductPageFilter implements Filter {
 		String email = (String) ((HttpServletRequest) request).getSession().getAttribute("user");
 
 		if (email != null) {
-			if (UserController.getUserInformation(email).getType() == UserController.USER_TYPE_SELLER) {
+			if (UserController.getUser(email).getType() == UserController.USER_TYPE_SELLER) {
 				res.sendRedirect("catalogue.jsp");
 				return;
 			}

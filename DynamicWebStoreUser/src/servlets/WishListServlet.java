@@ -34,7 +34,7 @@ public class WishListServlet extends HttpServlet{
 			if(req.getParameter("type").equalsIgnoreCase("addToWishList")) {
 				int id = Integer.parseInt(req.getParameter("id"));
 				Product product = ProductController.getProduct(id);
-				User user = UserController.getUserInformation(email);
+				User user = UserController.getUser(email);
 
 				// Add product to the WL if doesnt exists
 				if(!WishListController.checkWishListProducts(user.getWishlists(), product)) {

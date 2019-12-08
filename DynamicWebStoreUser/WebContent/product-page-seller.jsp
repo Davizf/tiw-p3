@@ -62,7 +62,7 @@ if (categories!=null) {
 }
 User userBean=null;
 if (user!=null) {
-	userBean=UserController.getUserInformation(user);
+	userBean=UserController.getUser(user);
 }
 %>
 

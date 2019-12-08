@@ -24,7 +24,7 @@ public class UserController {
 
 	public static final int USER_TYPE_SELLER = 1;
 
-	public static User getUserInformation(String email) {
+	public static User getUser(String email) {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
 		UserManager manager = new UserManager();
 		manager.setEntityManagerFactory(factory);
