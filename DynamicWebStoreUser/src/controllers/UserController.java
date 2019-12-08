@@ -5,6 +5,14 @@ import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.client.ClientConfig;
 
 import managers.UserManager;
 import model.Product;
@@ -81,12 +89,22 @@ public class UserController {
 	}
 	
 	public static boolean checkUserEmail(String email) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		UserManager manager = new UserManager();
-		manager.setEntityManagerFactory(factory);
-		boolean check =  manager.checkUserEmail(email);
-		factory.close();
-		return check;
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+		
+		WebTarget webTarget = client.target("http://localhost:11144");
+		WebTarget webTargetPath = webTarget.path("users").path("email");
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+		
+		if(response.getStatus() == 200) {
+			User user = response.readEntity(User.class);
+			client.close();
+			
+			return user != null;
+		} 
+
+		return true;
 	}
 	
 	public static boolean verifyUser(String email, String password) {

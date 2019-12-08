@@ -40,7 +40,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="users/{email}", method=RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getUserById(@PathVariable(value = "email", required = true) String email){
+	public ResponseEntity<?> getUserByEmail(@PathVariable(value = "email", required = true) String email){
 		try {
 			User user = userDAO.findByEmail(email);
 			return new ResponseEntity<>(user, 
@@ -82,7 +82,7 @@ public class UserController {
 		try {
 			User userFind = userDAO.findByEmail(email);
 
-			if (userFind == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			if (userFind == null || !user.getEmail().equals(email)) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 			user.setEmail(email);
 			userDAO.save(user);
