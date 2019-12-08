@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,9 +35,7 @@ public class UserServlet extends HttpServlet{
 		HttpSession session = req.getSession();
 		String email = req.getParameter("email");	
 
-
 		if(req.getParameter("operation").equalsIgnoreCase("Register")) {
-
 			if(UserController.checkUserEmail(email)) {
 				req.setAttribute("message", "This email has already been taken!");
 				RequestDispatcher rd = req.getRequestDispatcher("register-page.jsp");

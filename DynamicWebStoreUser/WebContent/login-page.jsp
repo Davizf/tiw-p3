@@ -320,10 +320,10 @@ if (user!=null) {
 								<h3 class="title">Login form</h3>
 							</div>
 							<div class="form-group">
-								<input class="input" type="email" name="email" placeholder="Email">
+								<input class="input" type="email" name="email" placeholder="Email" required>
 							</div>
 							<div class="form-group">
-								<input class="input" type="password" name="password" placeholder="Password">
+								<input class="input" type="password" name="password" placeholder="Password" required>
 							</div>
 							
 							<!-- can not find the user on database case -->
