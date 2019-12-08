@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -43,27 +44,27 @@ public class UserController {
 	}
 	
 	public static void addUser(User user) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		UserManager manager = new UserManager();
-		manager.setEntityManagerFactory(factory);
-		try {
-			manager.createUser(user);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		factory.close();
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+		
+		WebTarget webTarget = client.target("http://localhost:11144");
+		WebTarget webTargetPath = webTarget.path("users");
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.post(Entity.entity(user,MediaType.APPLICATION_JSON));
+		
+		client.close();
 	}
 	
 	public static void modifyUser(User user) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		UserManager manager = new UserManager();
-		manager.setEntityManagerFactory(factory);
-		try {
-			manager.updateUser(user);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		factory.close();
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+		
+		WebTarget webTarget = client.target("http://localhost:11144");
+		WebTarget webTargetPath = webTarget.path("users").path(user.getEmail());
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		invocationBuilder.put(Entity.entity(user,MediaType.APPLICATION_JSON));
+		
+		client.close();
 	}
 	
 	public static void deleteUser(User user) {
