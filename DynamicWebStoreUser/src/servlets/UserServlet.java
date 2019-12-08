@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,7 +15,7 @@ import controllers.UserController;
 import model.User;
 
 @WebServlet(name = "UserServlet", urlPatterns = "/UserServlet")
-public class UserServlet extends HttpServlet{
+public class UserServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	ArrayList<User> users = new ArrayList<User>();
@@ -33,10 +32,10 @@ public class UserServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		HttpSession session = req.getSession();
-		String email = req.getParameter("email");	
+		String email = req.getParameter("email");
 
-		if(req.getParameter("operation").equalsIgnoreCase("Register")) {
-			if(UserController.checkUserEmail(email)) {
+		if (req.getParameter("operation").equalsIgnoreCase("Register")) {
+			if (UserController.checkUserEmail(email)) {
 				req.setAttribute("message", "This email has already been taken!");
 				RequestDispatcher rd = req.getRequestDispatcher("register-page.jsp");
 				rd.forward(req, res);
@@ -56,7 +55,7 @@ public class UserServlet extends HttpServlet{
 				user.setCreditCardExpiration(req.getParameter("cardExpire"));
 				user.setCredit_card_CVV(Integer.parseInt(req.getParameter("cvv")));
 				String seller = req.getParameter("seller");
-				user.setType( (byte) ((seller != null && seller.equals("on"))?1:0) );
+				user.setType((byte) ((seller != null && seller.equals("on")) ? 1 : 0));
 
 				// Insert the user
 				UserController.addUser(user);
@@ -64,11 +63,11 @@ public class UserServlet extends HttpServlet{
 				RequestDispatcher rd = req.getRequestDispatcher("login-page.jsp");
 				rd.forward(req, res);
 			}
-		} else if(req.getParameter("operation").equalsIgnoreCase("Login")) {
+		} else if (req.getParameter("operation").equalsIgnoreCase("Login")) {
 			String password = req.getParameter("password");
 
 			// Check pass
-			if(UserController.verifyUser(email, password)) {
+			if (UserController.verifyUser(email, password)) {
 				User user = UserController.getUser(email);
 				session.setAttribute("user", email);
 				session.setAttribute("username", user.getName());
@@ -88,7 +87,7 @@ public class UserServlet extends HttpServlet{
 				rd.forward(req, res);
 			}
 
-		}  else if(req.getParameter("operation").equalsIgnoreCase("Save my profile")) {
+		} else if (req.getParameter("operation").equalsIgnoreCase("Save my profile")) {
 			// Create the user
 			User user = new User();
 			user.setPhone(Integer.parseInt(req.getParameter("tel")));
@@ -113,11 +112,11 @@ public class UserServlet extends HttpServlet{
 			RequestDispatcher rd = req.getRequestDispatcher("profile.jsp");
 			rd.forward(req, res);
 
-		} else if(req.getParameter("operation").equalsIgnoreCase("No")) {
+		} else if (req.getParameter("operation").equalsIgnoreCase("No")) {
 			RequestDispatcher rd = req.getRequestDispatcher("index.jsp");
 			rd.forward(req, res);
 
-		} else if(req.getParameter("operation").equalsIgnoreCase("Yes")) {
+		} else if (req.getParameter("operation").equalsIgnoreCase("Yes")) {
 			// Delete the user
 			User user = UserController.getUser((String) session.getAttribute("user"));
 
