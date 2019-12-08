@@ -1,13 +1,13 @@
-package com.tiw2019.users;
+package com.tiw2019.buyer_seller;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class MicroserviceUserApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(MicroserviceUserApplication.class, args);
 	}
 
 }
