@@ -25,11 +25,20 @@ public class UserController {
 	public static final int USER_TYPE_SELLER = 1;
 
 	public static User getUser(String email) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		UserManager manager = new UserManager();
-		manager.setEntityManagerFactory(factory);
-		User user = manager.getUser(email);
-		factory.close();
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+		User user = null;
+		
+		WebTarget webTarget = client.target("http://localhost:11144");
+		WebTarget webTargetPath = webTarget.path("users").path(email);
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+		
+		if(response.getStatus() == 200) {
+			user = response.readEntity(User.class);	
+		}
+		client.close();
+		
 		return user;
 	}
 	
