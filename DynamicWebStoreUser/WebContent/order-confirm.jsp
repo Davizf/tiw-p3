@@ -61,7 +61,7 @@ if (categories!=null) {
 }
 User userBean=null;
 if (user!=null) {
-	userBean=UserController.getUserInformation(user);
+	userBean=UserController.getUser(user);
 }
 ArrayList<ProductInCart> list = (ArrayList<ProductInCart>)request.getAttribute("cartList");
 %>
@@ -317,7 +317,7 @@ ArrayList<ProductInCart> list = (ArrayList<ProductInCart>)request.getAttribute("
 				<div class="col-md-6">
 				
 				<% if(user != null) {
-					User user_info = UserController.getUserInformation(user); 
+					User user_info = UserController.getUser(user); 
 				%>	
 					<div class="section-title">
 						<h4 class="title">Order confirmation</h4>
@@ -460,7 +460,7 @@ ArrayList<ProductInCart> list = (ArrayList<ProductInCart>)request.getAttribute("
 				<hr>
 					
 				<%
-				User user_info = UserController.getUserInformation(user); 
+				User user_info = UserController.getUser(user); 
 				%>
 				<div class="pull-right">
 					<input type="hidden" name="total-price" value= <%=total+shippingCost%> >

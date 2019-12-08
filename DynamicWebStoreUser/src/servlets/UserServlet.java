@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,9 +35,7 @@ public class UserServlet extends HttpServlet{
 		HttpSession session = req.getSession();
 		String email = req.getParameter("email");	
 
-
 		if(req.getParameter("operation").equalsIgnoreCase("Register")) {
-
 			if(UserController.checkUserEmail(email)) {
 				req.setAttribute("message", "This email has already been taken!");
 				RequestDispatcher rd = req.getRequestDispatcher("register-page.jsp");
@@ -70,7 +69,7 @@ public class UserServlet extends HttpServlet{
 
 			// Check pass
 			if(UserController.verifyUser(email, password)) {
-				User user = UserController.getUserInformation(email);
+				User user = UserController.getUser(email);
 				session.setAttribute("user", email);
 				session.setAttribute("username", user.getName());
 				session.setAttribute("cartList", null);
@@ -120,7 +119,7 @@ public class UserServlet extends HttpServlet{
 
 		} else if(req.getParameter("operation").equalsIgnoreCase("Yes")) {
 			// Delete the user
-			User user = UserController.getUserInformation((String) session.getAttribute("user"));
+			User user = UserController.getUser((String) session.getAttribute("user"));
 
 			UserController.deleteUser(user);
 

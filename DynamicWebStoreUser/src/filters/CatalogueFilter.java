@@ -28,7 +28,7 @@ public class CatalogueFilter implements Filter {
 			res.sendRedirect("index.jsp");
 			return;
 		} else {
-			if (UserController.getUserInformation(email).getType() != UserController.USER_TYPE_SELLER) {
+			if (UserController.getUser(email).getType() != UserController.USER_TYPE_SELLER) {
 				res.sendRedirect("products.jsp");
 				return;
 			}

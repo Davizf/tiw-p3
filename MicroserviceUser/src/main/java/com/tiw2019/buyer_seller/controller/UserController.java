@@ -31,24 +31,23 @@ public class UserController {
 	public ResponseEntity<?> getUsers(){
 		try {
 			List<User> users = userDAO.findAll();
-			return new ResponseEntity<>(users, 
+			return new ResponseEntity<List<User>>(users, 
 					(users.size() == 0) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
 		} catch (Exception ex) {
-			System.out.println("---------" + ex.getMessage());
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@RequestMapping(value="users/{email}", method=RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getUserById(@PathVariable(value = "email", required = true) String email){
+	public ResponseEntity<?> getUserByEmail(@PathVariable(value = "email", required = true) String email){
 		try {
 			User user = userDAO.findByEmail(email);
-			return new ResponseEntity<>(user, 
+			return new ResponseEntity<User>(user, 
 					(user != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT
 					);
 		} catch (Exception ex) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -56,11 +55,11 @@ public class UserController {
 	public ResponseEntity<?> getUsersByType(@RequestParam(value = "type", required = true) Integer type){
 		try {
 			List<User> users = userDAO.findByType(type);
-			return new ResponseEntity<>(users, 
+			return new ResponseEntity<List<User>>(users, 
 					(users.size() == 0) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
 		} catch (Exception ex) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -72,7 +71,7 @@ public class UserController {
 			if (userFind != null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			
 			userDAO.save(user);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
@@ -83,12 +82,12 @@ public class UserController {
 		try {
 			User userFind = userDAO.findByEmail(email);
 
-			if (userFind == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			if (userFind == null || !user.getEmail().equals(email)) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 			user.setEmail(email);
 			userDAO.save(user);
 
-			return new ResponseEntity<>(user, HttpStatus.OK);
+			return new ResponseEntity<User>(user, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
@@ -102,7 +101,6 @@ public class UserController {
 		} catch (EmptyResultDataAccessException e) {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println("---------" + e.getMessage());
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 	}

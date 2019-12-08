@@ -60,7 +60,7 @@ if (categories!=null) {
 }
 User userBean=null;
 if (user!=null) {
-	userBean=UserController.getUserInformation(user);
+	userBean=UserController.getUser(user);
 }
 %>
 
@@ -313,7 +313,7 @@ if (user!=null) {
 			
 			
 			<% if(user != null) {
-					User user_info = UserController.getUserInformation(user); 
+					User user_info = UserController.getUser(user); 
 			%>
 				<form action="UserServlet" method="post" class="clearfix">
 					<div class="col-md-6">

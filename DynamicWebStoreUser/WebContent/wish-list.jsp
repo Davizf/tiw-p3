@@ -62,7 +62,7 @@ if (categories!=null) {
 }
 User userBean=null;
 if (user!=null) {
-	userBean=UserController.getUserInformation(user);
+	userBean=UserController.getUser(user);
 }
 %>
 
@@ -435,7 +435,7 @@ if (user!=null) {
 								
 								
 								<%
-								User u = UserController.getUserInformation(user);
+								User u = UserController.getUser(user);
 								ArrayList<Product> list = (ArrayList<Product>) UserController.getWishListProduct(u);
 								if(list != null){
 									for(Product product : list ){
