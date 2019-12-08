@@ -35,7 +35,6 @@ public class UserController {
 					(users.size() == 0) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
 		} catch (Exception ex) {
-			System.out.println("---------" + ex.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
@@ -102,7 +101,6 @@ public class UserController {
 		} catch (EmptyResultDataAccessException e) {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (Exception e) {
-			System.out.println("---------" + e.getMessage());
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 	}
