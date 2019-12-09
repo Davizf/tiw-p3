@@ -68,3 +68,9 @@ No hay que importar /WS/tiw-p3 para que solo modifiquemos los proyectos individu
 - /users, POST: añade el usuario en RequestBody y CREATED
 - /users/{id}, PUT: modifica el usuario con {email} con lo del RequestBody(el email de requestBody tiene que ser igual a {email}) y OK (o NOT_FOUND)
 - /users/{id}, DELETE: elimina el usuario con {email} y OK (o NOT_FOUND)
+
+## MicroserviceMongoDBChat (http://localhost:11188)
+### Categories
+- /getAllMessages, GET: devuelve todas los mensajes guardados en MongoDB y OK (o NO_CONTENT)
+- /getUserMessages/{receiver}, GET: devuelve todos los mensajes pertenecientes al {receiver} y OK (o NOT_FOUND)
+- /sendMessage, body {"id": "6", "sender": "origin", "receiver":"destination","message":"Test message"}, POST: envia un mensaje al receptor
