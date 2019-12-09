@@ -69,9 +69,13 @@ No hay que importar /WS/tiw-p3 para que solo modifiquemos los proyectos individu
 - /users/{id}, PUT: modifica el usuario con {email} con lo del RequestBody(el email de requestBody tiene que ser igual a {email}) y OK (o NOT_FOUND)
 - /users/{id}, DELETE: elimina el usuario con {email} y OK (o NOT_FOUND)
 
-## MicroserviceMongoDBChat (http://localhost:11188)
+## MicroserviceChat (http://localhost:11188)
 ### Categories
 - /messages, GET: devuelve todas los mensajes guardados en MongoDB y OK (o NO_CONTENT)
 - /messages?email, GET: devuelve todos los mensajes destinados al usuario que pertenece el email y OK (o NO_CONTENT)
 - /messages{message}, POST: crea un mensaje con campos de {sender, receiver y message} y CREATED
 - /messages/{id}, DELETE: borra el mensaje con {id} y OK (o NOT_FOUND)
+
+## MicroserviceBank (http://localhost:11199)
+### Categories
+- /banks, GET: 
