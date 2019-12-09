@@ -22,3 +22,9 @@ No hay que importar /WS/tiw-p3 para que solo modifiquemos los proyectos individu
 2. Mover /WS/nuevo a /WS/tiw-p3/nuevo (El STS/Eclipse detectara que no existe y pedira que lo borres, hazlo)
 3. Hacer el git add y commit en /WS/tiw-p3
 4. Importar el proyecto "nuevo" con [2]
+
+# Enlaces de interes
+- Best practices: https://aulaglobal.uc3m.es/mod/page/view.php?id=2273099
+- Ejemplo Spring Data: https://aulaglobal.uc3m.es/mod/page/view.php?id=2273182
+- Video ejemplo REST con JPA: https://www.youtube.com/watch?v=DvzGf0cAlg4
+- Postman: https://www.youtube.com/watch?v=DEt4bfSCuIs
