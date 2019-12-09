@@ -31,7 +31,7 @@ No hay que importar /WS/tiw-p3 para que solo modifiquemos los proyectos individu
 
 # APIs
 
-## MicroserviceCatalogue
+## MicroserviceCatalogue (http://localhost:11133/categories)
 ### Categories
 - categories, GET: devuelve todas las categorias y OK (o NO_CONTENT)
 - categories/{id}, GET: devuelve la categoria {id} y OK (o NOT_FOUND)
