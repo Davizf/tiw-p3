@@ -25,15 +25,10 @@ import com.tiw2019.buyer_seller.model.Product;
 @EnableAutoConfiguration
 public class ProductController {
 
-	public static final int MAX_STOCK=2147483647, MIN_STOCK=0, NAME_CHARACTER=100, SHORT_DESC_CHARACTER=300, DEFAULT_LAST_PRODUCTS=4;
+	private static final int  DEFAULT_LAST_PRODUCTS=4;
 
 	@Autowired
 	ProductDAO productDAO;
-
-	@RequestMapping(value="products/verify_stock/{stock}", method=RequestMethod.GET, produces = "application/json")
-	public static boolean verifyStock(@PathVariable(value = "stock", required = true) int stock) {
-		return stock<MAX_STOCK && stock>MIN_STOCK;
-	}
 
 	@RequestMapping(value="products", method=RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getAllProducts(@RequestParam(value = "admin", required = false) boolean admin){
@@ -53,7 +48,7 @@ public class ProductController {
 		try {
 			Optional<Product> p = productDAO.findById(id);
 			return new ResponseEntity<>(p, 
-					(p.isPresent()) ? HttpStatus.OK : HttpStatus.NO_CONTENT
+					(p.isPresent()) ? HttpStatus.OK : HttpStatus.NOT_FOUND
 					);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -73,7 +68,7 @@ public class ProductController {
 	}
 
 	@RequestMapping(value="products/category", method=RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getProductsByCategory(@RequestParam(value = "category", required = false) String category, @RequestParam(value = "admin", required = false) boolean admin){
+	public ResponseEntity<?> getProductsByCategory(@RequestParam(value = "category", required = true) String category, @RequestParam(value = "admin", required = false) boolean admin){
 		try {
 			List<Product> p = admin ? productDAO.findAllByCategoryAdmin(category) : productDAO.findAllByCategory(category);
 			return new ResponseEntity<>(p, 

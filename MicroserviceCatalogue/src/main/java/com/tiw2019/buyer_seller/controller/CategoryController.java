@@ -45,7 +45,7 @@ public class CategoryController {
 		try {
 			Optional<Category> c = categoryDAO.findById(id);
 			return new ResponseEntity<>(c, 
-					(c.isPresent()) ? HttpStatus.OK : HttpStatus.NO_CONTENT
+					(c.isPresent()) ? HttpStatus.OK : HttpStatus.NOT_FOUND
 					);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
