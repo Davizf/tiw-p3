@@ -19,11 +19,12 @@ No hay que importar /WS/tiw-p3 para que solo modifiquemos los proyectos individu
 
 ## [3] Nuevo proyecto:
 1. Desde STS/Eclipse: New->Spring stater proyect, le llamaremos /WS/nuevo (Hacer cosas para que se pueda hacer el primer commit)
-2. Mover /WS/nuevo a /WS/tiw-p3/nuevo (El STS/Eclipse detectara que no existe y pedira que lo borres, hazlo)
-3. Hacer el git add y commit en /WS/tiw-p3
-4. Importar el proyecto "nuevo" con [2]
+2. Mover /WS/nuevo a /WS/tiw-p3/nuevo (El STS/Eclipse detectará que no existe y pedirá que lo borres, hazlo)
+3. Dejar solo la linea target/ en el .gitignore (para poder importarlo en otros workspaces)
+4. Hacer el git add y commit en /WS/tiw-p3
+5. Importar el proyecto "nuevo" con [2]
 
-# Enlaces de interes
+# Enlaces de interés
 - Best practices: https://aulaglobal.uc3m.es/mod/page/view.php?id=2273099
 - Ejemplo Spring Data: https://aulaglobal.uc3m.es/mod/page/view.php?id=2273182
 - Video ejemplo REST con JPA: https://www.youtube.com/watch?v=DvzGf0cAlg4
