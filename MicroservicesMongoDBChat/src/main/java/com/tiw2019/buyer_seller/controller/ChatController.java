@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tiw2019.buyer_seller.domains.Message;
-import com.tiw2019.buyer_seller.repositories.MessageRepository;
+import com.tiw2019.buyer_seller.dao.MessageDAO;
+import com.tiw2019.buyer_seller.model.Message;
 
 @RestController
 @CrossOrigin
@@ -24,7 +24,7 @@ import com.tiw2019.buyer_seller.repositories.MessageRepository;
 public class ChatController {
 
 	@Autowired
-	MessageRepository messageRepository;
+	MessageDAO messageRepository;
 
 	@RequestMapping(value = "/messages", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getAllMessages() {

@@ -1,4 +1,4 @@
-package com.tiw2019.buyer_seller.domains;
+package com.tiw2019.buyer_seller.model;
 
 import java.io.Serializable;
 import org.springframework.data.annotation.Id;

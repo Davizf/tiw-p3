@@ -1,4 +1,4 @@
-package com.tiw2019.buyer_seller.repositories;
+package com.tiw2019.buyer_seller.dao;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import com.tiw2019.buyer_seller.domains.Message;
+import com.tiw2019.buyer_seller.model.Message;
 
-public interface MessageRepository extends CrudRepository<Message, String>{
+public interface MessageDAO extends CrudRepository<Message, String>{
 		
 	List<Message> findAll();
 	
