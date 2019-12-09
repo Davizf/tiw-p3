@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,11 +22,13 @@ public class MessageServlet extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		int op = Integer.parseInt(req.getParameter("op")) ;	
+		
 		String sender = req.getParameter("sender") ;	
 		String msg = req.getParameter("message");
 		String receiver = req.getParameter("correlationId");
-
+		
+		int op = Integer.parseInt(req.getParameter("op")) ;	
+		
 		if (op==1){	// send a message to a seller			
 			Messages message = new Messages(sender, receiver, msg);
 			MessageController.sendMessage(message);
@@ -50,6 +53,10 @@ public class MessageServlet extends HttpServlet {
 		}else if(op == 4) {	// send a offer to buyers
 			MessageController.sendMessageToAllBuyers(msg, sender);
 			RequestDispatcher miR=req.getRequestDispatcher("index.jsp");
+			miR.forward(req, resp);
+		}else if(op == 5) {	// remove a message
+			MessageController.deelteMessage(req.getParameter("msgid"));
+			RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");
 			miR.forward(req, resp);
 		}
 	

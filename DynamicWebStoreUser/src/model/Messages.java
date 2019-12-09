@@ -2,6 +2,7 @@ package model;
 
 public class Messages {
 	
+	String id;
 	String receiver;
 	String sender;
 	String message;
@@ -21,6 +22,14 @@ public class Messages {
 
 	public void setReceiver(String receiver) {
 		this.receiver = receiver;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getSender() {

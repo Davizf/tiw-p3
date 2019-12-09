@@ -346,9 +346,17 @@ if (user!=null) {
 									<div class="review-body">
 										<p><%=msg.getMessage()%></p>
 									</div>
-										
-										
+								
 								</div>
+								
+								<div class="pull-right">
+									<form action="MessageServlet" method="post" class="clearfix">
+										<input type="hidden" name="op" value="5"> 
+										<input type="hidden" name="msgid" value="<%= msg.getId()%>">
+										<input type="submit" name="button" class="btn-danger" value="x" />
+									</form>
+								</div>
+								
 							</div>
 									
 				
@@ -361,6 +369,7 @@ if (user!=null) {
 									<INPUT type="hidden" name="sender" value="<%=user%>"> 
 									<input type="hidden" name="correlationId" value=<%=msg.getSender() %>>
 									<input type="submit" name="button" class="btn btn-success" value="Answer" />
+									
 								</div>
 							</div>
 						

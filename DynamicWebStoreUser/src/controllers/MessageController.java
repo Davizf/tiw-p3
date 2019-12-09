@@ -64,6 +64,20 @@ public class MessageController {
 		}
 
 	}
+	
+	public static boolean deelteMessage(String id) {
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+
+		WebTarget webTarget = client.target("http://localhost:11188");
+		WebTarget webTargetPath = webTarget.path("messages").path(id);
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.delete();
+
+		client.close();
+
+		return response.getStatus() == HTTP_STATUS_OK;
+	}
 
 
 
