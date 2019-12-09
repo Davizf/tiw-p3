@@ -58,3 +58,12 @@ No hay que importar /WS/tiw-p3 para que solo modifiquemos los proyectos individu
 - products/search/between_sale_prices?min&max, GET: devuelve los productos con el sale_price entre ?min&max y OK (o NO_CONTENT)
 - products/search/ship_price?price, GET: devuelve los productos con el ship_price menor a ?price [opcional], si no esta el parametro, ship_price<=0 y OK (o NO_CONTENT)
 - products/search/stock?stock, GET: devuelve los productos con el stock > ?stock y OK (o NO_CONTENT)
+
+## MicroserviceUser (http://localhost:11144)
+### Categories
+- /users, GET: devuelve todas los usuarios y OK (o NO_CONTENT)
+- /users/{email}, GET: devuelve el usuario con el {email} y OK (o NOT_FOUND)
+- /users?type, GET: devuelve los usuarios de un tipo(0 = compradores, 1 = vendedores, 2 = administradores) y OK (o NOT_FOUND)
+- /users, POST: añade el usuario en RequestBody y CREATED
+- /users/{id}, PUT: modifica el usuario con {email} con lo del RequestBody(el email de requestBody tiene que ser igual a {email}) y OK (o NOT_FOUND)
+- /users/{id}, DELETE: elimina el usuario con {email} y OK (o NOT_FOUND)
