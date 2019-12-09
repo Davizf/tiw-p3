@@ -23,7 +23,7 @@ public class ChatController {
 	@Autowired
 	MessageRepository messageRepository;
 
-	@RequestMapping(value = "/getAllMessages", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/messages", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getAllMessages() {
 
 		try {
@@ -38,7 +38,7 @@ public class ChatController {
 
 	}
 	
-	@RequestMapping(value = "/getUserMessages/{receiver}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/messages/{receiver}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getUserMessages(@PathVariable(value = "receiver", required = true) String receiver) {
 
 		try {
@@ -54,7 +54,7 @@ public class ChatController {
 
 	}
 
-	@RequestMapping(value = "/sendMessage", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/messages", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Void> sendMessage(@RequestBody Message message) {
 
 		try {

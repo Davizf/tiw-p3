@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jms.InteractionJMS;
+import controllers.MessageController;
+import model.Messages;
 
 @WebServlet(name = "MessageServlet", urlPatterns = "/jms-controller")
 public class MessageServlet extends HttpServlet {
@@ -22,29 +23,37 @@ public class MessageServlet extends HttpServlet {
 
 		int op = Integer.parseInt(req.getParameter("op")) ;	
 		String sender = req.getParameter("sender") ;	
-		InteractionJMS mq=new InteractionJMS();
+		
 		String msg = req.getParameter("message");
 
 		if(op == 4) {	// send a offer to buyers
-			mq.writeJMSToAllBuyers(msg,sender);
+			MessageController.sendMessageToAllBuyers(msg, sender);
 			RequestDispatcher miR=req.getRequestDispatcher("index.jsp");
 			miR.forward(req, resp);
 		}
 
-		String correlationId = req.getParameter("correlationId");
+		String receiver = req.getParameter("correlationId");
 
-		if (op==1){	// send a message to a seller
-			mq.writeJMS(msg,correlationId,sender);
+		if (op==1){	// send a message to a seller			
+			Messages message = new Messages();
+			message.setSender(sender);
+			message.setReceiver(receiver);
+			message.setMessage(msg);
+			MessageController.sendMessage(message);
 			RequestDispatcher miR=req.getRequestDispatcher("index.jsp");
 			miR.forward(req, resp);
 
 		}if (op==2) {	// read messages in my messages page
-			req.setAttribute("messages", mq.readJMS(correlationId));
+			req.setAttribute("messages", MessageController.getUserMessages(receiver));
 			RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");
 			miR.forward(req, resp);
 
 		}else if(op == 3){	// answer a message
-			mq.writeJMS(req.getParameter("message"),correlationId,sender);
+			Messages message = new Messages();
+			message.setSender(sender);
+			message.setReceiver(receiver);
+			message.setMessage(msg);
+			MessageController.sendMessage(message);
 			RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");
 			miR.forward(req, resp);
 		}

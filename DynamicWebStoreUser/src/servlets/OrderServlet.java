@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 import controllers.OrderController;
 import controllers.ProductController;
 import controllers.UserController;
-import jms.InteractionJMS;
 import model.Orders;
 import model.Orders_has_Product;
 
@@ -34,9 +33,10 @@ public class OrderServlet extends HttpServlet{
 
 		if(req.getParameter("type").equalsIgnoreCase("confirm-checkout")) {
 
-			InteractionJMS mq=new InteractionJMS();
-			mq.confirmPurchase(req.getParameter("card"), req.getParameter("total-price"));
-			String associatedCode = mq.readConfirm("confirm");
+			//InteractionJMS mq=new InteractionJMS();
+			//mq.confirmPurchase(req.getParameter("card"), req.getParameter("total-price"));
+			//String associatedCode = mq.readConfirm("confirm");
+			String associatedCode = "lolxD";
 
 			if(OrderController.checkProductsStock(productsInCart)) {
 				// Create the order
@@ -44,7 +44,9 @@ public class OrderServlet extends HttpServlet{
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 				Orders order = new Orders();
 				Orders_has_Product order_product;
+				
 				order.setConfirmation_id(associatedCode);
+				
 				order.setAddress(req.getParameter("address"));
 				order.setCity(req.getParameter("city"));
 				order.setCountry(req.getParameter("country"));
