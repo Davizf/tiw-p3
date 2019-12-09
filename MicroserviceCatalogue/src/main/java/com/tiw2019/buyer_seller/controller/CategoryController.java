@@ -65,7 +65,7 @@ public class CategoryController {
 	}
 
 	@RequestMapping(value = "categories", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<?> createCategory(@RequestBody(required = true) Category category) {
+	public ResponseEntity<?> addCategory(@RequestBody(required = true) Category category) {
 		try {
 			categoryDAO.save(category);
 			return new ResponseEntity<>(HttpStatus.CREATED);
