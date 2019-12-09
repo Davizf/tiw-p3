@@ -2,23 +2,35 @@ package model;
 
 public class Messages {
 	
-	String msg;
+	String id;
+	String receiver;
 	String sender;
+	String message;
 	
-	public Messages(String msg, String sender) {
-		this.msg = msg;
+	public Messages(String sender,String receiver, String message) {
 		this.sender = sender;
+		this.receiver = receiver;
+		this.message = message;
+	}
+	
+	public Messages() {
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getReceiver() {
+		return receiver;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
 	}
 
+	public String getId() {
+		return id;
+	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getSender() {
 		return sender;
@@ -27,6 +39,14 @@ public class Messages {
 	public void setSender(String sender) {
 		this.sender = sender;
 	}
-	
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	
 }

@@ -149,7 +149,7 @@ if (user!=null) {
 										<li><a href="Order?type=my-orders"><i class="fa fa-check"></i> My orders</a></li>
 										<li><a href="wish-list.jsp"><i class="fa fa-heart-o"></i> My wish list</a></li>
 									<%} %>
-									<li><a href="/tiw-p1/jms-controller?op=2&correlationId=<%=user%>"><i class="fa fa-comment-o"></i> My messages</a></li>
+									<li><a href="/tiw-p1/MessageServlet?op=2&correlationId=<%=user%>"><i class="fa fa-comment-o"></i> My messages</a></li>
 									<%if (userBean != null && userBean.getType() == UserController.USER_TYPE_SELLER){ %>
 										<li><a href="catalogue.jsp"><i class="fa fa-user-o"></i> My Catalogue</a></li>
 										<li><a href="seller-send-message.jsp"><i class="fa fa-comment-o"></i> Send a Offer</a></li>
@@ -280,14 +280,14 @@ if (user!=null) {
 							<div class="section-title">
 								<h3 class="title">Send an offer to buyers:</h3>
 							</div>
-							<form name="nombre" method="post" action="/tiw-p1/jms-controller">
+							<form name="nombre" method="post" action="MessageServlet">
 								
 								 
 								<h4>Message content:</h4> <INPUT type="text" name="message" size="94"> 
 								<br><br>
 
 								<INPUT type="hidden" name="op" value="4"> 
-								<INPUT type="hidden" name="sender" value=<%=session.getAttribute("username") %>> 
+								<INPUT type="hidden" name="sender" value=<%=user%>> 
 								<INPUT type="submit" class="primary-btn" name="ejecutar" value="Send">
 							</form>
 							

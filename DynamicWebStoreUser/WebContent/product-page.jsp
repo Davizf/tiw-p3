@@ -150,7 +150,7 @@ if (user!=null) {
 										<li><a href="Order?type=my-orders"><i class="fa fa-check"></i> My orders</a></li>
 										<li><a href="wish-list.jsp"><i class="fa fa-heart-o"></i> My wish list</a></li>
 									<%} %>
-									<li><a href="/tiw-p1/jms-controller?op=2&correlationId=<%=user%>"><i class="fa fa-comment-o"></i> My messages</a></li>
+									<li><a href="/tiw-p1/MessageServlet?op=2&correlationId=<%=user%>"><i class="fa fa-comment-o"></i> My messages</a></li>
 									<%if (userBean != null && userBean.getType() == UserController.USER_TYPE_SELLER){ %>
 										<li><a href="catalogue.jsp"><i class="fa fa-user-o"></i> My Catalogue</a></li>
 										<li><a href="seller-send-message.jsp"><i class="fa fa-comment-o"></i> Send a Offer</a></li>
@@ -385,7 +385,7 @@ if (user!=null) {
 							<%if(session.getAttribute("user") != null){%>
 								
 								<div class="pull-right">
-								<form action="/tiw-p1/jms-controller" method="post">	
+								<form action="MessageServlet" method="post">	
 									<input type="hidden" name="op" value="1">
 									
 									<!--  Aqui tiene que ir el email del vendedor -->

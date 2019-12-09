@@ -148,7 +148,7 @@ if (user!=null) {
 										<li><a href="Order?type=my-orders"><i class="fa fa-check"></i> My orders</a></li>
 										<li><a href="wish-list.jsp"><i class="fa fa-heart-o"></i> My wish list</a></li>
 									<%} %>
-									<li><a href="/tiw-p1/jms-controller?op=2&correlationId=<%=user%>"><i class="fa fa-comment-o"></i> My messages</a></li>
+									<li><a href="/tiw-p1/MessageServlet?op=2&correlationId=<%=user%>"><i class="fa fa-comment-o"></i> My messages</a></li>
 									<%if (userBean != null && userBean.getType() == UserController.USER_TYPE_SELLER){ %>
 										<li><a href="catalogue.jsp"><i class="fa fa-user-o"></i> My Catalogue</a></li>
 										<li><a href="seller-send-message.jsp"><i class="fa fa-comment-o"></i> Send a Offer</a></li>
@@ -329,11 +329,11 @@ if (user!=null) {
 				
 				
 				
-					<%if(request.getAttribute("messages") != null){%>
+					<%
+					List<Messages> messages = (List<Messages>)request.getAttribute("messages");
+					if(messages.size()!=0){%>
 						
 						<%
-							ArrayList<Messages> messages = (ArrayList<Messages>)request.getAttribute("messages");
-						
 							for(Messages msg : messages ){
 						%>
 						
@@ -341,19 +341,27 @@ if (user!=null) {
 							<div class="row">
 								<div class="col-md-6">
 											
-									<div><a href="#"><i class="fa fa-user-o"></i><b><%=msg.getSender() %></b></a></div>
+									<div><a href="#"><i class="fa fa-user-o"></i><b>&nbsp;<%=msg.getSender() %></b></a></div>
 										
 									<div class="review-body">
-										<p><%=msg.getMsg()%></p>
+										<p><%=msg.getMessage()%></p>
 									</div>
-										
-										
+								
 								</div>
+								
+								<div class="pull-right">
+									<form action="MessageServlet" method="post" class="clearfix">
+										<input type="hidden" name="op" value="5"> 
+										<input type="hidden" name="msgid" value="<%= msg.getId()%>">
+										<input type="submit" name="button" class="btn-danger" value="x" />
+									</form>
+								</div>
+								
 							</div>
 									
 				
 							
-						<form action="/tiw-p1/jms-controller" method="post" class="clearfix">
+						<form action="MessageServlet" method="post" class="clearfix">
 							<div class="form-group">
 								<div class="input-checkbox">
 									<INPUT type="hidden" name="op" value="3"> 
@@ -361,6 +369,7 @@ if (user!=null) {
 									<INPUT type="hidden" name="sender" value="<%=user%>"> 
 									<input type="hidden" name="correlationId" value=<%=msg.getSender() %>>
 									<input type="submit" name="button" class="btn btn-success" value="Answer" />
+									
 								</div>
 							</div>
 						

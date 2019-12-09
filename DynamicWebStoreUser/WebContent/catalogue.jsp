@@ -176,7 +176,7 @@
 									}
 								%>
 								<li><a
-									href="/tiw-p1/jms-controller?op=2&correlationId=<%=user%>"><i
+									href="/tiw-p1/MessageServlet?op=2&correlationId=<%=user%>"><i
 										class="fa fa-comment-o"></i> My messages</a></li>
 								<%
 									if (userBean != null && userBean.getType() == UserController.USER_TYPE_SELLER) {
