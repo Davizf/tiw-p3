@@ -43,11 +43,11 @@ public class TransactionController {
 		try {
 
 			transactionDAO.save(transaction);
-			return new ResponseEntity<Void>(HttpStatus.CREATED);
+			return new ResponseEntity<Void>(HttpStatus.OK);
 
 		} catch (Exception e) {
 
-			return new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
+			return new ResponseEntity<Void>(HttpStatus.PAYMENT_REQUIRED);
 		}
 	}
 

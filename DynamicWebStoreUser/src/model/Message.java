@@ -1,19 +1,19 @@
 package model;
 
-public class Messages {
+public class Message {
 	
 	String id;
 	String receiver;
 	String sender;
 	String message;
 	
-	public Messages(String sender,String receiver, String message) {
+	public Message(String sender,String receiver, String message) {
 		this.sender = sender;
 		this.receiver = receiver;
 		this.message = message;
 	}
 	
-	public Messages() {
+	public Message() {
 	}
 
 	public String getReceiver() {

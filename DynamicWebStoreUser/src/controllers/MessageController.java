@@ -13,19 +13,20 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
 
-import model.Messages;
+import model.Message;
 import model.User;
 
 public class MessageController {
 	
+	static int USER_TYPE_BUYER = 0;
 	public static final int HTTP_STATUS_CREATED = 201;
 	public static final int HTTP_STATUS_OK = 200;
 
-	public static List<Messages> getUserMessages(String receiver) {
+	public static List<Message> getUserMessages(String receiver) {
 		
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
-		List<Messages> messages = null;
+		List<Message> messages = null;
 
 		WebTarget webTarget = client.target("http://localhost:11188");
 		WebTarget webTargetPath = webTarget.path("messages").queryParam("receiver", receiver);
@@ -33,7 +34,7 @@ public class MessageController {
 		Response response = invocationBuilder.get();
 
 		if (response.getStatus() == 200) {
-			Messages[] messagesArray = response.readEntity(Messages[].class);
+			Message[] messagesArray = response.readEntity(Message[].class);
 			messages = Arrays.asList(messagesArray);
 		}
 		client.close();
@@ -41,7 +42,7 @@ public class MessageController {
 		return messages;
 	}
 
-	public static boolean sendMessage(Messages message) {
+	public static boolean sendMessage(Message message) {
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
 
@@ -57,15 +58,15 @@ public class MessageController {
 	
 	public static void sendMessageToAllBuyers(String message, String sender) {
 
-		List<User>buyers = UserController.getAllUsersByType(0);
+		List<User>buyers = UserController.getAllUsersByType(USER_TYPE_BUYER);
 		for(User buyer: buyers) {
-			Messages messages = new Messages(sender, buyer.getEmail(), message );
+			Message messages = new Message(sender, buyer.getEmail(), message );
 			sendMessage(messages);
 		}
 
 	}
 	
-	public static boolean deelteMessage(String id) {
+	public static boolean deleteMessage(String id) {
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
 

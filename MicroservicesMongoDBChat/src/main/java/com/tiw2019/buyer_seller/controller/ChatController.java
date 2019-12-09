@@ -24,13 +24,13 @@ import com.tiw2019.buyer_seller.model.Message;
 public class ChatController {
 
 	@Autowired
-	MessageDAO messageRepository;
+	MessageDAO messagesRepository;
 
 	@RequestMapping(value = "/messages", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getAllMessages() {
 
 		try {
-			List<Message> entityList = messageRepository.findAll();
+			List<Message> entityList = messagesRepository.findAll();
 
 			return new ResponseEntity<>(entityList, HttpStatus.OK);
 
@@ -46,7 +46,7 @@ public class ChatController {
 
 		try {
 			
-			List<Message> entityList = messageRepository.findByReceiver(receiver);
+			List<Message> entityList = messagesRepository.findByReceiver(receiver);
 
 			return new ResponseEntity<>(entityList, HttpStatus.OK);
 
@@ -62,7 +62,7 @@ public class ChatController {
 
 		try {
 
-			messageRepository.save(message);
+			messagesRepository.save(message);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
 
 		} catch (Exception e) {
@@ -74,7 +74,7 @@ public class ChatController {
 	@DeleteMapping("messages/{id}")
 	public ResponseEntity<Void> deleteMessage(@PathVariable String id) {
 		try {
-			messageRepository.delete(id);
+			messagesRepository.delete(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (EmptyResultDataAccessException e) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
