@@ -22,13 +22,13 @@ public class MessageController {
 	public static final int HTTP_STATUS_OK = 200;
 
 	public static List<Messages> getUserMessages(String receiver) {
+		
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
-		
 		List<Messages> messages = null;
 
 		WebTarget webTarget = client.target("http://localhost:11188");
-		WebTarget webTargetPath = webTarget.path("messages").path(receiver);
+		WebTarget webTargetPath = webTarget.path("messages").queryParam("receiver", receiver);
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
@@ -59,10 +59,7 @@ public class MessageController {
 
 		List<User>buyers = UserController.getAllUsersByType(0);
 		for(User buyer: buyers) {
-			Messages messages = new Messages();
-			messages.setSender(sender);
-			messages.setReceiver(buyer.getEmail());
-			messages.setMessage(message);
+			Messages messages = new Messages(sender, buyer.getEmail(), message );
 			sendMessage(messages);
 		}
 

@@ -385,7 +385,7 @@ if (user!=null) {
 							<%if(session.getAttribute("user") != null){%>
 								
 								<div class="pull-right">
-								<form action="/tiw-p1/jms-controller" method="post">	
+								<form action="MessageServlet" method="post">	
 									<input type="hidden" name="op" value="1">
 									
 									<!--  Aqui tiene que ir el email del vendedor -->

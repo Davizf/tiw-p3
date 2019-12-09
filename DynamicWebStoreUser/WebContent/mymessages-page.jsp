@@ -329,11 +329,11 @@ if (user!=null) {
 				
 				
 				
-					<%if(request.getAttribute("messages") != null){%>
+					<%
+					List<Messages> messages = (List<Messages>)request.getAttribute("messages");
+					if(messages.size()!=0){%>
 						
 						<%
-							ArrayList<Messages> messages = (ArrayList<Messages>)request.getAttribute("messages");
-						
 							for(Messages msg : messages ){
 						%>
 						
@@ -341,7 +341,7 @@ if (user!=null) {
 							<div class="row">
 								<div class="col-md-6">
 											
-									<div><a href="#"><i class="fa fa-user-o"></i><b><%=msg.getSender() %></b></a></div>
+									<div><a href="#"><i class="fa fa-user-o"></i><b>&nbsp;<%=msg.getSender() %></b></a></div>
 										
 									<div class="review-body">
 										<p><%=msg.getMessage()%></p>
