@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,16 +40,12 @@ public class OrderServlet extends HttpServlet{
 			String cvv = req.getParameter("cvv");
 			Transaction transaction = new Transaction(price, card_number, expiry_date, cvv);
 			
-			boolean transactionCorrect = BankController.sendTransaction(transaction);
+			String transactionId = BankController.sendTransaction(transaction);
 			
-			if(!transactionCorrect) {
-				PrintWriter out = res.getWriter();
-				out.println("Transaction failure!");
-				//RequestDispatcher rd = req.getRequestDispatcher("failure-page.jsp");
-				//rd.forward(req, res);
+			if(transactionId.length() == 0) {
+				RequestDispatcher rd = req.getRequestDispatcher("failure-page.jsp");
+				rd.forward(req, res);
 			}else {
-				
-				String associatedCode = "lolxD";
 
 				if(OrderController.checkProductsStock(productsInCart)) {
 					// Create the order
@@ -59,8 +54,7 @@ public class OrderServlet extends HttpServlet{
 					Orders order = new Orders();
 					Orders_has_Product order_product;
 					
-					order.setConfirmation_id(associatedCode);
-					
+					order.setConfirmation_id(transactionId);
 					order.setAddress(req.getParameter("address"));
 					order.setCity(req.getParameter("city"));
 					order.setCountry(req.getParameter("country"));

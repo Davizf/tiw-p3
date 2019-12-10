@@ -38,34 +38,31 @@ public class TransactionController {
 	}
 
 	@RequestMapping(value = "/transactions", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<Void> sendTransaction(@RequestBody Transaction transaction) {
+	public ResponseEntity<String> sendTransaction(@RequestBody Transaction transaction) {
 		
 		int card_number_length = transaction.getCard_number().length();
-		int cvv_length = transaction.getCVV().length();
+		//int cvv_length = transaction.getCVV().length();
 		
 		
 		//Problems:
 		// cvv always null????? wtf?
 		// think a good idea to compare date
 		
-		// To do list
-		// check and complete payment condition
-		// create a method to return transaction id
-		
-		
-		
-		if(card_number_length != 16 || card_number_length % 3 != 0 || cvv_length == 3) {
+		if(card_number_length == 16 || card_number_length % 3 == 0 ) {
 			try {
-				transactionDAO.save(transaction);
-				return new ResponseEntity<Void>(HttpStatus.OK);
+				Transaction tran = transactionDAO.save(transaction);
+				
+				return new ResponseEntity<>(tran.getId(), HttpStatus.OK);
 
 			} catch (Exception e) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 		}else {
-			return new ResponseEntity<Void>(HttpStatus.PAYMENT_REQUIRED);
+			return new ResponseEntity<>(HttpStatus.PAYMENT_REQUIRED);
 		}
 	}
+	
+	
 
 
 }
