@@ -41,14 +41,9 @@ public class TransactionController {
 	public ResponseEntity<String> sendTransaction(@RequestBody Transaction transaction) {
 		
 		int card_number_length = transaction.getCard_number().length();
-		//int cvv_length = transaction.getCVV().length();
+		int cvv_length = transaction.getCvv().length();
 		
-		
-		//Problems:
-		// cvv always null????? wtf?
-		// think a good idea to compare date
-		
-		if(card_number_length == 16 || card_number_length % 3 == 0 ) {
+		if(card_number_length == 16 && Long.parseLong(transaction.getCard_number()) % 3 == 0 && cvv_length == 3) {
 			try {
 				Transaction tran = transactionDAO.save(transaction);
 				

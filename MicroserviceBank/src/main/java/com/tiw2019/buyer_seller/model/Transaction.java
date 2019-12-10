@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @SuppressWarnings("serial")
 @Document(collection = "transactions")
-@JsonPropertyOrder({"card_number", "expiry_date","CVV"})
+@JsonPropertyOrder({"price", "card_number", "expiry_date","cvv"})
 public class Transaction implements Serializable{
 	    
 	@Id
@@ -21,18 +21,17 @@ public class Transaction implements Serializable{
     
     private String expiry_date;
      
-    private String CVV;
+    private String cvv;
     
-	public Transaction() {
-		
-	}
-
+    public Transaction() {
+    }
+    
 	@PersistenceConstructor
-	public Transaction(Double price, String card_number, String expiry_date, String CVV) {
+	public Transaction(Double price, String card_number, String expiry_date, String cvv) {
 		this.price = price;
 		this.card_number = card_number;
 		this.expiry_date = expiry_date;
-		this.CVV = CVV;
+		this.cvv = cvv;
 	}
 
 	public Double getPrice() {
@@ -67,12 +66,12 @@ public class Transaction implements Serializable{
 		this.expiry_date = expiry_date;
 	}
 
-	public String getCVV() {
-		return CVV;
+	public String getCvv() {
+		return cvv;
 	}
 
-	public void setCVV(String CVV) {
-		this.CVV = CVV;
+	public void setCvv(String cvv) {
+		this.cvv = cvv;
 	}
 	
 
