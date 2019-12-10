@@ -14,7 +14,7 @@ import controllers.ChatController;
 import model.Message;
 
 @WebServlet(name = "MessageServlet", urlPatterns = "/MessageServlet")
-public class MessageServlet extends HttpServlet {
+public class ChatServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

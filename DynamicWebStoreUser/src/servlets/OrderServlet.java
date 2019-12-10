@@ -44,11 +44,12 @@ public class OrderServlet extends HttpServlet{
 			boolean transactionCorrect = BankController.sendTransaction(transaction);
 			
 			if(!transactionCorrect) {
-				//PrintWriter out = res.getWriter();
-				//out.println("Transaction failure!");
-				RequestDispatcher rd = req.getRequestDispatcher("failure-page.jsp");
-				rd.forward(req, res);
+				PrintWriter out = res.getWriter();
+				out.println("Transaction failure!");
+				//RequestDispatcher rd = req.getRequestDispatcher("failure-page.jsp");
+				//rd.forward(req, res);
 			}else {
+				
 				String associatedCode = "lolxD";
 
 				if(OrderController.checkProductsStock(productsInCart)) {
