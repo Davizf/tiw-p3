@@ -42,7 +42,17 @@ public class TransactionController {
 		
 		int card_number_length = transaction.getCard_number().length();
 		int cvv_length = transaction.getCVV().length();
+		
+		
+		//Problems:
+		// cvv always null????? wtf?
 		// think a good idea to compare date
+		
+		// To do list
+		// check and complete payment condition
+		// create a method to return transaction id
+		
+		
 		
 		if(card_number_length != 16 || card_number_length % 3 != 0 || cvv_length == 3) {
 			try {

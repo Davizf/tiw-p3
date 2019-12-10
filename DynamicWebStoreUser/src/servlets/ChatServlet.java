@@ -35,7 +35,7 @@ public class ChatServlet extends HttpServlet {
 			RequestDispatcher miR=req.getRequestDispatcher("index.jsp");
 			miR.forward(req, resp);
 
-		}if (op==2) {	// read messages in my messages page
+		}else if (op==2) {	// read messages in my messages page
 			List <Message> messages = ChatController.getUserMessages(receiver);
 			req.setAttribute("messages", messages);
 			RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");
