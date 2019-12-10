@@ -16,7 +16,7 @@ import org.glassfish.jersey.client.ClientConfig;
 import model.Message;
 import model.User;
 
-public class MessageController {
+public class ChatController {
 	
 	static int USER_TYPE_BUYER = 0;
 	public static final int HTTP_STATUS_CREATED = 201;

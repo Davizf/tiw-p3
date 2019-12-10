@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controllers.MessageController;
+import controllers.ChatController;
 import model.Message;
 
 @WebServlet(name = "MessageServlet", urlPatterns = "/MessageServlet")
@@ -31,12 +31,12 @@ public class MessageServlet extends HttpServlet {
 		
 		if (op == 1){	// send a message to a seller			
 			Message message = new Message(sender, receiver, msg);
-			MessageController.sendMessage(message);
+			ChatController.sendMessage(message);
 			RequestDispatcher miR=req.getRequestDispatcher("index.jsp");
 			miR.forward(req, resp);
 
 		}if (op==2) {	// read messages in my messages page
-			List <Message> messages = MessageController.getUserMessages(receiver);
+			List <Message> messages = ChatController.getUserMessages(receiver);
 			req.setAttribute("messages", messages);
 			RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");
 			miR.forward(req, resp);
@@ -44,18 +44,18 @@ public class MessageServlet extends HttpServlet {
 
 		}else if(op == 3){	// answer a message
 			Message message = new Message(sender, receiver, msg);
-			MessageController.sendMessage(message);
+			ChatController.sendMessage(message);
 			
-			List <Message> messages = MessageController.getUserMessages(sender);
+			List <Message> messages = ChatController.getUserMessages(sender);
 			req.setAttribute("messages", messages);
 			RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");
 			miR.forward(req, resp);
 		}else if(op == 4) {	// send a offer to buyers
-			MessageController.sendMessageToAllBuyers(msg, sender);
+			ChatController.sendMessageToAllBuyers(msg, sender);
 			RequestDispatcher miR=req.getRequestDispatcher("index.jsp");
 			miR.forward(req, resp);
 		}else if(op == 5) {	// remove a message
-			MessageController.deleteMessage(req.getParameter("msgid"));
+			ChatController.deleteMessage(req.getParameter("msgid"));
 			RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");
 			miR.forward(req, resp);
 		}

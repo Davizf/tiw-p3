@@ -39,14 +39,15 @@ public class TransactionController {
 
 	@RequestMapping(value = "/transactions", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Void> sendTransaction(@RequestBody Transaction transaction) {
-
+		
+		
+		
 		try {
-
 			transactionDAO.save(transaction);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 
 		} catch (Exception e) {
-
+			
 			return new ResponseEntity<Void>(HttpStatus.PAYMENT_REQUIRED);
 		}
 	}

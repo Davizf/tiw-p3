@@ -465,7 +465,9 @@ ArrayList<ProductInCart> list = (ArrayList<ProductInCart>)request.getAttribute("
 				<div class="pull-right">
 					<input type="hidden" name="total-price" value= <%=total+shippingCost%> >
 					<input type="hidden" name="products" value= <%=list%> >
+					<input type="hidden" name="expiry" value="<%=user_info.getCreditCardExpiration()%>">
 					<input type="hidden" name="card" value="<%=user_info.getCreditCard()%>">
+					<input type="hidden" name="cvv" value="<%=user_info.getCredit_card_CVV()%>">
 					<input type="hidden" name="type" value= "confirm-checkout" >
 					<input type="submit" name="button" class="btn btn-success" value="Confirm my order" />
 				</div>

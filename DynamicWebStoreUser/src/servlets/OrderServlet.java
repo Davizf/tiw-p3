@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import controllers.BankController;
 import controllers.OrderController;
 import controllers.ProductController;
 import controllers.UserController;
 import model.Orders;
 import model.Orders_has_Product;
-
+import model.Transaction;
 import model.ProductInCart;
 
 @WebServlet(name = "Order", urlPatterns = "/Order")
@@ -32,10 +33,14 @@ public class OrderServlet extends HttpServlet{
 		ArrayList<ProductInCart> productsInCart = (ArrayList<ProductInCart>)session.getAttribute("cartList");
 
 		if(req.getParameter("type").equalsIgnoreCase("confirm-checkout")) {
-
-			//InteractionJMS mq=new InteractionJMS();
-			//mq.confirmPurchase(req.getParameter("card"), req.getParameter("total-price"));
-			//String associatedCode = mq.readConfirm("confirm");
+			
+			Double price = Double.parseDouble(req.getParameter("total-price"));
+			String card_number = req.getParameter("card");
+			String expiry_date = req.getParameter("expiry");
+			String cvv = req.getParameter("cvv");
+			Transaction transaction = new Transaction(price, card_number, expiry_date, cvv);
+			BankController.sendTransaction(transaction);
+			
 			String associatedCode = "lolxD";
 
 			if(OrderController.checkProductsStock(productsInCart)) {

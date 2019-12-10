@@ -1,22 +1,20 @@
-package com.tiw2019.buyer_seller.model;
+package model;
 
 import java.io.Serializable;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@SuppressWarnings("serial")
-@Document(collection = "transactions")
-@JsonPropertyOrder({"card_number", "expiry_date","CVV"})
+
 public class Transaction implements Serializable{
 	    
-	@Id
-	private String id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	private Double price;
+	private String id;
 	
+	private Double price;
+
 	private String card_number;
     
     private String expiry_date;
@@ -27,7 +25,6 @@ public class Transaction implements Serializable{
 		
 	}
 
-	@PersistenceConstructor
 	public Transaction(Double price, String card_number, String expiry_date, String CVV) {
 		this.price = price;
 		this.card_number = card_number;
