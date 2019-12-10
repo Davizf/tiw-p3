@@ -40,19 +40,22 @@ public class TransactionController {
 	@RequestMapping(value = "/transactions", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<Void> sendTransaction(@RequestBody Transaction transaction) {
 		
+		int card_number_length = transaction.getCard_number().length();
+		int cvv_length = transaction.getCVV().length();
+		// think a good idea to compare date
 		
-		
-		try {
-			transactionDAO.save(transaction);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+		if(card_number_length != 16 || card_number_length % 3 != 0 || cvv_length == 3) {
+			try {
+				transactionDAO.save(transaction);
+				return new ResponseEntity<Void>(HttpStatus.OK);
 
-		} catch (Exception e) {
-			
+			} catch (Exception e) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+		}else {
 			return new ResponseEntity<Void>(HttpStatus.PAYMENT_REQUIRED);
 		}
 	}
-
-
 
 
 }

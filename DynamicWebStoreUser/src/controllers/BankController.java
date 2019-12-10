@@ -13,8 +13,6 @@ import model.Transaction;
 
 public class BankController {
 	
-	
-	public static final int HTTP_STATUS_CREATED = 201;
 	public static final int HTTP_STATUS_OK = 200;
 
 
@@ -29,7 +27,7 @@ public class BankController {
 
 		client.close();
 
-		return response.getStatus() == HTTP_STATUS_CREATED;
+		return response.getStatus() == HTTP_STATUS_OK;
 	}
 	
 
