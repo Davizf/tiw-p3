@@ -319,7 +319,7 @@ if (user!=null) {
 					</div>
 					
 					<h4>Wow, It seems that the transaction has failed!</h4>
-					<p>Check your payment details or wait a few minutes for server maintenance</p>
+					<p>Please, check your payment details</p>
 					
 		
 					
