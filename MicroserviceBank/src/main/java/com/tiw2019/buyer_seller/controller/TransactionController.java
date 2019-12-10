@@ -40,10 +40,10 @@ public class TransactionController {
 	@RequestMapping(value = "/transactions", method = RequestMethod.POST, produces = "application/json")
 	public ResponseEntity<String> sendTransaction(@RequestBody Transaction transaction) {
 		
-		int card_number_length = transaction.getCard_number().length();
-		int cvv_length = transaction.getCvv().length();
+		int cardNumberLength = transaction.getCard_number().length();
+		int cvvLength = transaction.getCvv().length();
 		
-		if(card_number_length == 16 && Long.parseLong(transaction.getCard_number()) % 3 == 0 && cvv_length == 3) {
+		if(cardNumberLength == 16 && Long.parseLong(transaction.getCard_number()) % 3 == 0 && cvvLength == 3) {
 			try {
 				Transaction tran = transactionDAO.save(transaction);
 				

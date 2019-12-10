@@ -35,10 +35,10 @@ public class OrderServlet extends HttpServlet{
 		if(req.getParameter("type").equalsIgnoreCase("confirm-checkout")) {
 			
 			Double price = Double.parseDouble(req.getParameter("total-price"));
-			String card_number = req.getParameter("card");
-			String expiry_date = req.getParameter("expiry");
+			String cardNumber = req.getParameter("card");
+			String expiryDate = req.getParameter("expiry");
 			String cvv = req.getParameter("cvv");
-			Transaction transaction = new Transaction(price, card_number, expiry_date, cvv);
+			Transaction transaction = new Transaction(price, cardNumber, expiryDate, cvv);
 			
 			String transactionId = BankController.sendTransaction(transaction);
 			

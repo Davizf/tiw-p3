@@ -24,19 +24,19 @@ import com.tiw2019.buyer_seller.model.Message;
 public class ChatController {
 
 	@Autowired
-	MessageDAO messagesRepository;
+	MessageDAO messagesDAO;
 
 	@RequestMapping(value = "/messages", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getAllMessages() {
 
 		try {
-			List<Message> entityList = messagesRepository.findAll();
+			List<Message> entityList = messagesDAO.findAll();
 
-			return new ResponseEntity<>(entityList, HttpStatus.OK);
+			return new ResponseEntity<List<Message>>(entityList, HttpStatus.OK);
 
 		} catch (Exception ex) {
 
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 
 	}
@@ -46,13 +46,13 @@ public class ChatController {
 
 		try {
 			
-			List<Message> entityList = messagesRepository.findByReceiver(receiver);
+			List<Message> entityList = messagesDAO.findByReceiver(receiver);
 
-			return new ResponseEntity<>(entityList, HttpStatus.OK);
+			return new ResponseEntity<List<Message>>(entityList, HttpStatus.OK);
 
 		} catch (Exception ex) {
 
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 
 	}
@@ -62,7 +62,7 @@ public class ChatController {
 
 		try {
 
-			messagesRepository.save(message);
+			messagesDAO.save(message);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
 
 		} catch (Exception e) {
@@ -74,7 +74,7 @@ public class ChatController {
 	@DeleteMapping("messages/{id}")
 	public ResponseEntity<Void> deleteMessage(@PathVariable String id) {
 		try {
-			messagesRepository.delete(id);
+			messagesDAO.delete(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (EmptyResultDataAccessException e) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
