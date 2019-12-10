@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -56,6 +55,8 @@ public class ChatServlet extends HttpServlet {
 			miR.forward(req, resp);
 		}else if(op == 5) {	// remove a message
 			ChatController.deleteMessage(req.getParameter("msgid"));
+			List <Message> messages = ChatController.getUserMessages(sender);
+			req.setAttribute("messages", messages);
 			RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");
 			miR.forward(req, resp);
 		}
