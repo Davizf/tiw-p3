@@ -78,4 +78,4 @@ No hay que importar /WS/tiw-p3 para que solo modifiquemos los proyectos individu
 
 ## MicroserviceBank (http://localhost:11199)
 ### Categories
-- /banks, GET: 
+- /transactions, GET: devuelve todas las transacciones guardadas en MongoDB y OK (o NO_CONTENT)
