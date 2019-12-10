@@ -3,7 +3,7 @@
 <%@page pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
 <%@page import="model.Category"%>
-<%@page import="model.Messages"%>
+<%@page import="model.Message"%>
 <%@page import="model.ProductInCart" %>
 <%@page import="controllers.ShoppingCart" %>
 <%@page import="controllers.UserController"%>

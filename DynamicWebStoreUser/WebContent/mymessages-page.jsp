@@ -4,7 +4,7 @@
 <%@page pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
 <%@page import="model.Category"%>
-<%@page import="model.Messages"%>
+<%@page import="model.Message"%>
 <%@page import="controllers.UserController"%>
 <%@page import="model.CategoryLevel"%>
 <%@page import="model.HierarchicalCategories"%>
@@ -51,7 +51,7 @@
 
 <body>
 <%
-String user=(String)session.getAttribute("user");
+	String user=(String)session.getAttribute("user");
 ArrayList<Category> categories=CategoryController.getCategories();
 HierarchicalCategories hc=null;
 if (categories!=null) {
@@ -129,83 +129,115 @@ if (user!=null) {
 								<div class="header-btns-icon">
 									<i class="fa fa-user-o"></i>
 								</div>
-								<%if(user != null) { %>
-									<strong class="text-uppercase">Hi, <%=((String)session.getAttribute("username")) %>! <i class="fa fa-caret-down"></i></strong>
-								<%}else{ %>
+								<%
+									if(user != null) {
+								%>
+									<strong class="text-uppercase">Hi, <%=((String)session.getAttribute("username"))%>! <i class="fa fa-caret-down"></i></strong>
+								<%
+									}else{
+								%>
 									<strong class="text-uppercase">My Account <i class="fa fa-caret-down"></i></strong>
-								<%}%>
+								<%
+									}
+								%>
 							</div>
 							
-							<%if(user != null) { %>
+							<%
+															if(user != null) {
+														%>
 								<a class="text-camelcase" href="profile.jsp">My profile</a>
-							<%} else{ %>
+							<%
+								} else{
+							%>
 								<a href="login-page.jsp" class="text-uppercase">Login</a> / <a href="register-page.jsp" class="text-uppercase">Join</a>
-							<%} %>
+							<%
+								}
+							%>
 							
 							<ul class="custom-menu">
-								<%if(user != null) { %>
-									<%if (userBean != null && userBean.getType() != UserController.USER_TYPE_SELLER){ %>
+								<%
+									if(user != null) {
+								%>
+									<%
+										if (userBean != null && userBean.getType() != UserController.USER_TYPE_SELLER){
+									%>
 										<li><a href="Order?type=my-orders"><i class="fa fa-check"></i> My orders</a></li>
 										<li><a href="wish-list.jsp"><i class="fa fa-heart-o"></i> My wish list</a></li>
-									<%} %>
+									<%
+										}
+									%>
 									<li><a href="/tiw-p1/MessageServlet?op=2&correlationId=<%=user%>"><i class="fa fa-comment-o"></i> My messages</a></li>
-									<%if (userBean != null && userBean.getType() == UserController.USER_TYPE_SELLER){ %>
+									<%
+										if (userBean != null && userBean.getType() == UserController.USER_TYPE_SELLER){
+									%>
 										<li><a href="catalogue.jsp"><i class="fa fa-user-o"></i> My Catalogue</a></li>
 										<li><a href="seller-send-message.jsp"><i class="fa fa-comment-o"></i> Send a Offer</a></li>
-									<%} %>
+									<%
+										}
+									%>
 									<li><a href="UserServlet?operation=log_out"><i class="fa fa-user"></i> Log out</a></li>
 									<li><a href="delete-account.jsp"><i class="fa fa-user-times"></i> Delete my account</a></li>
-								<%}else{ %>
+								<%
+									}else{
+								%>
 									<li><a href="register-page.jsp"><i class="fa fa-user-plus"></i> Create an account</a></li>
 									<li><a href="login-page.jsp"><i class="fa fa-unlock-alt"></i> Login</a></li>
-								<%}%>
+								<%
+									}
+								%>
 								
 							</ul>
 						</li>
 						<!-- /Account -->
-						<%if(user != null) { %>
+						<%
+							if(user != null) {
+						%>
 							<!-- Cart -->
 							<%
-							ArrayList<ProductInCart> productsInCart = (ArrayList<ProductInCart>)session.getAttribute("cartList");
-							double cartTotal=0;
-							int cartNumber=0;
-							if (productsInCart!=null) {
-								cartNumber=productsInCart.size();
-								for (int i=0; i<productsInCart.size(); i++)
-									cartTotal+=productsInCart.get(i).getCost();
-							}
+								ArrayList<ProductInCart> productsInCart = (ArrayList<ProductInCart>)session.getAttribute("cartList");
+												double cartTotal=0;
+												int cartNumber=0;
+												if (productsInCart!=null) {
+													cartNumber=productsInCart.size();
+													for (int i=0; i<productsInCart.size(); i++)
+														cartTotal+=productsInCart.get(i).getCost();
+												}
 							%>
 							
 							
-							<%if (userBean != null && userBean.getType() != UserController.USER_TYPE_SELLER){ %>
+							<%
+																						if (userBean != null && userBean.getType() != UserController.USER_TYPE_SELLER){
+																					%>
 								<li class="header-cart dropdown default-dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 									<div class="header-btns-icon">
 										<i class="fa fa-shopping-cart"></i>
-										<span class="qty"><%=cartNumber %></span>
+										<span class="qty"><%=cartNumber%></span>
 									</div>
 									<strong class="text-uppercase">My Cart:</strong>
 									<br>
-									<span>$<%=cartTotal %></span>
+									<span>$<%=cartTotal%></span>
 								</a>
 								<div class="custom-menu">
 									<div id="shopping-cart">
 										<div class="shopping-cart-list">
 											<%
-											if (productsInCart!=null) {
-												for (int i=0; i<productsInCart.size(); i++) {
+												if (productsInCart!=null) {
+																					for (int i=0; i<productsInCart.size(); i++) {
 											%>
 											<div class="product product-widget">
 												<div class="product-thumb">
-													<img src="<%=productsInCart.get(i).getProduct().getImagePath() %>" alt="">
+													<img src="<%=productsInCart.get(i).getProduct().getImagePath()%>" alt="">
 												</div>
 												<div class="product-body">
-													<h3 class="product-price">$<%=productsInCart.get(i).getProduct().getPrice().doubleValue() %> <span class="qty">x<%=productsInCart.get(i).getQuantity() %></span></h3>
-													<h2 class="product-name"><a href="/tiw-p1/product-page.jsp?id=<%=productsInCart.get(i).getProduct().getId() %>"><%=productsInCart.get(i).getProduct().getName() %></a></h2>
+													<h3 class="product-price">$<%=productsInCart.get(i).getProduct().getPrice().doubleValue()%> <span class="qty">x<%=productsInCart.get(i).getQuantity()%></span></h3>
+													<h2 class="product-name"><a href="/tiw-p1/product-page.jsp?id=<%=productsInCart.get(i).getProduct().getId()%>"><%=productsInCart.get(i).getProduct().getName()%></a></h2>
 												</div>
 											</div>
-											<%} 
-												} %>
+											<%
+												} 
+																					}
+											%>
 										</div>
 										
 										<form action="ShoppingCart" method="get">
@@ -218,13 +250,17 @@ if (user!=null) {
 								</div>
 							</li>
 							
-							<%} %>
+							<%
+															}
+														%>
 							
 							
 							
 							
 							
-						<%} %>
+						<%
+																																										}
+																																									%>
 						<!-- /Cart -->
 						<!-- Mobile nav toggle-->
 						<li class="nav-toggle">
@@ -253,43 +289,61 @@ if (user!=null) {
 						<input type="hidden" name="category" value="" id="form_category_input">
 					</form>
 					<ul class="category-list">
-						<%if(categories != null) {%>
-							<%for(CategoryLevel category : hc.getCategories()) {
-								if (category.getDepth()==0) {
-									if (category.getChilds().size() == 0) {%>
-										<li><a href="#" onclick="document.getElementById('form_category_input').value='<%=HierarchicalCategories.getIdChildsStr(category) %>';document.getElementById('form_category').submit();"><%=category.getName() %></a></li>
-									<%} else {%>
+						<%
+							if(categories != null) {
+						%>
+							<%
+								for(CategoryLevel category : hc.getCategories()) {
+													if (category.getDepth()==0) {
+														if (category.getChilds().size() == 0) {
+							%>
+										<li><a href="#" onclick="document.getElementById('form_category_input').value='<%=HierarchicalCategories.getIdChildsStr(category)%>';document.getElementById('form_category').submit();"><%=category.getName()%></a></li>
+									<%
+										} else {
+									%>
 										<li class="dropdown side-dropdown">
-											<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%=category.getName() %><i class="fa fa-angle-right"></i></a>
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%=category.getName()%><i class="fa fa-angle-right"></i></a>
 											<div class="custom-menu">
 												<div class="row">
 													<div class="col-md-6">
 														<ul class="list-links">
 															<li>
 																<h3 class="list-links"><a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"
-																onclick="document.getElementById('form_category_input').value='<%=HierarchicalCategories.getIdChildsStr(category) %>';document.getElementById('form_category').submit();"><%=category.getName() %></a></h3>
+																onclick="document.getElementById('form_category_input').value='<%=HierarchicalCategories.getIdChildsStr(category)%>';document.getElementById('form_category').submit();"><%=category.getName()%></a></h3>
 															</li><br>
-															<%for (CategoryLevel categorySon : category.getChilds()) {%>
+															<%
+																for (CategoryLevel categorySon : category.getChilds()) {
+															%>
 																<li><h3 class="list-links-title">
-																	<a href="#" onclick="document.getElementById('form_category_input').value='<%=HierarchicalCategories.getIdChildsStr(categorySon) %>';document.getElementById('form_category').submit();"
-																	class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%=categorySon.getName() %></a></h3>
+																	<a href="#" onclick="document.getElementById('form_category_input').value='<%=HierarchicalCategories.getIdChildsStr(categorySon)%>';document.getElementById('form_category').submit();"
+																	class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%=categorySon.getName()%></a></h3>
 																</li>
-																	<%for (CategoryLevel categoryGrandChild : categorySon.getChilds()) {%>
-																		<li><a href="#" onclick="document.getElementById('form_category_input').value='<%=HierarchicalCategories.getIdChildsStr(categoryGrandChild) %>';document.getElementById('form_category').submit();"
-																			class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%=categoryGrandChild.getName() %></a>
+																	<%
+																		for (CategoryLevel categoryGrandChild : categorySon.getChilds()) {
+																	%>
+																		<li><a href="#" onclick="document.getElementById('form_category_input').value='<%=HierarchicalCategories.getIdChildsStr(categoryGrandChild)%>';document.getElementById('form_category').submit();"
+																			class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><%=categoryGrandChild.getName()%></a>
 																		</li>
-																	<%} %>
+																	<%
+																		}
+																	%>
 																<hr>
-															<%} %>
+															<%
+																}
+															%>
 														</ul>
 													</div>
 												</div>
 											</div>
 										</li>
-									<%}
-								}
-							}%>
-						<%} %>
+									<%
+										}
+															}
+														}
+									%>
+						<%
+							}
+						%>
 						<li><a href="ProductServlet?op=view">View all</a></li>
 					</ul>
 				</div>
@@ -330,12 +384,13 @@ if (user!=null) {
 				
 				
 					<%
-					List<Messages> messages = (List<Messages>)request.getAttribute("messages");
-					if(messages.size()!=0){%>
+																		List<Message> messages = (List<Message>)request.getAttribute("messages");
+																				if(messages.size()!=0){
+																	%>
 						
 						<%
-							for(Messages msg : messages ){
-						%>
+													for(Message msg : messages ){
+												%>
 						
 						
 							<div class="row">

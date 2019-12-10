@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,12 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import controllers.BankController;
 import controllers.OrderController;
 import controllers.ProductController;
 import controllers.UserController;
 import model.Orders;
 import model.Orders_has_Product;
-
+import model.Transaction;
 import model.ProductInCart;
 
 @WebServlet(name = "Order", urlPatterns = "/Order")
@@ -32,53 +34,68 @@ public class OrderServlet extends HttpServlet{
 		ArrayList<ProductInCart> productsInCart = (ArrayList<ProductInCart>)session.getAttribute("cartList");
 
 		if(req.getParameter("type").equalsIgnoreCase("confirm-checkout")) {
-
-			//InteractionJMS mq=new InteractionJMS();
-			//mq.confirmPurchase(req.getParameter("card"), req.getParameter("total-price"));
-			//String associatedCode = mq.readConfirm("confirm");
-			String associatedCode = "lolxD";
-
-			if(OrderController.checkProductsStock(productsInCart)) {
-				// Create the order
-				Date date = new Date();
-				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-				Orders order = new Orders();
-				Orders_has_Product order_product;
+			
+			Double price = Double.parseDouble(req.getParameter("total-price"));
+			String card_number = req.getParameter("card");
+			String expiry_date = req.getParameter("expiry");
+			String cvv = req.getParameter("cvv");
+			Transaction transaction = new Transaction(price, card_number, expiry_date, cvv);
+			
+			boolean transactionCorrect = BankController.sendTransaction(transaction);
+			
+			if(!transactionCorrect) {
+				PrintWriter out = res.getWriter();
+				out.println("Transaction failure!");
+				//RequestDispatcher rd = req.getRequestDispatcher("failure-page.jsp");
+				//rd.forward(req, res);
+			}else {
 				
-				order.setConfirmation_id(associatedCode);
-				
-				order.setAddress(req.getParameter("address"));
-				order.setCity(req.getParameter("city"));
-				order.setCountry(req.getParameter("country"));
-				order.setPostalCode(Integer.parseInt(req.getParameter("zipCode")));
-				order.setUserBean(UserController.getUser(email));
-				order.setDate(formatter.format(date));
+				String associatedCode = "lolxD";
 
-				// Fill the order with products
-				ArrayList<Orders_has_Product> products = new ArrayList<Orders_has_Product>();
-				for(ProductInCart product : productsInCart) {
-					order_product = new Orders_has_Product();
-					order_product.setProductPrice(product.getProduct().getSalePrice());
-					order_product.setProductBean(product.getProduct());
-					order_product.setOrder(order);
-					order_product.setShipPrice(product.getProduct().getShipPrice());
-					order_product.setQuantity(product.getQuantity());
-					products.add(order_product);
-					ProductController.updateStock(product.getProduct(), product.getQuantity());
+				if(OrderController.checkProductsStock(productsInCart)) {
+					// Create the order
+					Date date = new Date();
+					SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+					Orders order = new Orders();
+					Orders_has_Product order_product;
+					
+					order.setConfirmation_id(associatedCode);
+					
+					order.setAddress(req.getParameter("address"));
+					order.setCity(req.getParameter("city"));
+					order.setCountry(req.getParameter("country"));
+					order.setPostalCode(Integer.parseInt(req.getParameter("zipCode")));
+					order.setUserBean(UserController.getUser(email));
+					order.setDate(formatter.format(date));
+
+					// Fill the order with products
+					ArrayList<Orders_has_Product> products = new ArrayList<Orders_has_Product>();
+					for(ProductInCart product : productsInCart) {
+						order_product = new Orders_has_Product();
+						order_product.setProductPrice(product.getProduct().getSalePrice());
+						order_product.setProductBean(product.getProduct());
+						order_product.setOrder(order);
+						order_product.setShipPrice(product.getProduct().getShipPrice());
+						order_product.setQuantity(product.getQuantity());
+						products.add(order_product);
+						ProductController.updateStock(product.getProduct(), product.getQuantity());
+					}
+					order.setOrdersHasProducts(products);
+
+					// Insert the order
+					OrderController.createOrder(order);
+					productsInCart.clear();
+					session.setAttribute("cartList", null);
+					RequestDispatcher rd = req.getRequestDispatcher("confirm-page.jsp");
+					rd.forward(req, res);
+				} else {
+					req.setAttribute("msg_error", "Check the quantity of your products, not enough stock.");
+					RequestDispatcher rd = req.getRequestDispatcher("checkout.jsp");
+					rd.forward(req, res);
 				}
-				order.setOrdersHasProducts(products);
-
-				// Insert the order
-				OrderController.createOrder(order);
-				productsInCart.clear();
-				session.setAttribute("cartList", null);
-				RequestDispatcher rd = req.getRequestDispatcher("confirm-page.jsp");
-				rd.forward(req, res);
-			} else {
-				req.setAttribute("msg_error", "Check the quantity of your products, not enough stock.");
-				RequestDispatcher rd = req.getRequestDispatcher("checkout.jsp");
-				rd.forward(req, res);
 			}
+			
+			
 
 		}else if(req.getParameter("type").equalsIgnoreCase("my-orders")) {
 			RequestDispatcher rd = req.getRequestDispatcher("my-orders.jsp");
