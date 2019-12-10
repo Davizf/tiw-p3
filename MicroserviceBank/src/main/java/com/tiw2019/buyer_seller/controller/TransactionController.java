@@ -28,17 +28,17 @@ public class TransactionController {
 		try {
 			List<Transaction> entityList = transactionDAO.findAll();
 
-			return new ResponseEntity<>(entityList, HttpStatus.OK);
+			return new ResponseEntity<List<Transaction>>(entityList, HttpStatus.OK);
 
 		} catch (Exception ex) {
 
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 
 	}
 
 	@RequestMapping(value = "/transactions", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<String> sendTransaction(@RequestBody Transaction transaction) {
+	public ResponseEntity<?> sendTransaction(@RequestBody Transaction transaction) {
 		
 		int cardNumberLength = transaction.getCard_number().length();
 		int cvvLength = transaction.getCvv().length();
@@ -47,13 +47,13 @@ public class TransactionController {
 			try {
 				Transaction tran = transactionDAO.save(transaction);
 				
-				return new ResponseEntity<>(tran.getId(), HttpStatus.OK);
+				return new ResponseEntity<String>(tran.getId(), HttpStatus.OK);
 
 			} catch (Exception e) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 			}
 		}else {
-			return new ResponseEntity<>(HttpStatus.PAYMENT_REQUIRED);
+			return new ResponseEntity<Void>(HttpStatus.PAYMENT_REQUIRED);
 		}
 	}
 	
