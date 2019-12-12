@@ -399,7 +399,7 @@ if (user!=null) {
 									<div><a href="#"><i class="fa fa-user-o"></i><b>&nbsp;<%=msg.getSender() %></b></a></div>
 										
 									<div class="review-body">
-										<p><%=msg.getMessage()%></p>
+										<p>Message: <%=msg.getMessage()%></p>
 									</div>
 								
 								</div>
@@ -421,7 +421,7 @@ if (user!=null) {
 							<div class="form-group">
 								<div class="input-checkbox">
 									<INPUT type="hidden" name="op" value="3"> 
-									<input type="text" name="message" >
+									<input type="text" name="message" size="66" >
 									<INPUT type="hidden" name="sender" value="<%=user%>"> 
 									<input type="hidden" name="correlationId" value=<%=msg.getSender() %>>
 									<input type="submit" name="button" class="btn btn-success" value="Answer" />

@@ -283,7 +283,7 @@ if (user!=null) {
 							<form name="nombre" method="post" action="MessageServlet">
 								
 								 
-								<h4>Message content:</h4> <INPUT type="text" name="message" size="94"> 
+								<h4>Message content:</h4> <INPUT type="text" name="message" size="74"> 
 								<br><br>
 
 								<INPUT type="hidden" name="op" value="4"> 
