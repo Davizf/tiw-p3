@@ -206,7 +206,7 @@ if (user!=null) {
 							
 							
 							<%
-																						if (userBean != null && userBean.getType() != UserController.USER_TYPE_SELLER){
+							if (userBean != null && userBean.getType() != UserController.USER_TYPE_SELLER){
 																					%>
 								<li class="header-cart dropdown default-dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">

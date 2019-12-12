@@ -177,6 +177,10 @@ if (user!=null) {
 									cartTotal+=productsInCart.get(i).getCost();
 							}
 							%>
+							
+							<%
+							if (userBean != null && userBean.getType() != UserController.USER_TYPE_SELLER){
+																					%>
 							<li class="header-cart dropdown default-dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 									<div class="header-btns-icon">
@@ -216,6 +220,7 @@ if (user!=null) {
 									</div>
 								</div>
 							</li>
+							<%} %>
 						<%} %>
 						<!-- /Cart -->
 						<!-- Mobile nav toggle-->
