@@ -68,7 +68,7 @@ public class UserController {
 		try {
 			User userFind = userDAO.findByEmail(user.getEmail());
 
-			if (userFind != null) return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			if (userFind != null) return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 			
 			userDAO.save(user);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
