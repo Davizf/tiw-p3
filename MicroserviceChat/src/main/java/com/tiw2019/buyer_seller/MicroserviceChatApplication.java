@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringMonogoDBChatApplication {
+public class MicroserviceChatApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringMonogoDBChatApplication.class, args);
+		SpringApplication.run(MicroserviceChatApplication.class, args);
 	}
 }
