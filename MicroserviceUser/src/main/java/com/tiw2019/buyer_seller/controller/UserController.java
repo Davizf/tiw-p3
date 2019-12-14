@@ -64,7 +64,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "users", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<?> createUser(@RequestBody(required = true) User user) {
+	public ResponseEntity<Void> createUser(@RequestBody(required = true) User user) {
 		try {
 			User userFind = userDAO.findByEmail(user.getEmail());
 
@@ -78,7 +78,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "users/{email}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<?> updateUser(@PathVariable(value = "email", required = true) String email, @RequestBody(required = true) User user) {// TODO probar
+	public ResponseEntity<Void> updateUser(@PathVariable(value = "email", required = true) String email, @RequestBody(required = true) User user) {// TODO probar
 		try {
 			User userFind = userDAO.findByEmail(email);
 
