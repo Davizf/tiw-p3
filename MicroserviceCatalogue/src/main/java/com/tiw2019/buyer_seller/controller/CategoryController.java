@@ -31,15 +31,15 @@ public class CategoryController {
 	@RequestMapping(value="categories", method=RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getCategories(@RequestParam(value = "name", required = false) String name){
 		try {
-			List<Category> c;
+			List<Category> categories;
 
 			if (name==null) {
-				c = categoryDAO.findAll();
+				categories = categoryDAO.findAll();
 			} else {
-				c = categoryDAO.findByName(name);
+				categories = categoryDAO.findByName(name);
 			}
-			return new ResponseEntity<>(c, 
-					(c.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
+			return new ResponseEntity<List<Category>>(categories, 
+					(categories.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -50,26 +50,30 @@ public class CategoryController {
 	public ResponseEntity<?> getCategoryById(@PathVariable(value = "id", required = true) Integer id){
 		try {
 			Optional<Category> c = categoryDAO.findById(id);
-			return new ResponseEntity<>(c, 
-					(c.isPresent()) ? HttpStatus.OK : HttpStatus.NOT_FOUND
-					);
+
+			if (c.isPresent())
+				return new ResponseEntity<Category>(c.get(), HttpStatus.OK);
+			else
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
+	
 	@RequestMapping(value = "categories", method = RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<?> addCategory(@RequestBody(required = true) Category category) {
+	public ResponseEntity<Void> addCategory(@RequestBody(required = true) Category category) {
 		try {
 			categoryDAO.save(category);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@RequestMapping(value = "categories/{id}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<?> updateCategory(@PathVariable(value = "id", required = true) Integer id, @RequestBody(required = true) Category category) {
+	public ResponseEntity<Void> updateCategory(@PathVariable(value = "id", required = true) Integer id, @RequestBody(required = true) Category category) {
 		try {
 			Optional<Category> c = categoryDAO.findById(id);
 
@@ -78,9 +82,9 @@ public class CategoryController {
 			category.setId(id);
 			categoryDAO.save(category);
 
-			return new ResponseEntity<>(category, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -88,11 +92,11 @@ public class CategoryController {
 	public ResponseEntity<Void> deleteCategory(@PathVariable Integer id) {
 		try {
 			categoryDAO.deleteById(id);
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (EmptyResultDataAccessException e) {// No existe con ese id
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 

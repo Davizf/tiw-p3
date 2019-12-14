@@ -35,9 +35,9 @@ public class ProductController {
 	@RequestMapping(value="products/{id}", method=RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getProduct(@PathVariable(value = "id", required = true) Integer id){
 		try {
-			Optional<Product> p = productDAO.findById(id);
-			return new ResponseEntity<>(p, 
-					(p.isPresent()) ? HttpStatus.OK : HttpStatus.NOT_FOUND
+			Optional<Product> products = productDAO.findById(id);
+			return new ResponseEntity<>(products, 
+					(products.isPresent()) ? HttpStatus.OK : HttpStatus.NOT_FOUND
 					);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -56,12 +56,12 @@ public class ProductController {
 
 			if (categories!=null) {
 				// Convert "id, id" to List<Integer>
-				List<Integer> categoriesList = new ArrayList<Integer>();
+				List<Integer> categoryList = new ArrayList<Integer>();
 
 				String[] arr = categories.split(DELIMIT_CATEGORIES);
-				for (int i = 0; i < arr.length; i++) categoriesList.add(Integer.parseInt(arr[i]));
+				for (int i = 0; i < arr.length; i++) categoryList.add(Integer.parseInt(arr[i]));
 
-				return getProductsByCategories(categoriesList, admin);
+				return getProductsByCategories(categoryList, admin);
 			}
 
 			if (seller!=null) return getProductsBySeller(seller);
@@ -72,45 +72,43 @@ public class ProductController {
 
 			if (stock!=null) return getProductsByStock(stock);
 
-			List<Product> p = admin ? productDAO.findAll() : productDAO.findAllAvailable();
+			List<Product> products = admin ? productDAO.findAll() : productDAO.findAllAvailable();
 
-			return new ResponseEntity<>(p, 
-					(p.size() == 0) ? HttpStatus.NO_CONTENT : HttpStatus.OK
-					);
+			if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	private ResponseEntity<?> getProductsByCategoryId(Integer category, boolean admin){
-		List<Product> p = admin ? productDAO.findAllByCategoryIdAdmin(category) : productDAO.findAllByCategoryId(category);
-		return new ResponseEntity<>(p, 
-				(p.isEmpty()) ? HttpStatus.NOT_FOUND : HttpStatus.OK
-				);
+		List<Product> products = admin ? productDAO.findAllByCategoryIdAdmin(category) : productDAO.findAllByCategoryId(category);
+
+		if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 
 	private ResponseEntity<?> getProductsByCategory(String category, boolean admin){
-		List<Product> p = admin ? productDAO.findAllByCategoryAdmin(category) : productDAO.findAllByCategory(category);
-		return new ResponseEntity<>(p, 
-				(p.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
-				);
+		List<Product> products = admin ? productDAO.findAllByCategoryAdmin(category) : productDAO.findAllByCategory(category);
+
+		if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 
 	private ResponseEntity<?> getProductsByCategories(List<Integer> idCategories, boolean admin){
 		if (idCategories.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-		List<Product> p = admin ? productDAO.findAllByCategoriesIdAdmin(idCategories) : productDAO.findAllByCategoriesId(idCategories);
+		List<Product> products = admin ? productDAO.findAllByCategoriesIdAdmin(idCategories) : productDAO.findAllByCategoriesId(idCategories);
 
-		return new ResponseEntity<>(p, 
-				(p.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
-				);
+		if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 
 	private ResponseEntity<?> getProductsBySeller(String email){
-		List<Product> p = productDAO.findAllBySeller(email);
-		return new ResponseEntity<>(p, 
-				(p.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
-				);
+		List<Product> products = productDAO.findAllBySeller(email);
+
+		if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 
 	@RequestMapping(value="products", params = "last", method=RequestMethod.GET, produces = "application/json")
@@ -119,11 +117,10 @@ public class ProductController {
 			if (quantity==null) quantity = new Integer(DEFAULT_LAST_PRODUCTS);
 			if (quantity<0) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-			List<Product> p = productDAO.findAllOrderById().subList(0, quantity);
+			List<Product> products = productDAO.findAllOrderById().subList(0, quantity);
 
-			return new ResponseEntity<>(p, 
-					(p.size() == 0) ? HttpStatus.NO_CONTENT : HttpStatus.OK
-					);
+			if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -132,21 +129,21 @@ public class ProductController {
 	@DeleteMapping("products/{id}")
 	public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
 		try {
-			Optional<Product> p = productDAO.findById(id);
+			Optional<Product> product = productDAO.findById(id);
 
-			if (!p.isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			if (!product.isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-			p.get().setUserBean(null);
-			productDAO.save(p.get());
+			product.get().setUserBean(null);
+			productDAO.save(product.get());
 
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@RequestMapping(value = "products/{id}", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<?> updateProduct(@PathVariable(value = "id", required = true) Integer id, @RequestBody(required = true) Product product) {
+	public ResponseEntity<Void> updateProduct(@PathVariable(value = "id", required = true) Integer id, @RequestBody(required = true) Product product) {
 		try {
 			Optional<Product> p = productDAO.findById(id);
 
@@ -155,25 +152,25 @@ public class ProductController {
 			product.setId(id);
 			productDAO.save(product);
 
-			return new ResponseEntity<>(product, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@RequestMapping(value = "products/{id}", params = "stock", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<?> updateProductStock(@PathVariable(value = "id", required = true) Integer id, @RequestParam(value = "stock", required = true) Integer stock) {
+	public ResponseEntity<Void> updateProductStock(@PathVariable(value = "id", required = true) Integer id, @RequestParam(value = "stock", required = true) Integer stock) {
 		try {
-			Optional<Product> p = productDAO.findById(id);
+			Optional<Product> product = productDAO.findById(id);
 
-			if (!p.isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			if (!product.isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-			p.get().setStock(stock);
-			productDAO.save(p.get());
+			product.get().setStock(stock);
+			productDAO.save(product.get());
 
-			return new ResponseEntity<>(p.get(), HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -183,24 +180,24 @@ public class ProductController {
 			productDAO.save(product);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	private ResponseEntity<?> getProductByName(String name, boolean admin){
-		List<Product> p = admin ? productDAO.getProductByNameAdmin(name) : productDAO.getProductByName(name);
-		return new ResponseEntity<>(p, 
-				(p.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
-				);
+		List<Product> products = admin ? productDAO.getProductByNameAdmin(name) : productDAO.getProductByName(name);
+
+		if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 
 	@RequestMapping(value="products", params = {"min", "max"}, method=RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getProductsBetweenPrices(@RequestParam(value = "min", required = true) Integer min, @RequestParam(value = "max", required = true) Integer max){
 		try {
-			List<Product> p = productDAO.findAllBetweenPrices(new BigDecimal(min), new BigDecimal(max));
-			return new ResponseEntity<>(p, 
-					(p.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
-					);
+			List<Product> products = productDAO.findAllBetweenPrices(new BigDecimal(min), new BigDecimal(max));
+
+			if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -209,27 +206,27 @@ public class ProductController {
 	@RequestMapping(value="products", params = {"sale_min", "sale_max"}, method=RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> findAllBetweenSalePrices(@RequestParam(value = "sale_min", required = true) Integer min, @RequestParam(value = "sale_max", required = true) Integer max){
 		try {
-			List<Product> p = productDAO.findAllBetweenSalePrices(new BigDecimal(min), new BigDecimal(max));
-			return new ResponseEntity<>(p, 
-					(p.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
-					);
+			List<Product> products = productDAO.findAllBetweenSalePrices(new BigDecimal(min), new BigDecimal(max));
+
+			if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	private ResponseEntity<?> getProductsByShipPrice(Integer price){
-		List<Product> p = (price==null) ? productDAO.findAllByShipment(new BigDecimal(0)) : productDAO.findAllByShipment(new BigDecimal(price));
-		return new ResponseEntity<>(p, 
-				(p.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
-				);
+		List<Product> products = (price==null) ? productDAO.findAllByShipment(new BigDecimal(0)) : productDAO.findAllByShipment(new BigDecimal(price));
+
+		if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 
 	private ResponseEntity<?> getProductsByStock(Integer stock){
-		List<Product> p = productDAO.findAllByStock(stock);
-		return new ResponseEntity<>(p, 
-				(p.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
-				);
+		List<Product> products = productDAO.findAllByStock(stock);
+
+		if (products.isEmpty()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
 	}
 
 }
