@@ -242,4 +242,12 @@ public class Product implements Serializable {
 		return shopingcart;
 	}
 
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", description=" + description + ", imagePath=" + imagePath + ", name=" + name
+				+ ", price=" + price + ", salePrice=" + salePrice + ", shipPrice=" + shipPrice + ", shortDescription="
+				+ shortDescription + ", stock=" + stock + ", categoryBean=" + categoryBean + ", userBean=" + userBean
+				+ "]";
+	}
+
 }
