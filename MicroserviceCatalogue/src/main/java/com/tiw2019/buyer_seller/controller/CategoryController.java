@@ -29,9 +29,15 @@ public class CategoryController {
 	CategoryDAO categoryDAO;
 
 	@RequestMapping(value="categories", method=RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getCategories(){
+	public ResponseEntity<?> getCategories(@RequestParam(value = "name", required = false) String name){
 		try {
-			List<Category> c = categoryDAO.findAll();
+			List<Category> c;
+
+			if (name==null) {
+				c = categoryDAO.findAll();
+			} else {
+				c = categoryDAO.findByName(name);
+			}
 			return new ResponseEntity<>(c, 
 					(c.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
@@ -46,18 +52,6 @@ public class CategoryController {
 			Optional<Category> c = categoryDAO.findById(id);
 			return new ResponseEntity<>(c, 
 					(c.isPresent()) ? HttpStatus.OK : HttpStatus.NOT_FOUND
-					);
-		} catch (Exception ex) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-	}
-
-	@RequestMapping(value="categories", params = "name", method=RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getCategoryByName(@RequestParam(value = "name", required = true) String name){
-		try {
-			List<Category> c = categoryDAO.findByName(name);
-			return new ResponseEntity<>(c, 
-					(c.isEmpty()) ? HttpStatus.NO_CONTENT : HttpStatus.OK
 					);
 		} catch (Exception ex) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

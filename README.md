@@ -35,8 +35,8 @@ No hay que importar /WS/tiw-p3 para que solo modifiquemos los proyectos individu
 ## MicroserviceCatalogue (http://localhost:11133)
 ### Categories
 - /categories, GET: devuelve todas las categorias y OK (o NO_CONTENT)
+- /categories?name, GET: devuelve la categoria con string name y OK (o NO_CONTENT)
 - /categories/{id}, GET: devuelve la categoria {id} y OK (o NOT_FOUND)
-- /categories?name, GET: devuelve la categoria con string name y OK (o NOT_FOUND)
 - /categories, POST: añade la categoria en RequestBody y CREATED
 - /categories/{id}, PUT: modifica la categoria con {id} con lo del RequestBody y OK (o NOT_FOUND)
 - /categories/{id}, DELETE: elimina la categoria con {id} y OK (o NOT_FOUND)
