@@ -1,2 +1,4 @@
 .DS_Store
 target/
+DynamicWebStoreUser/build/
+DynamicWebStoreAdmin/build/
