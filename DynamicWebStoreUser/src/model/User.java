@@ -43,8 +43,8 @@ public class User implements Serializable {
 	@Column(name="credit_card_expiration")
 	private String creditCardExpiration;
 
-//	@Column(name="CURRENT_CONNECTIONS")
-//	private BigInteger currentConnections;
+	//	@Column(name="CURRENT_CONNECTIONS")
+	//	private BigInteger currentConnections;
 
 	private String name;
 
@@ -57,12 +57,12 @@ public class User implements Serializable {
 
 	private String surnames;
 
-//	@Column(name="TOTAL_CONNECTIONS")
-//	private BigInteger totalConnections;
+	//	@Column(name="TOTAL_CONNECTIONS")
+	//	private BigInteger totalConnections;
 
 	private int type;
 
-//	private String user;
+	//	private String user;
 
 	//bi-directional many-to-one association to Order
 	@OneToMany(mappedBy="userBean")
@@ -75,14 +75,14 @@ public class User implements Serializable {
 	//bi-directional many-to-many association to Product
 	@ManyToMany
 	@JoinTable(
-		name="wishlists"
-		, joinColumns={
-			@JoinColumn(name="user")
+			name="wishlists"
+			, joinColumns={
+					@JoinColumn(name="user")
 			}
-		, inverseJoinColumns={
-			@JoinColumn(name="product")
+			, inverseJoinColumns={
+					@JoinColumn(name="product")
 			}
-		)
+			)
 	private List<Product> products2;
 
 	//bi-directional many-to-one association to WishList
@@ -152,13 +152,13 @@ public class User implements Serializable {
 		this.creditCardExpiration = creditCardExpiration;
 	}
 
-//	public BigInteger getCurrentConnections() {
-//		return this.currentConnections;
-//	}
-//
-//	public void setCurrentConnections(BigInteger currentConnections) {
-//		this.currentConnections = currentConnections;
-//	}
+	//	public BigInteger getCurrentConnections() {
+	//		return this.currentConnections;
+	//	}
+	//
+	//	public void setCurrentConnections(BigInteger currentConnections) {
+	//		this.currentConnections = currentConnections;
+	//	}
 
 	public String getName() {
 		return this.name;
@@ -200,13 +200,13 @@ public class User implements Serializable {
 		this.surnames = surnames;
 	}
 
-//	public BigInteger getTotalConnections() {
-//		return this.totalConnections;
-//	}
-//
-//	public void setTotalConnections(BigInteger totalConnections) {
-//		this.totalConnections = totalConnections;
-//	}
+	//	public BigInteger getTotalConnections() {
+	//		return this.totalConnections;
+	//	}
+	//
+	//	public void setTotalConnections(BigInteger totalConnections) {
+	//		this.totalConnections = totalConnections;
+	//	}
 
 	public int getType() {
 		return this.type;
@@ -216,13 +216,13 @@ public class User implements Serializable {
 		this.type = type;
 	}
 
-//	public String getUser() {
-//		return this.user;
-//	}
-//
-//	public void setUser(String user) {
-//		this.user = user;
-//	}
+	//	public String getUser() {
+	//		return this.user;
+	//	}
+	//
+	//	public void setUser(String user) {
+	//		this.user = user;
+	//	}
 
 	public List<Orders> getOrders() {
 		return this.orders;
@@ -318,6 +318,14 @@ public class User implements Serializable {
 		shopingcart.setUserBean(null);
 
 		return shopingcart;
+	}
+
+	@Override
+	public String toString() {
+		return "User [email=" + email + ", address=" + address + ", city=" + city + ", country=" + country
+				+ ", creditCard=" + creditCard + ", credit_card_CVV=" + credit_card_CVV + ", creditCardExpiration="
+				+ creditCardExpiration + ", name=" + name + ", password=" + password + ", phone=" + phone
+				+ ", postalCode=" + postalCode + ", surnames=" + surnames + ", type=" + type + "]";
 	}
 
 }

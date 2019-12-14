@@ -28,11 +28,12 @@ public class CategoryController {
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == HTTP_STATUS_OK) categories = response.readEntity(Category[].class);
+		if (response.getStatus() == HTTP_STATUS_OK) {
+			categories = response.readEntity(Category[].class);
+			for (int i = 0; i < categories.length; i++)
+				resul.add(categories[i]);
+		}
 		client.close();
-
-		if (response.getStatus() == HTTP_STATUS_OK)
-			for (int i = 0; i < categories.length; i++) resul.add(categories[i]);
 
 		return resul;
 	}
