@@ -1,88 +1,70 @@
 package controllers;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import jdbc.info.InformationProperties;
-import managers.CategoryManager;
+import org.glassfish.jersey.client.ClientConfig;
+
 import model.Category;
-
 
 public class CategoryController {
 
+	private static final int HTTP_STATUS_OK = 200;
+	private static final String WEB_SERVICE="http://localhost:11133/categories";
+
 	public static ArrayList<Category> getCategories() {
-		ArrayList<Category> categories = new ArrayList<Category>();
-		Category category = null;
-		String query = "SELECT * FROM Categories";
-		String userName = InformationProperties.getStrUser();
-		String password = InformationProperties.getStrPassword();
-		String url = "jdbc:mysql://localhost/" + InformationProperties.getStrDatabaseName() + "?user=" + userName
-				+ "&password=" + password + "&useSSL=false&serverTimezone=UTC";
-		ResultSet res = null;
-		
-		try {
-			Class.forName(InformationProperties.getStrClassDriver());
+		Category[] categories = null;
+		ArrayList<Category> resul = new ArrayList<Category>();
 
-			Connection connection = DriverManager.getConnection(url);
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		WebTarget webTarget = client.target(WEB_SERVICE);
 
-			Statement myStatement = connection.createStatement();
+		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
 
-			res = myStatement.executeQuery(query);
-			while(res.next()) {
-				category = new Category();
-				category.setId(res.getInt("id"));
-				category.setName(res.getString("name"));
-				category.setParentId(res.getInt("parent_id"));
-				categories.add(category);
-			}
-			res.close();
-			myStatement.close();
-			connection.close();
-
-		} catch (ClassNotFoundException e) {
-			System.out.println(e);
-		} catch (SQLWarning sqlWarning) {
-			while (sqlWarning != null) {
-				System.out.println("Error: " + sqlWarning.getErrorCode());
-				System.out.println("Descripci�n: " + sqlWarning.getMessage());
-				System.out.println("SQLstate: " + sqlWarning.getSQLState());
-				sqlWarning = sqlWarning.getNextWarning();
-			}
-		} catch (SQLException sqlException) {
-			while (sqlException != null) {
-				System.out.println("Error: " + sqlException.getErrorCode());
-				System.out.println("Descripci�n: " + sqlException.getMessage());
-				System.out.println("SQLstate: " + sqlException.getSQLState());
-				sqlException = sqlException.getNextException();
-			}
+		if (response.getStatus() == HTTP_STATUS_OK) {
+			categories = response.readEntity(Category[].class);
+			for (int i = 0; i < categories.length; i++)
+				resul.add(categories[i]);
 		}
-		
-		return categories;
+		client.close();
+
+		return resul;
 	}
-	
-	public static Category  getCategory(String name) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		CategoryManager manager = new CategoryManager();
-		manager.setEntityManagerFactory(factory);
-		Category category = (Category) manager.getCategoryByName(name).get(0);
-		factory.close();
+
+	public static Category getCategory(String name) {
+		Category category = null;
+
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		WebTarget webTarget = client.target(WEB_SERVICE);
+
+		WebTarget webTargetPath = webTarget.queryParam("name", name);
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+
+		if (response.getStatus() == HTTP_STATUS_OK) category = response.readEntity(Category[].class)[0];
+		client.close();
 		return category;
 	}
-	
+
 	public static Category getCategory(int id) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		CategoryManager manager = new CategoryManager();
-		manager.setEntityManagerFactory(factory);
-		Category category = (Category) manager.getCategoryById(id);
-		factory.close();
+		Category category = null;
+
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		WebTarget webTarget = client.target(WEB_SERVICE);
+
+		WebTarget webTargetPath = webTarget.path(""+id);
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+
+		if (response.getStatus() == HTTP_STATUS_OK) category = response.readEntity(Category.class);
+		client.close();
 		return category;
 	}
 

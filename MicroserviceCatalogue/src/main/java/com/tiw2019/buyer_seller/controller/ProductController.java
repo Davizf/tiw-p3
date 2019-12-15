@@ -178,7 +178,7 @@ public class ProductController {
 	public ResponseEntity<?> addProduct(@RequestBody(required = true) Product product) {
 		try {
 			productDAO.save(product);
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return new ResponseEntity<Integer>(product.getId(), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

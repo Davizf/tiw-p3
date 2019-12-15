@@ -53,7 +53,7 @@ public interface ProductDAO extends CrudRepository<Product, Integer> {
 	@Query("SELECT p FROM Product p WHERE p.price BETWEEN :price_1 AND :price_2 AND p.userBean IS NOT NULL")
 	List<Product> findAllBetweenPrices(@Param("price_1") BigDecimal price_1, @Param("price_2") BigDecimal price_2);
 
-	@Query("SELECT p FROM Product p WHERE p.stock > :stock AND p.userBean IS NOT NULL")
+	@Query("SELECT p FROM Product p WHERE p.stock >= :stock AND p.userBean IS NOT NULL")
 	List<Product> findAllByStock(@Param("stock") Integer stock);
 
 }

@@ -77,4 +77,9 @@ public class Category implements Serializable {
 		return product;
 	}
 
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + ", parentId=" + parentId + "]";
+	}
+
 }

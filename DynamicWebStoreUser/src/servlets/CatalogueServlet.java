@@ -157,6 +157,7 @@ public class CatalogueServlet extends HttpServlet {
 			// Change image path auxiliar for the definitive
 			File image_file2 = new File(image_completePath);
 			image_file.renameTo(image_file2);
+			p.setId(newId);
 			p.setImagePath(image_completeShortPath);
 			ProductController.modifyProduct(p);
 
