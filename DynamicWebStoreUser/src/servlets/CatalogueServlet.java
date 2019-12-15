@@ -150,6 +150,7 @@ public class CatalogueServlet extends HttpServlet {
 				return;
 			}
 			// Change name of file to id
+			image_filePath = newId + ".png";
 			image_completePath = image_parentPath + "/" + image_filePath;
 			image_completeShortPath = image_parentShortPath + "/" + image_filePath;
 
