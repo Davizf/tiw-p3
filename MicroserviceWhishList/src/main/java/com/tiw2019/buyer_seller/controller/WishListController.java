@@ -1,0 +1,61 @@
+package com.tiw2019.buyer_seller.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tiw2019.buyer_seller.dao.WhishListDAO;
+import com.tiw2019.buyer_seller.model.WishList;
+
+
+@RestController
+public class WishListController {
+
+	@Autowired
+	WhishListDAO wishListDAO;
+	
+	@RequestMapping(value="/wishlist/{email}", method=RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> getWishListByEmail(@PathVariable(value="email", required=true) String email) {
+		try {
+			List<WishList> wl = wishListDAO.findByEmail(email);
+			return new ResponseEntity<List<WishList>>(wl,
+				(wl != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+		} catch(Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value="/wishlist", method=RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<?> addToWishList(@RequestBody(required=true) List<WishList> wishList) {
+		try {
+			for(WishList wl : wishList)
+				wishListDAO.save(wl);
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		} catch(Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value="/wishlist", method=RequestMethod.DELETE, produces = "application/json")
+	public ResponseEntity<?> deleteFromWishList(@RequestBody(required=true) List<WishList> wishList) {
+		try {
+			for(WishList wl : wishList)
+				wishListDAO.delete(wl);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (EmptyResultDataAccessException e) {
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+}
