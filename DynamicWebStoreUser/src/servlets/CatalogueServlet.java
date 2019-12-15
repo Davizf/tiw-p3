@@ -150,13 +150,13 @@ public class CatalogueServlet extends HttpServlet {
 				return;
 			}
 			// Change name of file to id
-			image_filePath = newId + ".png";
 			image_completePath = image_parentPath + "/" + image_filePath;
 			image_completeShortPath = image_parentShortPath + "/" + image_filePath;
 
 			// Change image path auxiliar for the definitive
 			File image_file2 = new File(image_completePath);
 			image_file.renameTo(image_file2);
+			p.setId(newId);
 			p.setImagePath(image_completeShortPath);
 			ProductController.modifyProduct(p);
 

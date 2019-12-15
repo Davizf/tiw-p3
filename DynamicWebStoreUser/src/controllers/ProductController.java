@@ -17,34 +17,27 @@ import model.Product;
 
 public class ProductController {
 
-	private static final int HTTP_STATUS_OK = 200;
+	private static final int HTTP_STATUS_OK = 200, HTTP_STATUS_CREATED = 201;
 	private static final String WEB_SERVICE="http://localhost:11133/products";
 
 	public static final int MAX_STOCK=2147483647, MIN_STOCK=0, NAME_CHARACTER=100, SHORT_DESC_CHARACTER=300, DEFAULT_LAST_PRODUCTS=4;
 
 	// Auxiliar GET functions
-	private static Product getWithPath(String path) {
-		Product product = null;
-
-		Client client = ClientBuilder.newClient(new ClientConfig());
-		WebTarget webTarget = client.target(WEB_SERVICE);
-
-		WebTarget webTargetPath = webTarget.path(path);
-		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
-		Response response = invocationBuilder.get();
-
-		if (response.getStatus() == HTTP_STATUS_OK) product = response.readEntity(Product.class);
-		client.close();
-
-		return product;
-	}
+	/**
+	 * GET {@link List<Product>} from WS with a parameter, empty list if error
+	 * @param parameter
+	 * @param value of the parameter
+	 */
 	private static List<Product> getWithParameter(String parameter, String value) {
 		List<Product> products = new ArrayList<Product>();
 
 		Client client = ClientBuilder.newClient(new ClientConfig());
 		WebTarget webTarget = client.target(WEB_SERVICE);
 
-		WebTarget webTargetPath = webTarget.queryParam(parameter, value);
+		WebTarget webTargetPath;
+		if (parameter==null) webTargetPath = webTarget;
+		else webTargetPath = webTarget.queryParam(parameter, value);
+
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
@@ -57,6 +50,11 @@ public class ProductController {
 
 		return products;
 	}
+	/**
+	 * GET {@link List<Product>} from WS with 2 parameters (both required), empty list if error
+	 * @param parameter
+	 * @param value of the parameter
+	 */
 	private static List<Product> getWithParameters(String parameter1, String value1, String parameter2, String value2) {
 		List<Product> products = new ArrayList<Product>();
 
@@ -78,7 +76,19 @@ public class ProductController {
 	}
 
 	public static Product getProduct(int id){
-		return getWithPath(""+id);
+		Product product = null;
+
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		WebTarget webTarget = client.target(WEB_SERVICE);
+
+		WebTarget webTargetPath = webTarget.path(""+id);
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+
+		if (response.getStatus() == HTTP_STATUS_OK) product = response.readEntity(Product.class);
+		client.close();
+
+		return product;
 	}
 
 	public static List<Product> getProductsByCategory(String category){
@@ -99,28 +109,12 @@ public class ProductController {
 		return getWithParameter("seller", email);
 	}
 
-
 	public static List<Product> getLastProducts(){
 		return getWithParameter("last", ""+DEFAULT_LAST_PRODUCTS);
 	}
 
 	public static List<Product> getAllProducts(){
-		List<Product> products = null;
-
-		Client client = ClientBuilder.newClient(new ClientConfig());
-		WebTarget webTarget = client.target(WEB_SERVICE);
-
-		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
-		Response response = invocationBuilder.get();
-
-		if (response.getStatus() == HTTP_STATUS_OK) {
-			Product[] productsArr = response.readEntity(Product[].class);
-			products=new ArrayList<Product>(productsArr.length);
-			for (int i = 0; i < productsArr.length; i++) products.add(productsArr[i]);
-		}
-		client.close();
-
-		return products;
+		return getWithParameter(null, null);
 	}
 
 	public static boolean deleteProduct(int id) {
@@ -147,16 +141,17 @@ public class ProductController {
 		return response.getStatus() == HTTP_STATUS_OK;
 	}
 
-	public static int addProduct(Product p) {// TODO
+	public static int addProduct(Product p) {
 		Client client = ClientBuilder.newClient(new ClientConfig());
 		WebTarget webTarget = client.target(WEB_SERVICE);
 
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.post(Entity.entity(p, MediaType.APPLICATION_JSON));
+		int newId = response.readEntity(Integer.class);
 		client.close();
 
-		if (response.getStatus() == HTTP_STATUS_OK)
-			return response.readEntity(Product.class).getId();
+		if (response.getStatus() == HTTP_STATUS_CREATED)
+			return newId;
 		else
 			return -1;
 	}
