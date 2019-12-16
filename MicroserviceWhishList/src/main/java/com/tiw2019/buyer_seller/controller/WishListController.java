@@ -33,22 +33,33 @@ public class WishListController {
 		}
 	}
 	
-	@RequestMapping(value="/wishlist", method=RequestMethod.POST, produces = "application/json")
-	public ResponseEntity<?> addToWishList(@RequestBody(required=true) List<WishList> wishList) {
+	@RequestMapping(value="/wishlist/{email}/{productId}", method=RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> getWishListByEmailAndProduct(
+			@PathVariable(value="email", required=true) String email,
+			@PathVariable(value="productId", required=true) Integer productId) {
 		try {
-			for(WishList wl : wishList)
-				wishListDAO.save(wl);
+			WishList wl = wishListDAO.findByEmailAndProduct(email, productId);
+			return new ResponseEntity<WishList>(wl,
+				(wl != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+		} catch(Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value="/wishlist", method=RequestMethod.POST, produces = "application/json")
+	public ResponseEntity<?> addToWishList(@RequestBody(required=true) WishList wishList) {
+		try {
+			wishListDAO.save(wishList);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} catch(Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
-	@RequestMapping(value="/wishlist", method=RequestMethod.DELETE, produces = "application/json")
-	public ResponseEntity<?> deleteFromWishList(@RequestBody(required=true) List<WishList> wishList) {
+	@RequestMapping(value="/wishlist/{id}", method=RequestMethod.DELETE, produces = "application/json")
+	public ResponseEntity<?> deleteFromWishList(@PathVariable(value="id", required=true) Integer id) {
 		try {
-			for(WishList wl : wishList)
-				wishListDAO.delete(wl);
+			wishListDAO.deleteById(id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} catch (EmptyResultDataAccessException e) {
 			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
