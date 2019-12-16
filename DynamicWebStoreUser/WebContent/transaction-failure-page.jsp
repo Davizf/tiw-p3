@@ -315,11 +315,11 @@ if (user!=null) {
 				
 			
 					<div class="section-title">
-						<h4 class="title">Request fail!</h4>
+						<h4 class="title">Transaction fail!</h4>
 					</div>
 					
-					<h4>Wow, It seems that something goes wrong!</h4>
-					<p>Please, retry your operation</p>
+					<h4>Wow, It seems that the transaction has failed!</h4>
+					<p>Please, check your payment details</p>
 					
 		
 					
