@@ -42,7 +42,6 @@ public class ProductServlet extends HttpServlet{
 			List<Product> products;
 			// Get products in a category
 			if (categories.length == 1) {
-				System.out.println(category);
 				products = ProductController.getProductsByCategory(Integer.parseInt(category));
 			} else {
 				// Get products in categories
