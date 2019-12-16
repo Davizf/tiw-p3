@@ -407,7 +407,7 @@ if (user!=null) {
 					<div class="col-md-6">
 						<div class="product-body">
 							<label for="product_name">Name</label>
-							<input class="input" name="product_name" placeholder="<%=p.getName() %>" required>
+							<input class="input" name="product_name" placeholder="<%=p.getName() %>" required <%if (modify) {%>value="<%=p.getName() %>"<%} %>>
 							<%if(categories != null) { %>
 								<br></br>
 								<label for="product_category">Category</label>
@@ -424,20 +424,20 @@ if (user!=null) {
 							<%} %>
 							<br></br>
 							<label for="product_price">Price</label>
-							<input class="input" type="text" name="product_price" pattern="^\d*(\.\d{0,2})?$" required placeholder="<%=p.getPrice().doubleValue() %>">
+							<input class="input" type="text" name="product_price" pattern="^\d*(\.\d{0,2})?$" required placeholder="<%=p.getPrice().doubleValue() %>" <%if (modify) {%>value="<%=p.getPrice().doubleValue() %>"<%} %>>
 							<br></br>
 							<label for="product_sale_price">Sale price</label>
-							<input class="input" type="text" name="product_sale_price" pattern="^\d*(\.\d{0,2})?$" required placeholder="<%=p.getSalePrice().doubleValue() %>">
+							<input class="input" type="text" name="product_sale_price" pattern="^\d*(\.\d{0,2})?$" required placeholder="<%=p.getSalePrice().doubleValue() %>" <%if (modify) {%>value="<%=p.getSalePrice().doubleValue() %>"<%} %>>
 							<br></br>
 							<label for="product_ship_price">Ship price</label>
-							<input class="input" type="text" name="product_ship_price" pattern="^\d*(\.\d{0,2})?$" required placeholder="<%=p.getShipPrice().doubleValue() %>">
+							<input class="input" type="text" name="product_ship_price" pattern="^\d*(\.\d{0,2})?$" required placeholder="<%=p.getShipPrice().doubleValue() %>" <%if (modify) {%>value="<%=p.getShipPrice().doubleValue() %>"<%} %>>
 							<br></br>
 							<label for="product_stock">Stock</label>
-							<input class="input" type="text" name="product_stock" pattern="^\d*(\.\d{0,2})?$" required placeholder="<%=p.getStock() %>">
+							<input class="input" type="text" name="product_stock" pattern="^\d*(\.\d{0,2})?$" required placeholder="<%=p.getStock() %>" <%if (modify) {%>value="<%=p.getStock() %>"<%} %>>
 							<p hidden><strong>Brand:</strong> E-SHOP</p>
 							<br></br>
 							<label for="product_short_description">Short description</label>
-							<input class="input" name="product_short_description" placeholder="<%=p.getShortDescription() %>" required>
+							<input class="input" name="product_short_description" placeholder="<%=p.getShortDescription() %>" required <%if (modify) {%>value="<%=p.getShortDescription() %>"<%} %>>
 
 						</div>
 						
@@ -463,7 +463,7 @@ if (user!=null) {
 							</ul>
 							<div class="tab-content">
 								<div id="tab1" class="tab-pane fade in active">
-									<p><textarea name="product_description" required style="width: 100%;height: 200px;" placeholder="<%=p.getDescription() %>"></textarea></p>
+									<p><textarea name="product_description" required style="width: 100%;height: 200px;" placeholder="<%=p.getDescription() %>" <%if (modify) {%>value="<%=p.getDescription() %>"<%} %>></textarea></p>
 								</div>
 							</div>
 						</div>
@@ -480,7 +480,6 @@ if (user!=null) {
 	<!-- /section -->
 
 	<!-- FOOTER -->
-<!-- FOOTER -->
 	<footer id="footer" class="section section-grey">
 		<!-- container -->
 		<div class="container">
@@ -574,4 +573,3 @@ if (user!=null) {
 </body>
 
 </html>
-
