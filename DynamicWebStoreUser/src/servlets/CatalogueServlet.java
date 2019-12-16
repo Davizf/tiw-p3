@@ -73,8 +73,14 @@ public class CatalogueServlet extends HttpServlet {
 			Product p = ProductController.getProduct(id);
 
 			// Delete product (if user is correct for security)
-			if (p.getUserBean().getEmail().equals(user))
-				ProductController.deleteProduct(id);
+			if (p.getUserBean().getEmail().equals(user)) {
+				if (!ProductController.deleteProduct(id)) {
+					req.setAttribute("msg_error", "Error deleting a product.");
+					RequestDispatcher rd = req.getRequestDispatcher("catalogue.jsp");
+					rd.forward(req, res);
+					return;
+				}
+			}
 
 			RequestDispatcher rd = req.getRequestDispatcher("catalogue.jsp");
 			rd.forward(req, res);
@@ -221,7 +227,13 @@ public class CatalogueServlet extends HttpServlet {
 			p.setImagePath(product_image_path);
 			p.setUserBean(UserController.getUser(user));
 
-			ProductController.modifyProduct(p);
+			if (!ProductController.modifyProduct(p)) {
+				req.setAttribute("msg_error", "Error updating a product.");
+				RequestDispatcher rd = req.getRequestDispatcher("catalogue.jsp");
+				rd.forward(req, res);
+				return;
+			}
+
 			RequestDispatcher rd = req.getRequestDispatcher("catalogue.jsp");
 			rd.forward(req, res);
 		}
