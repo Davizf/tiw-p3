@@ -53,6 +53,7 @@ public class ChatServlet extends HttpServlet {
 				RequestDispatcher miR=req.getRequestDispatcher("failure.jsp");
 				miR.forward(req, resp);
 			}
+			ChatController.deleteMessage(req.getParameter("msgid"));
 			List <Message> messages = ChatController.getUserMessages(sender);
 			req.setAttribute("messages", messages);
 			RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");

@@ -423,6 +423,7 @@ if (user!=null) {
 									<INPUT type="hidden" name="op" value="3"> 
 									<input type="text" name="message" size="66" >
 									<INPUT type="hidden" name="sender" value="<%=user%>"> 
+									<input type="hidden" name="msgid" value="<%= msg.getId()%>">
 									<input type="hidden" name="correlationId" value=<%=msg.getSender() %>>
 									<input type="submit" name="button" class="btn btn-success" value="Answer" />
 									<!-- Display that the transaction has not been made correctly -->
