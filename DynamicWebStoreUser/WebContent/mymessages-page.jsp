@@ -425,7 +425,11 @@ if (user!=null) {
 									<INPUT type="hidden" name="sender" value="<%=user%>"> 
 									<input type="hidden" name="correlationId" value=<%=msg.getSender() %>>
 									<input type="submit" name="button" class="btn btn-success" value="Answer" />
-									
+									<!-- Display that the transaction has not been made correctly -->
+									<%if(request.getAttribute("errorMessage") != null){%>
+										<p id="redText"> Ups, It seems that something goes wrong!</p>
+										<p id="redText">Please, retry your operation</p>
+									<%}%>
 								</div>
 							</div>
 						

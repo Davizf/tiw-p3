@@ -469,6 +469,11 @@ ArrayList<ProductInCart> list = (ArrayList<ProductInCart>)request.getAttribute("
 					<input type="hidden" name="card" value="<%=user_info.getCreditCard()%>">
 					<input type="hidden" name="cvv" value="<%=user_info.getCredit_card_CVV()%>">
 					<input type="hidden" name="type" value= "confirm-checkout" >
+					<!-- Display that the transaction has not been made correctly -->
+					<%if(request.getAttribute("errorMessage") != null){%>
+						<p id="redText"> Ups, It seems that the transaction has failed!</p>
+						<p id="redText">Please, check your payment details</p>
+					<%}%>
 					<input type="submit" name="button" class="btn btn-success" value="Confirm my order" />
 				</div>
 		</form>			
