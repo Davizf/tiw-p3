@@ -31,7 +31,10 @@ public class ChatServlet extends HttpServlet {
 		if (op == 1){	// send a message to a seller			
 			Message message = new Message(sender, receiver, msg);
 			if(!ChatController.sendMessage(message)) {
-				RequestDispatcher miR=req.getRequestDispatcher("failure.jsp");
+				List <Message> messages = ChatController.getUserMessages(sender);
+				req.setAttribute("messages", messages);
+				req.setAttribute("errorMessage", "on");
+				RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");
 				miR.forward(req, resp);
 			}
 			RequestDispatcher miR=req.getRequestDispatcher("index.jsp");
@@ -60,7 +63,10 @@ public class ChatServlet extends HttpServlet {
 			miR.forward(req, resp);
 		}else if(op == 5) {	// remove a message
 			if(!ChatController.deleteMessage(req.getParameter("msgid"))) {
-				RequestDispatcher miR=req.getRequestDispatcher("failure.jsp");
+				List <Message> messages = ChatController.getUserMessages(sender);
+				req.setAttribute("messages", messages);
+				req.setAttribute("errorMessage", "on");
+				RequestDispatcher miR=req.getRequestDispatcher("mymessages-page.jsp");
 				miR.forward(req, resp);
 			}
 			List <Message> messages = ChatController.getUserMessages(sender);
