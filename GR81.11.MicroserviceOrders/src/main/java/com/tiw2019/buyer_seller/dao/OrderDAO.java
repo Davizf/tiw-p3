@@ -15,4 +15,8 @@ public interface OrderDAO extends CrudRepository<Order, Integer>{
 	@Query("SELECT o FROM Order o WHERE o.userBean.email LIKE :email")
 	List<Order> findAllByEmail(@Param("email") String email);
 	
+//	@Query("SELECT o FROM Order o WHERE o.productBean.id LIKE :productId")
+//	List<Order> findAllByProduct(@Param("productId") Integer productId);
+//	
+	
 }
