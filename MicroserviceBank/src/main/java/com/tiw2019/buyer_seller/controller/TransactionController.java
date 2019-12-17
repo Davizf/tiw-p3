@@ -47,7 +47,7 @@ public class TransactionController {
 		int cardNumberLength = transaction.getCard_number().length();
 		int cvvLength = transaction.getCvv().length();
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date cardExpiryDate = sdf.parse(transaction.getExpiry_date());
 		Date date = new Date();
 		String currentDate = sdf.format(date);
