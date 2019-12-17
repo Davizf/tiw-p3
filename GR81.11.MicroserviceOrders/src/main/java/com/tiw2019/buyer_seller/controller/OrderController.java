@@ -59,5 +59,15 @@ public class OrderController {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	@RequestMapping(value="/order", params = {"product_id"}, method=RequestMethod.GET, produces="application/json")
+	public ResponseEntity<?> getOrdersByProduct(@RequestParam(value="product_id", required=true) Integer productId) {
+		try {
+			List<Order> orders = orderDAO.findAllByProduct(productId);
+			return new ResponseEntity<List<Order>>(orders, (orders != null) ? HttpStatus.OK : HttpStatus.NO_CONTENT);
+		} catch(Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 }
