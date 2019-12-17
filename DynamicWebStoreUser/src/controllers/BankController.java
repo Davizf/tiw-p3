@@ -26,7 +26,7 @@ public class BankController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.post(Entity.entity(transaction, MediaType.APPLICATION_JSON));
 		
-		if (response.getStatus() == 200) {
+		if (response.getStatus() == HTTP_STATUS_OK) {
 			transaction_id = response.readEntity(String.class);
 		}
 		client.close();

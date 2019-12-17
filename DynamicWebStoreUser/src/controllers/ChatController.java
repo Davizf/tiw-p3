@@ -33,7 +33,7 @@ public class ChatController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == 200) {
+		if (response.getStatus() == HTTP_STATUS_OK) {
 			Message[] messagesArray = response.readEntity(Message[].class);
 			messages = Arrays.asList(messagesArray);
 		}

@@ -19,6 +19,9 @@ import model.ProductInCart;
 
 public class OrderController {
 	private static final String PATH = "http://localhost:11155/order";
+	public static final int USER_TYPE_SELLER = 1;
+	public static final int HTTP_STATUS_CREATED = 201;
+	public static final int HTTP_STATUS_OK = 200;
 	
 	public static boolean checkProductsStock(ArrayList<ProductInCart> productsInCart) {
 		for(ProductInCart productInCart : productsInCart) {
@@ -40,7 +43,7 @@ public class OrderController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if(response.getStatus() == 200)
+		if(response.getStatus() == HTTP_STATUS_OK)
 			products = Arrays.asList(response.readEntity(Orders[].class));
 		
 		client.close();
@@ -56,6 +59,6 @@ public class OrderController {
 		Response response = invocationBuilder.post(Entity.entity(order, MediaType.APPLICATION_JSON));
 		
 		client.close();
-		return response.getStatus() == 201;
+		return response.getStatus() == HTTP_STATUS_CREATED;
 	}
 }

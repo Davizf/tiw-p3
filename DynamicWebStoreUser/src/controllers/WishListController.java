@@ -18,6 +18,9 @@ import model.WishList;
 
 public class WishListController {
 	private static final String PATH = "http://localhost:11166/wishlist";
+	public static final int USER_TYPE_SELLER = 1;
+	public static final int HTTP_STATUS_CREATED = 201;
+	public static final int HTTP_STATUS_OK = 200;
 	
 	public static boolean addWishList(WishList wishList) {
 		Client client = ClientBuilder.newClient(new ClientConfig());
@@ -29,7 +32,7 @@ public class WishListController {
 		Response response = invocationBuilder.post(Entity.entity(wishList, MediaType.APPLICATION_JSON));
 
 		client.close();
-		return response.getStatus() == 201;
+		return response.getStatus() == HTTP_STATUS_CREATED;
 	}
 	
 	public static WishList getWishListByUserAndProduct(String email, Integer productId) {
@@ -59,7 +62,7 @@ public class WishListController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 		
-		if (response.getStatus() == 200)
+		if (response.getStatus() == HTTP_STATUS_OK)
 			wls = Arrays.asList(response.readEntity(WishList[].class));
 		
 		client.close();
@@ -76,7 +79,7 @@ public class WishListController {
 		Response response = invocationBuilder.delete();
 
 		client.close();
-		return response.getStatus() == 200;
+		return response.getStatus() == HTTP_STATUS_OK;
 	}
 	
 	public static boolean checkWishListProducts(String email, Product product) {
