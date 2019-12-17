@@ -31,20 +31,7 @@ public class OrderController {
 			for(Orders_has_Product ohp : order.getOrdersHasProducts())
 				ohp.setOrder(order);
 
-			orderDAO.save(order);
-			
-			System.out.println("############### RECEIVED ENTITY ###############");
-			System.out.println("ID: " + order.getId());
-			System.out.println("ADDRESS: " + order.getAddress());
-			System.out.println("CITY: " + order.getCity());
-			System.out.println("CONFIRMATION ID: " + order.getConfirmation_id());
-			System.out.println("COUNTRY: " + order.getCountry());
-			System.out.println("DATE: " + order.getDate());
-			System.out.println("POSTAL CODE: " + order.getPostalCode());
-			System.out.println("USER: " + order.getUserBean().getEmail());
-			System.out.println("OHP[0] ORDER ID: " + order.getOrdersHasProducts().get(0).getOrder().getId());
-			System.out.println("############### END RECEIVED ENTITY ###############");
-			
+			orderDAO.save(order);		
 			ohpDAO.saveAll(order.getOrdersHasProducts());
 			
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
