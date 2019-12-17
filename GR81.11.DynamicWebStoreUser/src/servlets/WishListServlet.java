@@ -18,7 +18,7 @@ import model.Product;
 import model.User;
 import model.WishList;
 
-@WebServlet(name = "WishList", urlPatterns = {"/WishList", "/wish-list.jsp"})
+@WebServlet(name = "WishList", urlPatterns = "/WishList")
 public class WishListServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
@@ -66,10 +66,6 @@ public class WishListServlet extends HttpServlet{
 			rd.forward(req, res);
 		}
 
-	}
-
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
 	}
 
 }
