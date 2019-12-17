@@ -35,7 +35,7 @@ public class OrderController {
 		List<Orders> products = null;
 
 		WebTarget webTarget = client.target(PATH);
-		WebTarget webTargetPath = webTarget.path(email);
+		WebTarget webTargetPath = webTarget.queryParam("user_email", email);
 
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();

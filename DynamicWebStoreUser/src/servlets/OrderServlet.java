@@ -43,7 +43,9 @@ public class OrderServlet extends HttpServlet{
 			String transactionId = BankController.sendTransaction(transaction);
 			
 			if(transactionId.length() == 0) {
-				RequestDispatcher rd = req.getRequestDispatcher("failure-page.jsp");
+				req.setAttribute("errorMessage", "on");
+				req.setAttribute("cartList", productsInCart);
+				RequestDispatcher rd = req.getRequestDispatcher("order-confirm.jsp");
 				rd.forward(req, res);
 			}else {
 				if(OrderController.checkProductsStock(productsInCart)) {
