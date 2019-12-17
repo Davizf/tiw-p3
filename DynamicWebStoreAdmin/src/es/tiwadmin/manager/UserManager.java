@@ -1,142 +1,138 @@
 package es.tiwadmin.manager;
 
+import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import org.glassfish.jersey.client.ClientConfig;
 
 import es.tiwadmin.model.User;
 
 public class UserManager {
-	private EntityManagerFactory emf;
+	private static final String PATH = "http://localhost:11144/users";
 	
-	public UserManager(String schemaName) {
-		this.emf = Persistence.createEntityManagerFactory(schemaName);
-	}
-	
-	public Boolean verifyAdmin(String email, String password) {
+	public static boolean verifyAdmin(String email, String password) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
 		User user = null;
-		EntityManager em = this.emf.createEntityManager();
+
+		WebTarget webTarget = client.target(PATH);
+		WebTarget webTargetPath = webTarget.path(email);
 		
-		try {
-			user = (User) em.find(User.class, email);
-		} finally {
-			em.close();
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+
+		if (response.getStatus() == 200) {
+			user = response.readEntity(User.class);
+			client.close();
+
+			return user.getType() == 2 && user.getPassword().equals(password);
 		}
 		
-		return user != null ? user.getType() == 2 && user.getPassword().equals(password) : false;
+		client.close();
+		return false;
 	}
 	
-	public User getUser(String email) {
+	public static User getUser(String email) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
 		User user = null;
-		EntityManager em = this.emf.createEntityManager();
+
+		WebTarget webTarget = client.target(PATH);
+		WebTarget webTargetPath = webTarget.path(email);
 		
-		try {
-			user = (User) em.find(User.class, email);
-		} finally {
-			em.close();
-		}
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+
+		if (response.getStatus() == 200)
+			user = response.readEntity(User.class);
+		
+		client.close();
+		
+		if(user != null)
+			user.setProducts(ProductManager.findAllUserProducts(user.getEmail()));
 		
 		return user;
 	}
 	
-	public boolean userExists(String email) {
-		User user = null;
-		EntityManager em = this.emf.createEntityManager();
+//	public static boolean userExists(String email) {
+//		Client client = ClientBuilder.newClient(new ClientConfig());
+//		User user = null;
+//
+//		WebTarget webTarget = client.target(PATH);
+//		WebTarget webTargetPath = webTarget.path(email);
+//		
+//		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+//		Response response = invocationBuilder.get();
+//
+//		if (response.getStatus() == 200)
+//			user = response.readEntity(User.class);
+//		
+//		client.close();
+//		return user != null;
+//	}
+	
+	public static boolean createUser(User user) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
+
+		WebTarget webTarget = client.target(PATH);
 		
-		try {
-			user = (User) em.find(User.class, email);
-		} finally {
-			em.close();
-		}
-		
-		return user != null;
+		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(user, MediaType.APPLICATION_JSON));
+
+		client.close();
+		return response.getStatus() == 201;
 	}
 	
-	public void createUser(User user) {
-		EntityManager em = this.emf.createEntityManager();
+	public static boolean updateUser(User user) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
+
+		WebTarget webTarget = client.target(PATH);
+		WebTarget webTargetPath = webTarget.path(user.getEmail());
 		
-		try {
-			em.getTransaction().begin();
-			em.persist(user);
-			em.getTransaction().commit();
-		} catch (Exception ex) {
-			try {
-				if (em.getTransaction().isActive()) {
-					em.getTransaction().rollback();
-				}
-			} catch (Exception e) {
-				ex.printStackTrace();
-				//throw e;
-			}
-			throw ex;
-		} finally {
-			em.close();
-		}
-		
-		return;
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.put(Entity.entity(user, MediaType.APPLICATION_JSON));
+
+		client.close();
+		return response.getStatus() == 200;
 	}
 	
-	public void updateUser(User user) {
-		EntityManager em = this.emf.createEntityManager();
+	public static boolean deleteUser(String userEmail) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
+
+		WebTarget webTarget = client.target(PATH);
+		WebTarget webTargetPath = webTarget.path(userEmail);
 		
-		try {
-			em.getTransaction().begin();
-			user = em.merge(user);
-			em.getTransaction().commit();
-		} catch (Exception ex) {
-			try {
-				if (em.getTransaction().isActive()) {
-					em.getTransaction().rollback();
-				}
-			} catch (Exception e) {
-				ex.printStackTrace();
-				//throw e;
-			}
-			throw ex;
-		} finally {
-			em.close();
-		}
-		
-		return;
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.delete();
+
+		client.close();
+		return response.getStatus() == 200;
 	}
 	
-	public void deleteUser(String userEmail) {
-		EntityManager em = this.emf.createEntityManager();
-		User user = this.getUser(userEmail);
-		if(user == null) return;
+	public static List<User> findAllUsers() {
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		List<User> users = null;
+
+		WebTarget webTarget = client.target(PATH);
 		
-		try {
-			em.getTransaction().begin();
-			user = em.merge(user);
-			em.remove(user);
-			em.getTransaction().commit();
-		} catch (Exception ex) {
-			try {
-				if (em.getTransaction().isActive()) {
-					em.getTransaction().rollback();
-				}
-			} catch (Exception e) {
-				ex.printStackTrace();
-				//throw e;
-			}
-			throw ex;
-		} finally {
-			em.close();
-		}
-		return;
-	}
-	
-	public List<User> findAllUsers() {
-		EntityManager em = this.emf.createEntityManager();
-		Query query = em.createNamedQuery("User.findAll", User.class);
+		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+
+		if (response.getStatus() == 200)
+			users = Arrays.asList(response.readEntity(User[].class));
 		
-		@SuppressWarnings("unchecked")
-		List<User> out = (List<User>) query.getResultList();
-		em.close();
-		return out;
+		client.close();
+		
+		for(User user : users)
+			user.setProducts(ProductManager.findAllUserProducts(user.getEmail()));
+		
+		return users;
 	}
 	
 }

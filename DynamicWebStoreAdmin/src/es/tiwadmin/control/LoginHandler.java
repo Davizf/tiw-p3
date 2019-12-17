@@ -23,7 +23,7 @@ public class LoginHandler implements RequestHandler {
 			if(url.substring(url.lastIndexOf("/") + 1).equals("logout")) {
 				session.invalidate();
 				try {
-					response.sendRedirect("/tiw-admin");
+					response.sendRedirect("/DynamicWebStoreAdmin");
 				} catch(IOException e) {
 					System.out.println(e.getMessage());
 				}
@@ -34,11 +34,10 @@ public class LoginHandler implements RequestHandler {
 		} else {
 			String actionParam = request.getParameter("action");
 			if(actionParam != null && actionParam.equals("login")) {
-				UserManager um = new UserManager(InformationProperties.getStrDatabaseName());
 				String email = request.getParameter("email");
 			
-				if(um.verifyAdmin(email, request.getParameter("password"))) {
-					session.setAttribute("user", um.getUser(email));
+				if(UserManager.verifyAdmin(email, request.getParameter("password"))) {
+					session.setAttribute("user", UserManager.getUser(email));
 					return "/userList";
 				} else
 					return "WEB-INF/jsp/login.jsp";

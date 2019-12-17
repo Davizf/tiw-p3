@@ -3,7 +3,6 @@ package es.tiwadmin.control;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import es.tiwadmin.info.InformationProperties;
 import es.tiwadmin.manager.CategoryManager;
 import es.tiwadmin.manager.ProductManager;
 import es.tiwadmin.manager.UserManager;
@@ -17,7 +16,7 @@ public class SingleItemPageHandler implements RequestHandler {
 		User user = (User) request.getSession().getAttribute("user");
 		
 		if(user == null)
-			return "/tiw-admin";
+			return "/DynamicWebStoreAdmin";
 		
 		if(request.getMethod().equals("GET")) {
 			switch(getEndpoint(request)) {
@@ -27,11 +26,10 @@ public class SingleItemPageHandler implements RequestHandler {
 				case "userAdd":
 					return "WEB-INF/jsp/userForm.jsp";
 				case "productAdd":
-					CategoryManager cm = new CategoryManager(InformationProperties.getStrDatabaseName());
-					request.setAttribute("categoryList", cm.findAllCategories());
+					request.setAttribute("categoryList", CategoryManager.findAllCategories());
 					return "WEB-INF/jsp/productForm.jsp";
 				default:
-					return "/tiw-admin";
+					return "/DynamicWebStoreAdmin";
 			}
 		}
 		
@@ -39,21 +37,18 @@ public class SingleItemPageHandler implements RequestHandler {
 		
 		switch(wantedClass) {
 			case "user":
-				UserManager um = new UserManager(InformationProperties.getStrDatabaseName());
-				request.setAttribute("item", um.getUser(request.getParameter("itemPK")));
+				request.setAttribute("item", UserManager.getUser(request.getParameter("itemPK")));
 				if(getEndpoint(request).contains("Detail"))
 					return "WEB-INF/jsp/userDetail.jsp";
 				else
 					return "WEB-INF/jsp/userForm.jsp";
 				
 			case "product":
-				ProductManager pm = new ProductManager(InformationProperties.getStrDatabaseName());
-				request.setAttribute("item", pm.getProduct(Integer.parseInt(request.getParameter("itemID"))));
+				request.setAttribute("item", ProductManager.getProduct(Integer.parseInt(request.getParameter("itemID"))));
 				if(getEndpoint(request).contains("Detail"))
 					return "WEB-INF/jsp/productDetail.jsp";
 				else {
-					CategoryManager cm = new CategoryManager(InformationProperties.getStrDatabaseName());
-					request.setAttribute("categoryList", cm.findAllCategories());
+					request.setAttribute("categoryList", CategoryManager.findAllCategories());
 					return "WEB-INF/jsp/productForm.jsp";
 				}
 				

@@ -1,7 +1,12 @@
+<%@page import="java.util.Collection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
     
 <%@ page import="java.util.List" %>
-<%@ page import="es.tiwadmin.model.MessageCollection" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.util.stream.Collectors" %>
+<%@ page import="es.tiwadmin.model.MyMessage" %>
+
 
 <html>
     <head>
@@ -38,32 +43,39 @@
 						<tbody>
 						<%
 							@SuppressWarnings("unchecked")
-							List<MessageCollection> items = (List<MessageCollection>) session.getAttribute("messages");
+							List<MyMessage> items = (List<MyMessage>) request.getAttribute("messages");
 							if(items != null) {
-								for(MessageCollection item : items) {
-									int unreadMessages = item.getUnreadMessages();
+								ArrayList<String> users = new ArrayList<String>();
+								for(MyMessage msg : items)
+									if(!users.contains(msg.getSender()))
+										users.add(msg.getSender());
+								
+								for(String sender : users) {
+									List<MyMessage> toPrint = new ArrayList<MyMessage>();
+									for(MyMessage elem : items)
+										if(elem.getSender().equals(sender))
+											toPrint.add(elem);
+									
+									//items.stream().filter(elem -> elem.getSender().equals(sender)).collect(Collectors.toList());
+									Collections.reverse(toPrint);
 						%>
 							<tr>
 								<td><input type="checkbox"></td>
 								<td>
-									<% if(unreadMessages > 0) { %><b><% } %>
-									<%= item.getSender() %>
-									<% if(unreadMessages > 0) { %></b><% } %>
+									<%= sender %>
 								</td>
 								<td>
-									<% for(int i = item.getMsgs().size() - 1; i >= 0; --i) { %>
-										<% if(unreadMessages > 0) { %><b><% } %>
-										<%= item.getMsgs().get(i)%>
-										<% if(unreadMessages > 0) { %></b><% } %> 
+									<% for(MyMessage msg : toPrint) { %>
+										<%= msg.getMessage() %>
 										<br>
-									<% unreadMessages--;} %>
+									<% } %>
 								</td>
 								<td>
 									<form action="messageWrite" method="POST">
-										<button name="itemPK" value="<%=item.getSender() %>"><img src="images/mail.png"></button>
+										<button name="itemPK" value="<%=sender %>"><img src="images/mail.png"></button>
 									</form>
 								</td>
-								<% item.setUnreadMessages(0);} %>
+								<% } %>
 						<% } %>
 						</tr>
 						</tbody>

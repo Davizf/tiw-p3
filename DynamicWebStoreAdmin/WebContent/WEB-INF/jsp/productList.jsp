@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
     
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="es.tiwadmin.model.User" %>
 <%@ page import="es.tiwadmin.model.Product" %>
 <%@ page import="es.tiwadmin.model.Category" %>
@@ -8,6 +9,7 @@
 <% 	
 	@SuppressWarnings("unchecked")
 	List<Product> items = (List<Product>) request.getAttribute("items");
+	if(items == null) items = new ArrayList<Product>();
 %>
 
 <html>

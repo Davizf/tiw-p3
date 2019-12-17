@@ -70,7 +70,8 @@
 								<td><%= item.getSurnames() %></td>
 								<td><%= item.getPhone() %></td>
 								<td><%= translateSeller(item.getType()) %></td>
-								<td><%= item.getProducts().size() %></td>
+								<td><%= item.getProducts() == null ? 0 : item.getProducts().size() %></td>
+
 								<input type="hidden" name="itemPK" value="<%= item.getEmail()%>">
 								<td>
 									<form action="messageWrite" method="POST">

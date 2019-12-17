@@ -49,8 +49,6 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="userBean")
 	private List<Order> orders;
 
-	//bi-directional many-to-one association to Product
-	@OneToMany(mappedBy="userBean")
 	private List<Product> products;
 
 	//bi-directional many-to-one association to ShopingCart

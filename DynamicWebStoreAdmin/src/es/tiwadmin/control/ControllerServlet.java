@@ -37,7 +37,7 @@ public class ControllerServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		this.handlerList = new HashMap<String, RequestHandler>();
 		
-		this.handlerList.put("/tiw-admin", new LoginHandler());
+		this.handlerList.put("/DynamicWebStoreAdmin", new LoginHandler());
 		this.handlerList.put("/logout", new LoginHandler());
 		this.handlerList.put("/userList", new ListPageHandler());
 		this.handlerList.put("/productList", new ListPageHandler());

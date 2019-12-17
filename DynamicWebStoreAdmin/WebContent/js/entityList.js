@@ -5,8 +5,14 @@ document.querySelector('thead input[type="checkbox"').addEventListener('click', 
 document.querySelectorAll('.mass-operation').forEach(elem => elem.addEventListener('click', function() {
 	let form = document.forms['mass-operation'];
 	form['operation'].value = this.id;
-	form['keys'].value = [...document.querySelectorAll('tbody input[type="checkbox"]:checked')].map(elem => {
-		return elem.parentNode.nextElementSibling.innerText;
-	}).join(" ");
+	if(window.location.href.includes("orderList")) {
+		form['keys'].value = [...document.querySelectorAll('tbody input[type="checkbox"]:checked')].map(elem => {
+			return elem.parentNode.nextElementSibling.nextElementSibling.innerText;
+		}).join(" ");
+	} else {
+		form['keys'].value = [...document.querySelectorAll('tbody input[type="checkbox"]:checked')].map(elem => {
+			return elem.parentNode.nextElementSibling.innerText;
+		}).join(" ");
+	}
 	form.submit();
 }));
