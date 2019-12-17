@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>MicroserviceBank</name>
+	<name>GR81.11.MicroserviceCatalogue</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -21,11 +21,6 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>org.hibernate.eclipse.console.hibernateBuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
 			<name>org.springframework.ide.eclipse.boot.validation.springbootbuilder</name>
 			<arguments>
 			</arguments>
@@ -41,6 +36,5 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
-		<nature>org.hibernate.eclipse.console.hibernateNature</nature>
 	</natures>
 </projectDescription>
