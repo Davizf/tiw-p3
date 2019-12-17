@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @SuppressWarnings("serial")
-@Document(collection = "gr81.11.messages")
+@Document(collection = "messages")
 @JsonPropertyOrder({"sender", "receiver","message"})
 public class Message implements Serializable{
 	    

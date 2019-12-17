@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @SuppressWarnings("serial")
-@Document(collection = "gr81.11.transactions")
+@Document(collection = "transactions")
 @JsonPropertyOrder({"price", "card_number", "expiry_date","cvv"})
 public class Transaction implements Serializable{
 	    
