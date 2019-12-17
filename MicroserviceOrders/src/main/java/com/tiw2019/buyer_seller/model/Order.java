@@ -16,6 +16,7 @@ public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
 	private String address;
@@ -23,7 +24,7 @@ public class Order implements Serializable {
 	private String city;
 
 	@Column(name="confirmation_id")
-	private String confirmationId;
+	private String confirmation_id;
 
 	private String country;
 
@@ -68,12 +69,12 @@ public class Order implements Serializable {
 		this.city = city;
 	}
 
-	public String getConfirmationId() {
-		return this.confirmationId;
+	public String getConfirmation_id() {
+		return this.confirmation_id;
 	}
 
-	public void setConfirmationId(String confirmationId) {
-		this.confirmationId = confirmationId;
+	public void setConfirmation_id(String confirmationId) {
+		this.confirmation_id = confirmationId;
 	}
 
 	public String getCountry() {
