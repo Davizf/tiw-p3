@@ -16,18 +16,16 @@ public class EditPageHandler implements RequestHandler {
 		User user = (User) request.getSession().getAttribute("user");
 		
 		if(user == null)
-			return "/tiw-admin";
+			return "/DynamicWebStoreAdmin";
 		
 		String wantedClass = this.getWantedClass(request);
 		
 		switch(wantedClass) {
 			case "user":
-				UserManager um = new UserManager(InformationProperties.getStrDatabaseName());
-				request.setAttribute("item", um.getUser(request.getParameter("itemPK")));
+				request.setAttribute("item", UserManager.getUser(request.getParameter("itemPK")));
 				return "WEB-INF/jsp/" + getDestJspName(request) + ".jsp";
 			case "product":
-				ProductManager pm = new ProductManager(InformationProperties.getStrDatabaseName());
-				request.setAttribute("item", pm.getProduct(Integer.parseInt(request.getParameter("itemPK"))));
+				request.setAttribute("item", ProductManager.getProduct(Integer.parseInt(request.getParameter("itemPK"))));
 				return "WEB-INF/jsp/" + getDestJspName(request) + ".jsp";
 		}
 		

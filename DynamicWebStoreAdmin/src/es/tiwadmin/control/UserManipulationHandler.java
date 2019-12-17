@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import es.tiwadmin.info.InformationProperties;
 import es.tiwadmin.manager.UserManager;
 import es.tiwadmin.model.User;
 
@@ -17,12 +16,10 @@ public class UserManipulationHandler implements RequestHandler {
 		User user = (User) request.getSession().getAttribute("user");
 		
 		if(user == null)
-			return "/tiw-admin";
+			return "/DynamicWebStoreAdmin";
 
-		UserManager um = new UserManager(InformationProperties.getStrDatabaseName());
-		
 		if(request.getRequestURI().contains("Remove")) {
-			um.deleteUser(request.getParameter("itemPK"));
+			UserManager.deleteUser(request.getParameter("itemPK"));
 			return "/userList";
 		}
 		
@@ -32,7 +29,7 @@ public class UserManipulationHandler implements RequestHandler {
 		if(!password.equals(request.getParameter("password-check")))
 			errors.add("Passwords do not match");
 		
-		User newUser = um.getUser(request.getParameter("email"));
+		User newUser = UserManager.getUser(request.getParameter("email"));
 		
 		String action = request.getParameter("action");
 		if(action.equals("create") && newUser != null)
@@ -84,11 +81,11 @@ public class UserManipulationHandler implements RequestHandler {
 		
 		
 		if(action.equals("edit"))
-			um.updateUser(newUser);
+			UserManager.updateUser(newUser);
 		else
-			um.createUser(newUser);
+			UserManager.createUser(newUser);
 		
-		request.setAttribute("item", um.getUser(newUser.getEmail()));
+		request.setAttribute("item", UserManager.getUser(newUser.getEmail()));
 		return "WEB-INF/jsp/userDetail.jsp";
 	}
 	

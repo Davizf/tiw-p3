@@ -75,7 +75,7 @@
 									<% 
 										BigDecimal price = new BigDecimal(0);
 										for(OrdersHasProduct ohp : ohps)
-											price = price.add(ohp.getProductPrice());
+											price = price.add(ohp.getProductPrice().multiply(new BigDecimal(ohp.getQuantity())));
 									%>
 									<%=price%> €
 								</td>

@@ -40,17 +40,13 @@
 							<img src="images/user.png">
 							<div>
 								<h1><%=item == null ? "New User" : item.getName()%> <%=item == null ? "" : item.getSurnames() %></h1>
-								<h2><%=item == null ? " " : item.getEmail() %></h2>
+								<h2><%=item == null ? "" : item.getEmail() %></h2>
 							</div>
 						</div>
 						<div id="stats">
 							<div>
 								<span>Products</span>
-								<span><%=item == null ? "" : item.getProducts().size() %></span>
-							</div>
-							<div>
-								<span>Sales</span>
-								<span><%=item == null ? "" : item.getOrders().size() %></span>
+								<span><%=item == null ? "" : item.getProducts() == null ? "0" : item.getProducts().size() %></span>
 							</div>
 						</div>
 					</div>

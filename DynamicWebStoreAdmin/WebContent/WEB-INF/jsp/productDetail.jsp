@@ -51,10 +51,10 @@
 								<span>Stock</span>
 								<span><%=item.getStock() %></span>
 							</div>
-							<div>
+							<!-- div>
 								<span>Sales</span>
-								<span><%=item.getOrdersHasProducts().size() %></span>
-							</div>
+								<span><%-- =item.getOrdersHasProducts().size() --%></span>
+							</div -->
 						</div>
 					</div>
 					<hr>
@@ -114,10 +114,10 @@
 										<th>Stock</th>
 										<td><%=item.getStock() %></td>
 									</tr>
-									<tr>
+									<!-- tr>
 										<th>Sells</th>
-										<td><%=item.getOrdersHasProducts().size() %></td>
-									</tr>
+										<td><%-- =item.getOrdersHasProducts().size() --%></td>
+									</tr -->
 								</table>
 							</div>
 						</div>

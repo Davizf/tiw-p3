@@ -13,11 +13,11 @@
 			<input type="hidden" name="action" value="login">
 			<div>
 				<label for="email">Email:</label>
-				<input name="email" id="email" type="email">
+				<input name="email" id="email" type="email" value="admin@gmail.com">
 			</div>
 			<div>
 				<label for="password">Password:</label>
-				<input name="password" id="password" type="password">
+				<input name="password" id="password" type="password" value="admin">
 			</div>
 			<div>
 				<input type="submit" value="Log In">

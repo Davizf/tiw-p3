@@ -52,11 +52,7 @@
 						<div id="stats">
 							<div>
 								<span>Products</span>
-								<span><%=item.getProducts().size() %></span>
-							</div>
-							<div>
-								<span>Sales</span>
-								<span><%=item.getOrders().size() %></span>
+								<span><%= item.getProducts() == null ? 0 : item.getProducts().size() %></span>
 							</div>
 						</div>
 					</div>

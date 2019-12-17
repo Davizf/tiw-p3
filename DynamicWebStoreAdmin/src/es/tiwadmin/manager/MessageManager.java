@@ -1,150 +1,67 @@
 package es.tiwadmin.manager;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import es.tiwadmin.info.InformationProperties;
-import es.tiwadmin.model.MessageCollection;
+import org.glassfish.jersey.client.ClientConfig;
 
+import es.tiwadmin.model.MyMessage;
 
 public class MessageManager {
 
-	private ConnectionFactory factory = null;
-	private InitialContext initialContext = null;
-	private Destination queue = null;
-	private Connection Qcon = null;
-	private Session QSes = null;
-	private MessageProducer Mpro = null;
-	private MessageConsumer Mcon = null;
+	private static final String PATH = "http://localhost:11188/messages";
+	static int USER_TYPE_BUYER = 0;
+	public static final int HTTP_STATUS_CREATED = 201;
+	public static final int HTTP_STATUS_OK = 200;
 
-	public void writeJMS(String sender, String receiver, String message) {
+	public static List<MyMessage> getUserMessages(String receiver) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		List<MyMessage> messages = null;
 
-		try {
-			initialContext = new InitialContext();
-			factory = (ConnectionFactory) initialContext.lookup(InformationProperties.getQCF());
-			queue = (Destination) initialContext.lookup(InformationProperties.getQueue());
-			
-			Qcon = factory.createConnection();
-			QSes = Qcon.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		WebTarget webTarget = client.target(PATH);
+		WebTarget webTargetPath = webTarget.queryParam("receiver", receiver);
+		
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
 
-			Mpro = QSes.createProducer(queue);
-
-			TextMessage msg = QSes.createTextMessage();
-
-			msg.setText(message);
-			msg.setJMSCorrelationID(receiver);
-			msg.setStringProperty("sender", sender);
-			Qcon.start();
-			Mpro.send(msg);
-
-			this.Mpro.close();
-			this.QSes.close();
-			this.Qcon.close();
-
-		} catch (JMSException e) {
-			System.out.println("JMS Error: "+ e.getLinkedException().getMessage());
-			System.out.println("JMS Error: "+ e.getLinkedException().toString());
-		} catch (Exception e) {
-			System.out.println("Error Exception: "+ e.getMessage());
-		}
-
+		if (response.getStatus() == HTTP_STATUS_OK)
+			messages = Arrays.asList(response.readEntity(MyMessage[].class));
+		
+		client.close();
+		return messages;
 	}
 
-	public List<MessageCollection> readJMS(String receiver) {
+	public static boolean sendMessage(MyMessage message) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
 
-		ArrayList<MessageCollection> messages = new ArrayList<MessageCollection>();
+		WebTarget webTarget = client.target(PATH);
 		
-		try {
-			initialContext = new InitialContext();
+		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(message, MediaType.APPLICATION_JSON));
 
-			factory = (ConnectionFactory) initialContext.lookup(InformationProperties.getQCF());
-			queue = (Destination) initialContext.lookup(InformationProperties.getQueue());
-				
-			Qcon = factory.createConnection();
-
-			QSes = Qcon.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
-			if (receiver.equals(""))
-				Mcon = QSes.createConsumer(queue);
-			else
-				Mcon = QSes.createConsumer(queue, "JMSCorrelationID = '" + receiver.trim() + "'");
-			
-			Qcon.start();
-			Message message = null;
-
-			while ((message = Mcon.receive(100)) != null) {
-				if (message instanceof TextMessage) {
-					TextMessage m = (TextMessage) message;
-					
-					String mSender = m.getStringProperty("sender");
-					
-					List<MessageCollection> sameSenderList = 
-							messages.stream().filter(elem ->  elem.getSender().equals(mSender)).collect(Collectors.toList());
-					
-					if(sameSenderList.size() != 0) {
-						for(MessageCollection msg : sameSenderList) {
-							msg.addMessage(m.getText());
-							msg.setUnreadMessages(msg.getUnreadMessages() + 1);
-						}
-					} else  {
-						messages.add(new MessageCollection(mSender, m.getText()));
-					}
-					
-				} else {
-					System.out.println("Invalid message type. Only TestMessage is allowed.");
-					break;
-				}	
-			}
-			
-			this.Mcon.close();
-			this.QSes.close();
-			this.Qcon.close();
-
-		} catch (JMSException jmse) {
-			System.out.println("JMS Error: "+ jmse.getLinkedException().getMessage());
-			System.out.println("JMS Error: "+ jmse.getLinkedException().toString());
-		} catch(NamingException ne) {
-			System.out.println("JMS Error: " + ne.getMessage());
-		}
-		
-		return messages.size() == 0 ? null : messages;
+		client.close();
+		return response.getStatus() == HTTP_STATUS_CREATED;
 	}
 	
-	public List<MessageCollection> join(List<MessageCollection> sessionStored, List<MessageCollection> newGenerated) {
-		if(sessionStored == null)
-			return newGenerated;
-		else
-			if(newGenerated == null)
-				return sessionStored;
+	public static boolean deleteMessage(String id) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
 
-		List<MessageCollection> commonFromSession =
-				sessionStored.stream().filter(elem -> newGenerated.contains(elem)).collect(Collectors.toList());
+		WebTarget webTarget = client.target(PATH);
+		WebTarget webTargetPath = webTarget.path(id);
 		
-		sessionStored.removeIf(elem -> commonFromSession.contains(elem));
-		
-		for(MessageCollection msg : newGenerated) {
-			int index = commonFromSession.indexOf(msg);
-			if(index == -1) continue;
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.delete();
 
-			msg.getMsgs().addAll(0, commonFromSession.get(index).getMsgs());
-			msg.setUnreadMessages(commonFromSession.size());
-		}
-		
-		newGenerated.addAll(sessionStored);
-		return newGenerated;
+		client.close();
+		return response.getStatus() == HTTP_STATUS_OK;
 	}
 
 }

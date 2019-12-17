@@ -25,6 +25,11 @@
 	if(cancel != null) {
 		cancel.addEventListener('click', function() {
 			let newURL = window.location.href.replace("Edit", "List").replace("Add", "List");
+			if(window.location.href.includes("mass")) {
+				let aux = window.location.href.split("/");
+				aux.pop();
+				newURL = aux.join("/");
+			}
 			window.location.href = newURL;
 		});
 	}

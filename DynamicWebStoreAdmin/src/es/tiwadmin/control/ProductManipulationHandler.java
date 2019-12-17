@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import es.tiwadmin.info.InformationProperties;
 import es.tiwadmin.manager.CategoryManager;
 import es.tiwadmin.manager.ProductManager;
 import es.tiwadmin.manager.UserManager;
@@ -23,15 +22,11 @@ public class ProductManipulationHandler implements RequestHandler {
 		User user = (User) request.getSession().getAttribute("user");
 		
 		if(user == null)
-			return "/tiw-admin";
-
-		ProductManager pm = new ProductManager(InformationProperties.getStrDatabaseName());
-		UserManager um = new UserManager(InformationProperties.getStrDatabaseName());
-		CategoryManager cm = new CategoryManager(InformationProperties.getStrDatabaseName());
+			return "/DynamicWebStoreAdmin";
 		
 		//Remove product
 		if(request.getRequestURI().contains("Remove")) {
-			pm.deleteProduct(Integer.parseInt(request.getParameter("itemID")));
+			ProductManager.deleteProduct(Integer.parseInt(request.getParameter("itemID")));
 			
 			return "/productList";
 		}
@@ -40,7 +35,7 @@ public class ProductManipulationHandler implements RequestHandler {
 		
 		//Product must belong to an existing user. If user doesn't exist, return to form again
 		String sellerParam = request.getParameter("seller");
-		User seller = um.getUser(sellerParam);
+		User seller = UserManager.getUser(sellerParam);
 		if(seller == null && !sellerParam.equals("[DELETED]"))
 			errors.add("Seller must be an existing user");
 		else {
@@ -54,7 +49,7 @@ public class ProductManipulationHandler implements RequestHandler {
 		if(catParam == null || catParam.equals("placeholder"))
 			errors.add("A category must be selected");
 		else {
-			cat = cm.getCategory(Integer.parseInt(catParam));
+			cat = CategoryManager.getCategory(Integer.parseInt(catParam));
 			if(cat == null)
 				errors.add("Category doesn't exist");
 		}
@@ -83,10 +78,10 @@ public class ProductManipulationHandler implements RequestHandler {
 		
 		//Create product or gets it from database
 		String productId = request.getParameter("productId");
-		Product newProduct = productId.isEmpty() ? new Product() : pm.getProduct(Integer.parseInt(productId));
+		Product newProduct = productId.isEmpty() ? new Product() : ProductManager.getProduct(Integer.parseInt(productId));
 		String imagePathParam = request.getParameter("image");
 		if(imagePathParam == null || imagePathParam.isEmpty())
-			imagePathParam = "/tiw-admin/images/box.png";
+			imagePathParam = "/DynamicWebStoreAdmin/images/box.png";
 		
 		
 		//Fill new data
@@ -142,9 +137,9 @@ public class ProductManipulationHandler implements RequestHandler {
 		
 		//Create or update product
 		if(productId.isEmpty())
-			pm.createProduct(newProduct);
+			ProductManager.createProduct(newProduct);
 		else
-			pm.updateProduct(newProduct);
+			ProductManager.updateProduct(newProduct);
 		
 		request.setAttribute("item", newProduct);
 		return "WEB-INF/jsp/productDetail.jsp";

@@ -11,11 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import es.tiwadmin.info.InformationProperties;
 import es.tiwadmin.manager.MessageManager;
 import es.tiwadmin.manager.ProductManager;
 import es.tiwadmin.manager.UserManager;
-import es.tiwadmin.model.MessageCollection;
+import es.tiwadmin.model.MyMessage;
 import es.tiwadmin.model.User;
 
 public class MassOperationHandler implements RequestHandler {
@@ -26,15 +25,16 @@ public class MassOperationHandler implements RequestHandler {
 		User user = (User) request.getSession().getAttribute("user");
 		
 		if(user == null)
-			return "/tiw-admin";
+			return "/DynamicWebStoreAdmin";
 
 		String keysParam = request.getParameter("keys");		
 		List<String> keys = Arrays.asList(request.getParameter("keys").split(" "));
 		
+		System.out.println("############### MASSOPHANDLER SAYS KEY[0]: " + keys.get(0) + " ###############");
+		
 		
 		switch(request.getParameter("operation")) {
 			case "mass-remove-products":
-				ProductManager pm = new ProductManager(InformationProperties.getStrDatabaseName());
 				if(keysParam.isEmpty()) {
 					try {
 						response.sendRedirect(request.getContextPath() + "/productList");
@@ -45,10 +45,9 @@ public class MassOperationHandler implements RequestHandler {
 				}
 				
 				for(String key : keys)
-					pm.deleteProduct(Integer.parseInt(key));
+					ProductManager.deleteProduct(Integer.parseInt(key));
 			return "/productList";
 			case "mass-remove-users":
-				UserManager um = new UserManager(InformationProperties.getStrDatabaseName());
 				if(keysParam.isEmpty()) {
 					try {
 						response.sendRedirect(request.getContextPath() + "/userList");
@@ -59,7 +58,7 @@ public class MassOperationHandler implements RequestHandler {
 				}
 				
 				for(String key : keys)
-					um.deleteUser(key);
+					UserManager.deleteUser(key);
 				return "/userList";
 			case "mass-remove-messages":
 				if(keysParam.isEmpty()) {
@@ -70,14 +69,12 @@ public class MassOperationHandler implements RequestHandler {
 					}
 					return null;
 				}
-				HttpSession session = request.getSession();
 				
-				@SuppressWarnings("unchecked")
-				ArrayList<MessageCollection> sessionMsgs = (ArrayList<MessageCollection>) session.getAttribute("messages");
-				
-				sessionMsgs.removeIf(elem -> keys.contains(elem.getSender()));
-				
-				session.setAttribute("messages", sessionMsgs);
+				for(String sender : keys) {
+					List<MyMessage> userMsgs = MessageManager.getUserMessages(sender);
+					for(MyMessage msg : userMsgs)
+						MessageManager.deleteMessage(msg.getId());
+				}
 				
 				return "/messageList";
 			case "mass-send-message":
@@ -96,11 +93,12 @@ public class MassOperationHandler implements RequestHandler {
 					return "WEB-INF/jsp/messageForm.jsp";
 				}
 
+				MyMessage message = null;
 				
-				MessageManager mm = new MessageManager();
-				
-				for(String key : keys)
-					mm.writeJMS(user.getEmail(), key, messageBody);
+				for(String key : keys) {
+					message = new MyMessage(user.getEmail(), key, messageBody);
+					MessageManager.sendMessage(message);
+				}
 				
 				try {
 					response.sendRedirect(request.getContextPath() + "/messageList");
