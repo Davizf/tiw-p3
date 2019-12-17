@@ -84,7 +84,7 @@ public class UserController {
 	}
 
 	public static ArrayList<Product> getWishListProduct(User user) {
-		List<WishList> wishLists = user.getWishlists();
+		List<WishList> wishLists = WishListController.getWishListByUser(user.getEmail());
 		ArrayList<Product> wishListProducts = new ArrayList<Product>();
 
 		for (WishList wishList : wishLists) {

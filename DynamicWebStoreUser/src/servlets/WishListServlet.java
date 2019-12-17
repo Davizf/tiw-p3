@@ -37,14 +37,14 @@ public class WishListServlet extends HttpServlet{
 				User user = UserController.getUser(email);
 
 				// Add product to the WL if doesnt exists
-				if(!WishListController.checkWishListProducts(user.getWishlists(), product)) {
+				if(!WishListController.checkWishListProducts(user.getEmail(), product)) {
 					WishList wishList = new WishList();
 
 					wishList.setProductBean(product);
 					wishList.setUserBean(user);
-					user.addWishlist(wishList);
+					WishListController.addWishList(wishList);
 
-					UserController.modifyUser(user);
+					//UserController.modifyUser(user);
 				}
 
 				RequestDispatcher rd = req.getRequestDispatcher("wish-list.jsp");
@@ -55,7 +55,8 @@ public class WishListServlet extends HttpServlet{
 				int product = Integer.parseInt(req.getParameter("product"));
 				WishList wishList = WishListController.getWishListByUserAndProduct(email, product);
 
-				WishListController.deleteWishList(wishList);
+				if(wishList != null)
+					WishListController.deleteWishList(wishList);
 
 				RequestDispatcher rd = req.getRequestDispatcher("wish-list.jsp");
 				rd.forward(req, res);

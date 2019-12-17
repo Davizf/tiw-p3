@@ -1,5 +1,7 @@
+<%@page import="controllers.WishListController"%>
 <%@page import="model.Category"%>
 <%@page import="model.User"%>
+<%@page import="model.WishList"%>
 <%@page import="controllers.CategoryController"%>
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
@@ -436,22 +438,23 @@ if (user!=null) {
 								
 								<%
 								User u = UserController.getUser(user);
-								ArrayList<Product> list = (ArrayList<Product>) UserController.getWishListProduct(u);
+								//ArrayList<Product> list = (ArrayList<Product>) UserController.getWishListProduct(u);
+								List<WishList> list = WishListController.getWishListByUser(u.getEmail());
 								if(list != null){
-									for(Product product : list ){
+									for(WishList wl : list ){
 								%>
 									<tr>
-										<td class="thumb"><img src= <%= product.getImagePath() %> alt=""></td>
+										<td class="thumb"><img src= <%= wl.getProductBean().getImagePath() %> alt=""></td>
 										<td class="details">
-											<a href="#"><%= product.getName() %></a>
+											<a href="#"><%= wl.getProductBean().getName() %></a>
 											<ul>
 												<li><span>Size: M</span></li>
 											</ul>
 										</td>
 										<form action="WishList" method="post">
-											<td class="price text-center"><strong>$<%= product.getSalePrice()%></strong><br>
-											<del class="font-weak"><small>$<%=product.getPrice().doubleValue()%></small></del></td>
-											<input type="hidden" name="product" value= <%= product.getId() %> >
+											<td class="price text-center"><strong>$<%= wl.getProductBean().getSalePrice()%></strong><br>
+											<del class="font-weak"><small>$<%=wl.getProductBean().getPrice().doubleValue()%></small></del></td>
+											<input type="hidden" name="product" value= <%= wl.getProductBean().getId() %> >
 											<input type="hidden" name="type" value= "deleteInWishList" >
 											<td class="text-right"><input type="submit" class="primary-btn add-to-cart" value="X" /></td>
 										</form>
