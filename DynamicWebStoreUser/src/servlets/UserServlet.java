@@ -56,12 +56,13 @@ public class UserServlet extends HttpServlet {
 				user.setCredit_card_CVV(Integer.parseInt(req.getParameter("cvv")));
 				String seller = req.getParameter("seller");
 				user.setType((byte) ((seller != null && seller.equals("on")) ? 1 : 0));
-
 				// Insert the user
-				if (!UserController.addUser(user)) {
+				boolean createUser = UserController.addUser(user);
+
+				if (!createUser) {
 					req.setAttribute("message", "Something went wrong, try again!");
 				}
-				RequestDispatcher rd = UserController.addUser(user) ? req.getRequestDispatcher("login-page.jsp")
+				RequestDispatcher rd = createUser ? req.getRequestDispatcher("login-page.jsp")
 						: req.getRequestDispatcher("register-page.jsp");
 
 				rd.forward(req, res);
@@ -75,12 +76,12 @@ public class UserServlet extends HttpServlet {
 				session.setAttribute("user", email);
 				session.setAttribute("username", user.getName());
 				session.setAttribute("cartList", null);
-				
+
 				// If user is seller go to catalogue
 				RequestDispatcher rd = user.getType() == UserController.USER_TYPE_SELLER
 						? req.getRequestDispatcher("catalogue.jsp")
 						: req.getRequestDispatcher("index.jsp");
-				
+
 				rd.forward(req, res);
 			} else {
 				req.setAttribute("message", "The email or password is wrong!");
@@ -104,40 +105,41 @@ public class UserServlet extends HttpServlet {
 			user.setCreditCardExpiration(req.getParameter("cardExpire"));
 			user.setCredit_card_CVV(Integer.parseInt(req.getParameter("cvv")));
 			session.setAttribute("username", user.getName());
-			
 			RequestDispatcher rd;
 			// Modify the user
-			if(UserController.modifyUser(user)) {
+			if (UserController.modifyUser(user)) {
 				req.setAttribute("message", "Changes have been made correctly!");
 				req.setAttribute("user_information", (User) user);
 				rd = req.getRequestDispatcher("profile.jsp");
 				rd.forward(req, res);
+				return;
 			}
 
 			req.setAttribute("message", "Changes have not been made correctly!");
 			req.setAttribute("user_information", (User) user);
 			rd = req.getRequestDispatcher("profile.jsp");
 			rd.forward(req, res);
-
 		} else if (req.getParameter("operation").equalsIgnoreCase("No")) {
 			RequestDispatcher rd = req.getRequestDispatcher("index.jsp");
 			rd.forward(req, res);
 
 		} else if (req.getParameter("operation").equalsIgnoreCase("Yes")) {
 			RequestDispatcher rd;
-			// Delete the user
 			User user = UserController.getUser((String) session.getAttribute("user"));
 
-			if(UserController.deleteUser(user)) {
+			// Delete the user
+			if (UserController.deleteUser(user)) {
 				session.invalidate();
 				rd = req.getRequestDispatcher("index.jsp");
 				rd.forward(req, res);
+				return;
 			}
 			
 			req.setAttribute("message", "Something went wrong, try again!");
 			rd = req.getRequestDispatcher("delete-account.jsp");
 			rd.forward(req, res);
 		}
+
 	}
 
 }

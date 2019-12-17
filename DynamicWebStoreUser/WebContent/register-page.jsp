@@ -316,7 +316,7 @@ if (user!=null) {
 
 					<div class="col-md-6">
 						<div class="billing-details">
-							<p>Already a customer ? <a href="#">Login</a></p>
+							<p>Already a customer ? <a href="login-page.jsp">Login</a></p>
 							<div class="section-title">
 								<h3 class="title">Register form</h3>
 							</div>
@@ -348,10 +348,10 @@ if (user!=null) {
 								<input class="input" type="tel" name="tel" placeholder="Telephone" required>
 							</div>
 							<div class="form-group">
-								<input class="input" type="number" name="card" placeholder="Credit Card" required>
+								<input class="input" type="text" name="card" placeholder="Credit Card"  maxlength="16" pattern="\d{16}" required>
 							</div>
 							<div class="form-group">
-								<input class="input" type="date" name="cardExpire" placeholder="Credit Card Experiation" required>
+								<input class="input" type="date" name="cardExpire" placeholder="Credit Card Experiation"  min="2019-12-01" max="9999-12-31" required>
 							</div>
 							<div class="form-group">
 								<input class="input" type="text" name="cvv" placeholder="Credit Card CVV" maxlength="3" pattern="\d{3}" required>
