@@ -316,7 +316,7 @@ if (user!=null) {
 
 					<div class="col-md-6">
 						<div class="billing-details">
-							<p>Already a customer ? <a href="#">Login</a></p>
+							<p>Already a customer ? <a href="login-page.jsp">Login</a></p>
 							<div class="section-title">
 								<h3 class="title">Register form</h3>
 							</div>
