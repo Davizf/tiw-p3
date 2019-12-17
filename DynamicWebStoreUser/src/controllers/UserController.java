@@ -21,6 +21,7 @@ public class UserController {
 
 	public static final int USER_TYPE_SELLER = 1;
 	public static final int HTTP_STATUS_OK = 200;
+	public static final int HTTP_STATUS_CREATED = 201;
 
 	public static User getUser(String email) {
 		ClientConfig config = new ClientConfig();
