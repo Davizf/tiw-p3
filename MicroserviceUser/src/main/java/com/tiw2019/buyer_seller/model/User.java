@@ -37,9 +37,6 @@ public class User implements Serializable {
 	@Column(name = "credit_card_expiration")
 	private String creditCardExpiration;
 
-//	@Column(name="CURRENT_CONNECTIONS")
-//	private BigInteger currentConnections;
-
 	private String name;
 
 	private String password;
@@ -51,28 +48,8 @@ public class User implements Serializable {
 
 	private String surnames;
 
-//	@Column(name="TOTAL_CONNECTIONS")
-//	private BigInteger totalConnections;
-
 	private int type;
 
-//	private String user;
-
-	/*
-	 * //bi-directional many-to-one association to Product
-	 * 
-	 * @OneToMany(mappedBy="userBean") private List<Product> products1;
-	 * 
-	 * //bi-directional many-to-many association to Product
-	 * 
-	 * @ManyToMany
-	 * 
-	 * @JoinTable( name="wishlists" , joinColumns={
-	 * 
-	 * @JoinColumn(name="user") } , inverseJoinColumns={
-	 * 
-	 * @JoinColumn(name="product") } ) private List<Product> products2;
-	 */
 	public User() {
 	}
 
