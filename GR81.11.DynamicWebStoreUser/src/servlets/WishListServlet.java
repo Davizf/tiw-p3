@@ -18,19 +18,19 @@ import model.Product;
 import model.User;
 import model.WishList;
 
-@WebServlet(name = "WishList", urlPatterns = "/WishList")
+@WebServlet(name = "WishList", urlPatterns = {"/WishList", "/wish-list.jsp"})
 public class WishListServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
 	ArrayList<Product> products = new ArrayList<Product>();
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-
 		HttpSession session = req.getSession();
 
 		// Only if there is a user logged
 		if(session.getAttribute("user") != null) {
 			String email = (String) session.getAttribute("user");
+
 			if(req.getParameter("type").equalsIgnoreCase("addToWishList")) {
 				int id = Integer.parseInt(req.getParameter("id"));
 				Product product = ProductController.getProduct(id);
@@ -50,7 +50,6 @@ public class WishListServlet extends HttpServlet{
 				RequestDispatcher rd = req.getRequestDispatcher("wish-list.jsp");
 				rd.forward(req, res);
 
-
 			} else if(req.getParameter("type").equalsIgnoreCase("deleteInWishList")) {
 				int product = Integer.parseInt(req.getParameter("product"));
 				WishList wishList = WishListController.getWishListByUserAndProduct(email, product);
@@ -60,16 +59,17 @@ public class WishListServlet extends HttpServlet{
 
 				RequestDispatcher rd = req.getRequestDispatcher("wish-list.jsp");
 				rd.forward(req, res);
-
 			}
 
 		} else {
-
 			RequestDispatcher rd = req.getRequestDispatcher("login-page.jsp");
 			rd.forward(req, res);
-
 		}
 
+	}
+
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
 	}
 
 }
