@@ -1,46 +1,89 @@
 package controllers;
 
+import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import managers.WishListManager;
+import org.glassfish.jersey.client.ClientConfig;
+
 import model.Product;
 import model.WishList;
 
 public class WishListController {
+	private static final String PATH = "http://localhost:11166/wishlist";
+	public static final int USER_TYPE_SELLER = 1;
+	public static final int HTTP_STATUS_CREATED = 201;
+	public static final int HTTP_STATUS_OK = 200;
+	
+	public static boolean addWishList(WishList wishList) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
 
-	public static WishList getWishListByUserAndProduct(String email, int product) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		WishListManager manager = new WishListManager();
-		manager.setEntityManagerFactory(factory);
-		WishList wishList = (WishList) manager.getWishListByUserAndProduct(email, product).get(0);
-		factory.close();
-		return wishList;	
+		WebTarget webTarget = client.target(PATH);
+		//WebTarget webTargetPath = webTarget.path("users");
+		
+		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.post(Entity.entity(wishList, MediaType.APPLICATION_JSON));
+
+		client.close();
+		return response.getStatus() == HTTP_STATUS_CREATED;
+	}
+	
+	public static WishList getWishListByUserAndProduct(String email, Integer productId) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		WishList wl = null;
+		
+		WebTarget webTarget = client.target(PATH);
+		WebTarget webTargetPath = webTarget.queryParam("user_email", email).queryParam("product_id", productId.toString());
+		
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+		
+		if (response.getStatus() == 200)
+			wl = response.readEntity(WishList.class);
+		
+		client.close();
+		return wl;
+	}
+	
+	public static List<WishList> getWishListByUser(String email) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		List<WishList> wls = null;
+		
+		WebTarget webTarget = client.target(PATH);
+		WebTarget webTargetPath = webTarget.queryParam("user_email", email);
+		
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.get();
+		
+		if (response.getStatus() == HTTP_STATUS_OK)
+			wls = Arrays.asList(response.readEntity(WishList[].class));
+		
+		client.close();
+		return wls;
 	}
 	
 	public static boolean deleteWishList(WishList wishList) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tiw-p1-buyer-seller");		
-		WishListManager manager = new WishListManager();
-		manager.setEntityManagerFactory(factory);
-		try {
-			manager.deleteWishList(wishList);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-			factory.close();
-		}
-		return true;
+		Client client = ClientBuilder.newClient(new ClientConfig());
+
+		WebTarget webTarget = client.target(PATH);
+		WebTarget webTargetPath = webTarget.path(wishList.getId() + "");
+		
+		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
+		Response response = invocationBuilder.delete();
+
+		client.close();
+		return response.getStatus() == HTTP_STATUS_OK;
 	}
 	
-	public static boolean checkWishListProducts(List<WishList> userWishList, Product product) {
-		for(WishList wishlist : userWishList) {
-			if (product.getId() == wishlist.getProductBean().getId()) {
-				return true;
-			}
-		}
-		return false;
+	public static boolean checkWishListProducts(String email, Product product) {
+		return getWishListByUserAndProduct(email, product.getId()) != null;
 	}
+	
 }

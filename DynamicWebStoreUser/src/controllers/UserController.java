@@ -20,7 +20,6 @@ import model.WishList;
 public class UserController {
 
 	public static final int USER_TYPE_SELLER = 1;
-	public static final int HTTP_STATUS_CREATED = 201;
 	public static final int HTTP_STATUS_OK = 200;
 
 	public static User getUser(String email) {
@@ -33,7 +32,7 @@ public class UserController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == 200) {
+		if (response.getStatus() == HTTP_STATUS_OK) {
 			user = response.readEntity(User.class);
 		}
 		client.close();
@@ -84,7 +83,7 @@ public class UserController {
 	}
 
 	public static ArrayList<Product> getWishListProduct(User user) {
-		List<WishList> wishLists = user.getWishlists();
+		List<WishList> wishLists = WishListController.getWishListByUser(user.getEmail());
 		ArrayList<Product> wishListProducts = new ArrayList<Product>();
 
 		for (WishList wishList : wishLists) {
@@ -104,7 +103,7 @@ public class UserController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == 200) {
+		if (response.getStatus() == HTTP_STATUS_OK) {
 			User[] usersArray = response.readEntity(User[].class);
 			users = Arrays.asList(usersArray);
 		}
@@ -123,7 +122,7 @@ public class UserController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == 200) {
+		if (response.getStatus() == HTTP_STATUS_OK) {
 			user = response.readEntity(User.class);
 		}
 		client.close();
@@ -140,7 +139,7 @@ public class UserController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == 200) {
+		if (response.getStatus() == HTTP_STATUS_OK) {
 			User user = response.readEntity(User.class);
 			client.close();
 

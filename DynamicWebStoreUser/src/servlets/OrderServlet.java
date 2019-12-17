@@ -48,7 +48,6 @@ public class OrderServlet extends HttpServlet{
 				RequestDispatcher rd = req.getRequestDispatcher("order-confirm.jsp");
 				rd.forward(req, res);
 			}else {
-
 				if(OrderController.checkProductsStock(productsInCart)) {
 					// Create the order
 					Date date = new Date();
@@ -70,14 +69,14 @@ public class OrderServlet extends HttpServlet{
 						order_product = new Orders_has_Product();
 						order_product.setProductPrice(product.getProduct().getSalePrice());
 						order_product.setProductBean(product.getProduct());
-						order_product.setOrder(order);
+						//order_product.setOrder(order);
 						order_product.setShipPrice(product.getProduct().getShipPrice());
 						order_product.setQuantity(product.getQuantity());
 						products.add(order_product);
 						ProductController.updateStock(product.getProduct(), product.getQuantity());
 					}
 					order.setOrdersHasProducts(products);
-
+					
 					// Insert the order
 					OrderController.createOrder(order);
 					productsInCart.clear();

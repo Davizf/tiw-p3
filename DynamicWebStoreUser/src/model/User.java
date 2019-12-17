@@ -3,7 +3,6 @@ package model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -64,9 +63,9 @@ public class User implements Serializable {
 
 	//	private String user;
 
-	//bi-directional many-to-one association to Order
-	@OneToMany(mappedBy="userBean")
-	private List<Orders> orders;
+//	//bi-directional many-to-one association to Order
+//	@OneToMany(mappedBy="userBean")
+//	private List<Orders> orders;
 
 	//bi-directional many-to-one association to Product
 	@OneToMany(mappedBy="userBean")
@@ -85,13 +84,13 @@ public class User implements Serializable {
 			)
 	private List<Product> products2;
 
-	//bi-directional many-to-one association to WishList
-	@OneToMany(mappedBy="userBean", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<WishList> wishlists;
+//	//bi-directional many-to-one association to WishList
+//	@OneToMany(mappedBy="userBean", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<WishList> wishlists;
 
-	//bi-directional many-to-one association to ShopingCart
-	@OneToMany(mappedBy="userBean")
-	private List<ShopingCart> shopingcarts;
+//	//bi-directional many-to-one association to ShopingCart
+//	@OneToMany(mappedBy="userBean")
+//	private List<ShopingCart> shopingcarts;
 
 	public User() {
 	}
@@ -224,27 +223,27 @@ public class User implements Serializable {
 	//		this.user = user;
 	//	}
 
-	public List<Orders> getOrders() {
-		return this.orders;
-	}
+//	public List<Orders> getOrders() {
+//		return this.orders;
+//	}
+//
+//	public void setOrders(List<Orders> orders) {
+//		this.orders = orders;
+//	}
 
-	public void setOrders(List<Orders> orders) {
-		this.orders = orders;
-	}
-
-	public Orders addOrder(Orders order) {
-		getOrders().add(order);
-		order.setUserBean(this);
-
-		return order;
-	}
-
-	public Orders removeOrder(Orders order) {
-		getOrders().remove(order);
-		order.setUserBean(null);
-
-		return order;
-	}
+//	public Orders addOrder(Orders order) {
+//		getOrders().add(order);
+//		order.setUserBean(this);
+//
+//		return order;
+//	}
+//
+//	public Orders removeOrder(Orders order) {
+//		getOrders().remove(order);
+//		order.setUserBean(null);
+//
+//		return order;
+//	}
 
 	public List<Product> getProducts1() {
 		return this.products1;
@@ -276,49 +275,49 @@ public class User implements Serializable {
 		this.products2 = products2;
 	}
 
-	public List<WishList> getWishlists() {
-		return this.wishlists;
-	}
+//	public List<WishList> getWishlists() {
+//		return this.wishlists;
+//	}
+//
+//	public void setWishlists(List<WishList> wishlists) {
+//		this.wishlists = wishlists;
+//	}
 
-	public void setWishlists(List<WishList> wishlists) {
-		this.wishlists = wishlists;
-	}
+//	public WishList addWishlist(WishList wishlist) {
+//		getWishlists().add(wishlist);
+//		wishlist.setUserBean(this);
+//
+//		return wishlist;
+//	}
+//
+//	public WishList removeWishlist(WishList wishlist) {
+//		getWishlists().remove(wishlist);
+//		wishlist.setUserBean(null);
+//
+//		return wishlist;
+//	}
+//
+//	public List<ShopingCart> getShopingcarts() {
+//		return this.shopingcarts;
+//	}
+//
+//	public void setShopingcarts(List<ShopingCart> shopingcarts) {
+//		this.shopingcarts = shopingcarts;
+//	}
 
-	public WishList addWishlist(WishList wishlist) {
-		getWishlists().add(wishlist);
-		wishlist.setUserBean(this);
-
-		return wishlist;
-	}
-
-	public WishList removeWishlist(WishList wishlist) {
-		getWishlists().remove(wishlist);
-		wishlist.setUserBean(null);
-
-		return wishlist;
-	}
-
-	public List<ShopingCart> getShopingcarts() {
-		return this.shopingcarts;
-	}
-
-	public void setShopingcarts(List<ShopingCart> shopingcarts) {
-		this.shopingcarts = shopingcarts;
-	}
-
-	public ShopingCart addShopingcart(ShopingCart shopingcart) {
-		getShopingcarts().add(shopingcart);
-		shopingcart.setUserBean(this);
-
-		return shopingcart;
-	}
-
-	public ShopingCart removeShopingcart(ShopingCart shopingcart) {
-		getShopingcarts().remove(shopingcart);
-		shopingcart.setUserBean(null);
-
-		return shopingcart;
-	}
+//	public ShopingCart addShopingcart(ShopingCart shopingcart) {
+//		getShopingcarts().add(shopingcart);
+//		shopingcart.setUserBean(this);
+//
+//		return shopingcart;
+//	}
+//
+//	public ShopingCart removeShopingcart(ShopingCart shopingcart) {
+//		getShopingcarts().remove(shopingcart);
+//		shopingcart.setUserBean(null);
+//
+//		return shopingcart;
+//	}
 
 	@Override
 	public String toString() {
