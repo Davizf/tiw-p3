@@ -23,7 +23,7 @@ public class LoginHandler implements RequestHandler {
 			if(url.substring(url.lastIndexOf("/") + 1).equals("logout")) {
 				session.invalidate();
 				try {
-					response.sendRedirect("/DynamicWebStoreAdmin");
+					response.sendRedirect("/GR81.11.DynamicWebStoreAdmin");
 				} catch(IOException e) {
 					System.out.println(e.getMessage());
 				}
