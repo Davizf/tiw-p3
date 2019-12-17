@@ -64,12 +64,12 @@ public class OrderController {
 	@RequestMapping(value="/order", params = {"product_id"}, method=RequestMethod.GET, produces="application/json")
 	public ResponseEntity<?> getOrdersByProduct(@RequestParam(value="product_id", required=true) Integer productId) {
 		try {
-			//List<Order> orders = orderDAO.findAllByProduct(productId);
 			List<Orders_has_Product> ohps = ohpDAO.findAllByProduct(productId);
 			
-			ArrayList<Order> orders = new ArrayList<Order>();
 			if(ohps == null)
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+
+			ArrayList<Order> orders = new ArrayList<Order>();
 			
 			for(Orders_has_Product ohp : ohps)
 				orders.add(ohp.getOrder());
