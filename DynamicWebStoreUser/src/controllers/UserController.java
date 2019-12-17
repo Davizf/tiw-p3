@@ -20,8 +20,6 @@ import model.WishList;
 public class UserController {
 
 	public static final int USER_TYPE_SELLER = 1;
-	public static final int HTTP_STATUS_OK = 200;
-	public static final int HTTP_STATUS_CREATED = 201;
 
 	public static User getUser(String email) {
 		ClientConfig config = new ClientConfig();
@@ -33,7 +31,7 @@ public class UserController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == HTTP_STATUS_OK) {
+		if (response.getStatus() == HTTPStatuses.OK) {
 			user = response.readEntity(User.class);
 		}
 		client.close();
@@ -52,7 +50,7 @@ public class UserController {
 
 		client.close();
 
-		return response.getStatus() == HTTP_STATUS_CREATED;
+		return response.getStatus() == HTTPStatuses.CREATED;
 	}
 
 	public static boolean modifyUser(User user) {
@@ -66,7 +64,7 @@ public class UserController {
 
 		client.close();
 
-		return response.getStatus() == HTTP_STATUS_OK;
+		return response.getStatus() == HTTPStatuses.OK;
 	}
 
 	public static boolean deleteUser(User user) {
@@ -80,7 +78,7 @@ public class UserController {
 
 		client.close();
 
-		return response.getStatus() == HTTP_STATUS_OK;
+		return response.getStatus() == HTTPStatuses.OK;
 	}
 
 	public static ArrayList<Product> getWishListProduct(User user) {
@@ -104,7 +102,7 @@ public class UserController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == HTTP_STATUS_OK) {
+		if (response.getStatus() == HTTPStatuses.OK) {
 			User[] usersArray = response.readEntity(User[].class);
 			users = Arrays.asList(usersArray);
 		}
@@ -123,7 +121,7 @@ public class UserController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == HTTP_STATUS_OK) {
+		if (response.getStatus() == HTTPStatuses.OK) {
 			user = response.readEntity(User.class);
 		}
 		client.close();
@@ -140,7 +138,7 @@ public class UserController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == HTTP_STATUS_OK) {
+		if (response.getStatus() == HTTPStatuses.OK) {
 			User user = response.readEntity(User.class);
 			client.close();
 

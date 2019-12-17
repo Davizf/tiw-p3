@@ -17,13 +17,11 @@ import model.Message;
 import model.User;
 
 public class ChatController {
-	
+
 	static int USER_TYPE_BUYER = 0;
-	public static final int HTTP_STATUS_CREATED = 201;
-	public static final int HTTP_STATUS_OK = 200;
 
 	public static List<Message> getUserMessages(String receiver) {
-		
+
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
 		List<Message> messages = null;
@@ -33,7 +31,7 @@ public class ChatController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == HTTP_STATUS_OK) {
+		if (response.getStatus() == HTTPStatuses.OK) {
 			Message[] messagesArray = response.readEntity(Message[].class);
 			messages = Arrays.asList(messagesArray);
 		}
@@ -53,9 +51,9 @@ public class ChatController {
 
 		client.close();
 
-		return response.getStatus() == HTTP_STATUS_CREATED;
+		return response.getStatus() == HTTPStatuses.CREATED;
 	}
-	
+
 	public static void sendMessageToAllBuyers(String message, String sender) {
 
 		List<User>buyers = UserController.getAllUsersByType(USER_TYPE_BUYER);
@@ -65,7 +63,7 @@ public class ChatController {
 		}
 
 	}
-	
+
 	public static boolean deleteMessage(String id) {
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
@@ -77,11 +75,7 @@ public class ChatController {
 
 		client.close();
 
-		return response.getStatus() == HTTP_STATUS_OK;
+		return response.getStatus() == HTTPStatuses.OK;
 	}
-
-
-
-
 
 }

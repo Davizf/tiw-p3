@@ -15,7 +15,6 @@ import model.Category;
 
 public class CategoryController {
 
-	private static final int HTTP_STATUS_OK = 200;
 	private static final String WEB_SERVICE="http://localhost:11133/categories";
 
 	public static ArrayList<Category> getCategories() {
@@ -28,7 +27,7 @@ public class CategoryController {
 		Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == HTTP_STATUS_OK) {
+		if (response.getStatus() == HTTPStatuses.OK) {
 			categories = response.readEntity(Category[].class);
 			for (int i = 0; i < categories.length; i++)
 				resul.add(categories[i]);
@@ -48,7 +47,7 @@ public class CategoryController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == HTTP_STATUS_OK) category = response.readEntity(Category[].class)[0];
+		if (response.getStatus() == HTTPStatuses.OK) category = response.readEntity(Category[].class)[0];
 		client.close();
 		return category;
 	}
@@ -63,7 +62,7 @@ public class CategoryController {
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
 
-		if (response.getStatus() == HTTP_STATUS_OK) category = response.readEntity(Category.class);
+		if (response.getStatus() == HTTPStatuses.OK) category = response.readEntity(Category.class);
 		client.close();
 		return category;
 	}

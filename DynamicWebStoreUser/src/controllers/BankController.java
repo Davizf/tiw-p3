@@ -12,9 +12,6 @@ import org.glassfish.jersey.client.ClientConfig;
 import model.Transaction;
 
 public class BankController {
-	
-	public static final int HTTP_STATUS_OK = 200;
-
 
 	public static String sendTransaction(Transaction transaction) {
 		String transaction_id = "";
@@ -25,19 +22,13 @@ public class BankController {
 		WebTarget webTargetPath = webTarget.path("transactions");
 		Invocation.Builder invocationBuilder = webTargetPath.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.post(Entity.entity(transaction, MediaType.APPLICATION_JSON));
-		
-		if (response.getStatus() == HTTP_STATUS_OK) {
+
+		if (response.getStatus() == HTTPStatuses.OK) {
 			transaction_id = response.readEntity(String.class);
 		}
 		client.close();
 
 		return transaction_id;
 	}
-	
-
-
-
-
-
 
 }
