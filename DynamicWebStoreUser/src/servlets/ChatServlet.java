@@ -60,7 +60,7 @@ public class ChatServlet extends HttpServlet {
 			miR.forward(req, resp);
 		}else if(op == 4) {	// send a offer to buyers
 			ChatController.sendMessageToAllBuyers(msg, sender);
-			RequestDispatcher miR=req.getRequestDispatcher("index.jsp");
+			RequestDispatcher miR=req.getRequestDispatcher("catalogue.jsp");
 			miR.forward(req, resp);
 		}else if(op == 5) {	// remove a message
 			if(!ChatController.deleteMessage(req.getParameter("msgid"))) {
