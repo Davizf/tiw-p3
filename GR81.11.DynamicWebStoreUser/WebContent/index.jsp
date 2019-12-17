@@ -1,5 +1,4 @@
 <%@page import="controllers.UserController"%>
-<%@page import="managers.UserManager"%>
 <%@page import="servlets.ProductServlet"%>
 <%@page import="model.User"%>
 <%@page import="model.ProductInCart"%>
