@@ -57,13 +57,14 @@ public class UserServlet extends HttpServlet {
 				String seller = req.getParameter("seller");
 				user.setType((byte) ((seller != null && seller.equals("on")) ? 1 : 0));
 
+				RequestDispatcher rd;
 				// Insert the user
 				if (!UserController.addUser(user)) {
 					req.setAttribute("message", "Something went wrong, try again!");
+					rd = req.getRequestDispatcher("register-page.jsp");
 				}
-				RequestDispatcher rd = UserController.addUser(user) ? req.getRequestDispatcher("login-page.jsp")
-						: req.getRequestDispatcher("register-page.jsp");
-
+				
+				rd = req.getRequestDispatcher("login-page.jsp");		
 				rd.forward(req, res);
 			}
 		} else if (req.getParameter("operation").equalsIgnoreCase("Login")) {
